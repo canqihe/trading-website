@@ -140,7 +140,7 @@ body {
 
 .nav-menu a:hover {
     color: var(--text-primary);
-    background: rgba(252, 211, 3, 0.1);
+    background: rgba(0, 153, 255, 0.15);
 }
 
 .nav-menu a.active {
@@ -760,4 +760,375 @@ html {
 .content-item:nth-child(8) { animation-delay: 0.45s; }
 .content-item:nth-child(9) { animation-delay: 0.5s; }
 .content-item:nth-child(10) { animation-delay: 0.55s; }
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE ADAPTATION
+   ======================================== */
+
+/* Tablets and Small Screens (768px and below) */
+@media (max-width: 768px) {
+    /* Navigation */
+    .nav-container {
+        padding: 0 20px;
+        height: auto;
+        min-height: 60px;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .nav-menu a {
+        font-size: 11px;
+        padding: 8px 10px;
+    }
+
+    /* Hero Section */
+    .hero {
+        padding: 80px 20px;
+        min-height: 500px;
+    }
+
+    .hero-title {
+        font-size: clamp(36px, 10vw, 56px);
+        letter-spacing: -2px;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+        padding: 0 10px;
+    }
+
+    /* Container */
+    .container {
+        padding: 0 20px;
+    }
+
+    /* Section Spacing */
+    section {
+        padding: 60px 20px;
+    }
+
+    /* Section Titles */
+    .section-title {
+        font-size: clamp(28px, 6vw, 40px);
+        margin-bottom: 40px;
+    }
+
+    /* Intro Cards - Single Column */
+    .intro-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .intro-card {
+        padding: 28px;
+    }
+
+    .card-icon {
+        font-size: 42px;
+        margin-bottom: 16px;
+    }
+
+    .intro-card h3 {
+        font-size: 22px;
+    }
+
+    .intro-card p {
+        font-size: 15px;
+    }
+
+    /* Content Grid - Single Column */
+    .content-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .content-item {
+        padding: 24px;
+    }
+
+    .content-number {
+        font-size: 36px;
+        margin-bottom: 8px;
+    }
+
+    .content-item h3 {
+        font-size: 18px;
+    }
+
+    /* Quote Section */
+    .quote-section {
+        padding: 60px 20px;
+    }
+
+    .big-quote {
+        font-size: clamp(20px, 5vw, 28px);
+        padding: 0 20px;
+    }
+
+    .big-quote::before {
+        font-size: 80px;
+        top: -10px;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 40px 20px 30px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .footer-bottom p {
+        font-size: 12px;
+    }
+}
+
+/* Mobile Phones (480px and below) */
+@media (max-width: 480px) {
+    /* Navigation - Horizontal Scroll */
+    .nav-container {
+        padding: 0 16px;
+    }
+
+    .nav-menu {
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: 3px;
+        padding: 4px 0;
+    }
+
+    .nav-menu a {
+        font-size: 11px;
+        padding: 6px 10px;
+        white-space: nowrap;
+    }
+
+    /* Hide scrollbar for nav */
+    .nav-menu::-webkit-scrollbar {
+        display: none;
+    }
+    .nav-menu {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* Hero Section */
+    .hero {
+        padding: 60px 16px;
+        min-height: 400px;
+    }
+
+    .hero-title {
+        font-size: clamp(32px, 12vw, 48px);
+    }
+
+    .hero-subtitle {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    /* Container */
+    .container {
+        padding: 0 16px;
+    }
+
+    /* Section Spacing */
+    section {
+        padding: 48px 16px;
+    }
+
+    /* Section Titles */
+    .section-title {
+        font-size: clamp(24px, 7vw, 32px);
+        margin-bottom: 32px;
+    }
+
+    /* Intro Cards */
+    .intro-card {
+        padding: 24px;
+    }
+
+    .card-icon {
+        font-size: 38px;
+    }
+
+    .intro-card h3 {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .intro-card p {
+        font-size: 14px;
+    }
+
+    /* Content Items */
+    .content-item {
+        padding: 20px;
+    }
+
+    .content-number {
+        font-size: 32px;
+    }
+
+    .content-item h3 {
+        font-size: 16px;
+    }
+
+    .content-item p {
+        font-size: 13px;
+    }
+
+    /* Quote */
+    .big-quote {
+        font-size: 18px;
+        padding: 0;
+        line-height: 1.5;
+    }
+
+    .big-quote::before {
+        font-size: 60px;
+        left: -10px;
+    }
+
+    .big-quote footer {
+        margin-top: 24px;
+        font-size: 14px;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 30px 16px 20px;
+    }
+
+    .footer-content {
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .footer-section h4 {
+        font-size: 14px;
+    }
+
+    .footer-section p {
+        font-size: 13px;
+    }
+}
+
+/* Content Page Layout on Mobile */
+@media (max-width: 768px) {
+    .content-page {
+        flex-direction: column;
+        padding: 40px 20px;
+    }
+
+    .content-sidebar {
+        width: 100%;
+        position: static;
+        height: auto;
+        padding-right: 0;
+        padding-bottom: 30px;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 30px;
+    }
+
+    .toc-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 8px;
+    }
+
+    .toc-list li {
+        margin-bottom: 0;
+    }
+
+    .content-main {
+        padding-left: 0;
+    }
+
+    .article-title {
+        font-size: clamp(28px, 7vw, 40px);
+    }
+
+    .article-content {
+        font-size: 16px;
+    }
+
+    .article-content h2 {
+        font-size: clamp(24px, 6vw, 32px);
+        margin-top: 48px;
+        margin-bottom: 24px;
+    }
+
+    .article-content h3 {
+        font-size: clamp(20px, 5vw, 24px);
+        margin-top: 36px;
+        margin-bottom: 16px;
+    }
+
+    .article-content p {
+        margin-bottom: 20px;
+    }
+
+    .article-content ul,
+    .article-content ol {
+        margin: 20px 0;
+        padding-left: 24px;
+    }
+
+    .article-content li {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .article-content blockquote {
+        font-size: 17px;
+        padding: 20px 24px;
+        margin: 32px 0;
+    }
+
+    .article-content code {
+        font-size: 0.85em;
+    }
+
+    .article-content hr {
+        margin: 48px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-page {
+        padding: 30px 16px;
+    }
+
+    .article-title {
+        font-size: clamp(24px, 8vw, 32px);
+    }
+
+    .article-content {
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .article-content h2 {
+        margin-top: 36px;
+    }
+
+    .article-content h3 {
+        margin-top: 28px;
+    }
+
+    .article-content blockquote {
+        font-size: 16px;
+        padding: 16px 20px;
+        margin: 24px 0;
+    }
+}
 
