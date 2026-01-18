@@ -215,7 +215,6 @@ const particleCount = Math.floor((canvas.width * canvas.height) / 15000);
 
 ## 📞 联系方式
 
-- Twitter: [@nfa_trader](https://x.com/nfa_trader)
 - GitHub Issues: [提交问题](https://github.com/yourusername/trading-website/issues)
 
 ## ⚠️ 免责声明
