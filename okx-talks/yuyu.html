@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予与：1年9个月从5万到1亿 | OKX对话交易员</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --accent-gold: #d4a853;
+            --accent-gold-light: #f0c77a;
+            --accent-orange: #e87d3e;
+            --accent-orange-dark: #c46228;
+            --text-primary: #f5f5f0;
+            --text-secondary: #a0a0a8;
+            --text-muted: #6a6a75;
+            --border-color: #2a2a35;
+            --border-gold: rgba(212, 168, 83, 0.3);
+            --shadow-gold: rgba(212, 168, 83, 0.15);
+            --glow-gold: rgba(212, 168, 83, 0.08);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-gold);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent-gold);
+            letter-spacing: 0.05em;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold-light);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, var(--glow-gold) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(232, 125, 62, 0.05) 0%, transparent 40%);
+            animation: heroGlow 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-5%, -5%) rotate(5deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s ease forwards;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 50%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s ease 0.15s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s ease 0.3s forwards;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s ease 0.45s forwards;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .meta-value a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .meta-value a:hover {
+            color: var(--accent-gold-light);
+        }
+
+        .timeline-section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, transparent 0%, var(--border-gold) 10%, var(--border-gold) 90%, transparent 100%);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            position: relative;
+            margin-bottom: 4rem;
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--bg-primary);
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            background: var(--accent-gold);
+            box-shadow: 0 0 20px var(--glow-gold);
+        }
+
+        .timeline-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            max-width: 400px;
+            margin: 0 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 40px var(--shadow-gold);
+        }
+
+        .timeline-year {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .quote-section {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-section::before {
+            content: '"';
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20rem;
+            color: var(--border-gold);
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .quotes-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .quote-card:hover {
+            border-color: var(--border-gold);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .quote-source {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: normal;
+        }
+
+        .content-section {
+            padding: 6rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .chapter {
+            margin-bottom: 6rem;
+        }
+
+        .chapter-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .subsection {
+            margin-bottom: 3rem;
+        }
+
+        .subsection-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .dialogue {
+            margin-bottom: 2.5rem;
+        }
+
+        .question {
+            font-weight: 500;
+            color: var(--accent-gold-light);
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .answer {
+            color: var(--text-secondary);
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        .answer p {
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.1) 0%, rgba(232, 125, 62, 0.05) 100%);
+            border-left: 3px solid var(--accent-gold);
+            padding: 1.5rem 2rem;
+            border-radius: 0 8px 8px 0;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--text-primary);
+        }
+
+        .highlight-box p {
+            margin-bottom: 0.8rem;
+        }
+
+        .stats-section {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-gold);
+            transform: scale(1.02);
+        }
+
+        .stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        footer {
+            padding: 4rem 2rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-gold);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .disclaimer {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            z-index: 99;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent-gold-light);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px var(--shadow-gold);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                padding-left: 50px;
+                padding-right: 0;
+                justify-content: flex-start;
+            }
+
+            .timeline-item::before {
+                left: 20px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .quote-text {
+                font-size: 1.2rem;
+            }
+
+            .chapter-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="../index.html" class="nav-logo">OKX 对话交易员</a>
+        <ul class="nav-links">
+            <li><a href="#hero">首页</a></li>
+            <li><a href="#timeline">时间线</a></li>
+            <li><a href="#quotes">金句</a></li>
+            <li><a href="#journey">完整访谈</a></li>
+        </ul>
+        <button class="mobile-menu-btn">☰</button>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-tag">OKX 对话交易员 · 第30+期</div>
+            <h1 class="hero-title">1年9个月从5万到1亿<br>予与的裸K狙击术与三次爆仓重生</h1>
+            <p class="hero-subtitle">
+                从大学生活费2万起步，历经三次爆仓归零，借5万元重启征途。<br>
+                这是8年血泪淬炼的交易信条，不是暴富神话。
+            </p>
+            <div class="hero-meta">
+                <div class="meta-item">
+                    <div class="meta-label">嘉宾</div>
+                    <div class="meta-value"><a href="https://x.com/yuyuvkx" target="_blank">@予与</a></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">主持人</div>
+                    <div class="meta-value"><a href="https://x.com/mia_okx" target="_blank">@Mia</a></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">收益率</div>
+                    <div class="meta-value">2000倍</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">时间跨度</div>
+                    <div class="meta-value">1年9个月</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="timeline-section" id="timeline">
+        <div class="section-header">
+            <div class="section-label">JOURNEY</div>
+            <h2 class="section-title">成长轨迹</h2>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2017-2019</div>
+                    <div class="timeline-title">初入市场 · 艰难探索</div>
+                    <div class="timeline-desc">2万大学生活费起步，两年震荡，最终归零。第一次经历爆仓，心态濒临崩盘。</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2020-2021</div>
+                    <div class="timeline-title">牛市爆发 · 首个千万</div>
+                    <div class="timeline-desc">"312"事件成为转折点，从不到100万做到近2000万。听从父亲劝告，一半资金买房买车。</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2021-2023</div>
+                    <div class="timeline-title">三次爆仓 · 跌入低谷</div>
+                    <div class="timeline-desc">千万资产半年内亏光。经历三次爆仓，第三次在2023年中，心态彻底崩溃。</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2023.10-2024</div>
+                    <div class="timeline-title">浴火重生 · 5万到1亿</div>
+                    <div class="timeline-desc">借5万元最后一次尝试。吸取所有教训，重视风控。1年9个月，从5万做到1亿。</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="quote-section" id="quotes">
+        <div class="section-header">
+            <div class="section-label">QUOTES</div>
+            <h2 class="section-title">交易金句</h2>
+        </div>
+        <div class="quotes-grid">
+            <div class="quote-card">
+                <div class="quote-text">浮亏绝不加仓</div>
+                <div class="quote-source">— 予与的交易铁律</div>
+            </div>
+            <div class="quote-card">
+                <div class="quote-text">只做龙头，强者恒强</div>
+                <div class="quote-source">— 标的选择哲学</div>
+            </div>
+            <div class="quote-card">
+                <div class="quote-text">利润必须沉淀</div>
+                <div class="quote-source">— 24岁购房的启示</div>
+            </div>
+            <div class="quote-card">
+                <div class="quote-text">市场永远会朝着阻力最小的方向运行</div>
+                <div class="quote-source">— 《股票大作手回忆录》</div>
+            </div>
+            <div class="quote-card">
+                <div class="quote-text">你要知道这是牛市</div>
+                <div class="quote-source">— 相信趋势的力量</div>
+            </div>
+            <div class="quote-card">
+                <div class="quote-text">永远不要逆势操作</div>
+                <div class="quote-source">— 避免两头挨打</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">3次</div>
+                <div class="stat-label">爆仓归零</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8年</div>
+                <div class="stat-label">交易淬炼</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2000×</div>
+                <div class="stat-label">最终收益</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1亿</div>
+                <div class="stat-label">资产规模</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" id="journey">
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER ONE</div>
+            <h2 class="chapter-title">个人经历篇——来时路</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">从0到第一桶金：学习、积累与突破（2017–2020）</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：您是怎么接触到加密货币的？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>2017年的时候我接触加密，其实这完全是个偶然的机会。当时我比较喜欢摄影，加入了一个摄影爱好群，某天看到群里有人聊莱特币，我就很好奇，便开始在百度和谷歌上搜索，了解了加密货币。越了解越觉得这东西挺适合我，也可能是未来最好的金融资产。于是花了几天时间在各种网站和视频里学习，对这个领域的认知逐渐加深，也坚定了我对比特币未来的信心。2017年年初正好赶上加密货币第二波牛市，那时候整个市场非常火爆，很多社交平台和群聊都在热议。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：最开始是怎么开始学习交易度过"新手期"的呢？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>刚开始其实我完全不懂交易，也没接触过股票类资产，最初只是玩现货买卖，但一直亏钱，感觉这样下去不行，就决定系统地学习技术分析和交易技巧。我买了几本书，第一本是《股票大作手回忆录》，这本书贯穿了我整个八年的交易生涯，至少读了十遍，每次读都会有新的体会。刚开始看它像看小说，没完全理解，但随着实战经验积累，书里的内容对我帮助越来越大。我还读过《期货市场技术分析》，里面讲了道氏理论、均线、波浪和各种技术指标，我学到了基础的K线形态，比如头肩底、双底、双顶这些。虽然也看过《日本蜡烛图》，但我觉得它对加密货币市场不太适用，复盘比特币的历史K线后发现经典形态不太匹配，所以没有深入钻研。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：如果让你总结你读的第一本交易书的三句话，你会怎么分享？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>如果是通过《股票大作手回忆录》这本书来表达的话，我可以说，我现在大部分的交易准则，几乎都是延续自这本书里的内容。它对我影响非常大。里面有几句大家可能都很熟悉的话，比如：</p>
+                        <p><strong>第一句，"市场永远会朝着阻力最小的方向运行。"</strong></p>
+                        <p><strong>第二句，"你要知道这是牛市。"</strong>意思是，在牛市过程中，你要相信趋势已经形成，相信行情会带着你赚取超额收益。</p>
+                        <p><strong>第三句，也很关键，就是"永远不要逆势操作"。</strong>很多人亏钱的根本原因就在这儿：他们总想双向都做，多也想吃，空也想吃。但结果往往是两头挨打。大多数时候，其实你只需要选准一个方向，比如现在行情这么好，就只需要顺趋势做多就行了。回调做多，而不要去试图抄顶做空。因为现在比特币已经突破了历史新高，没有人知道它的顶部在哪里。如果你想去猜，那本质上都是在瞎猜。唯一可能有效的阻力位，也许就是整数位，或者它真的走出顶部形态了，那时你再去判断趋势是否反转，再去做空会更稳妥。但如果在趋势的中途你去反向操作，基本就是不断挨揍、亏钱。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：那你除了看书之外，在入门期会加入一些社群，或者看一些KOL的分享吗？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>最开始我确实会去看别人的内容。我也写过关于自己刚入场时的学习经历，当时我在推特上发过一篇文章，也提到了我最早关注的一个远古级KOL——"棋局"。他以前的微博名叫"莱特币"。刚接触他的时候，我几乎是"疯了"，不停看他的观点，也加了他的社群，持续了一段时间。不过这几年我基本没有再加过任何新的KOL社区群。现在唯一还在的一个群，是2018年加的，也是一个远古KOL建的。虽然群主早就不在了，但这个群里还有一百多位兄弟坚持留着，群也一直保留至今。我们现在偶尔也会线下聚一聚，我觉得挺好的，从线上变成了线下的朋友。</p>
+                        <p>但我也意识到，如果信息来源太杂，比如你关注了特别多的KOL、看了很多零散的文章，其实会带来很多噪音。信息越嘈杂，对交易的干扰就越大。这反而不利于你形成清晰的交易判断。可能你原本已经在构建自己的交易体系，但因为接收了太多干扰信息，就变得犹豫、不敢坚定执行。比如你正在持仓，突然看到一个KOL说的观点跟你相反，你可能会一下子动摇，开始怀疑自己是不是错了。所以我觉得，在这个市场里，唯一值得你信任的，永远只有你自己。</p>
+                        <p>说实话，这么多年下来，真正能赚钱的人太少了。这其实也反映了当前整个市场的现实。如果说"八二开"已经算乐观了，那我觉得"九一开"才更真实。大多数人都是亏损的。哪怕已经入圈七八年，也不代表他的交易能力就一定强。因为每个人的成长速度和学习能力是不一样的。有的人可能在很短时间内，通过总结自己过去的错误和密集学习，让自己能力快速提升；但也有很多人，会陷入路径依赖——他们最开始靠某种方式赚到钱，就会一直沿用那套方法。但我们已经到了2025年了，连比特币都纳入ETF了，如果还在用几年前那套老方法去交易，肯定不行。很多人赚不到钱，就是因为思维没有与时俱进。做交易也是一样，行情如果突然转向，你也必须快速调整策略。比如在上涨趋势中，如果突然回调并跌破了前一个高点，这时候你还在死扛、加仓，那最后亏钱是必然的。所以交易最重要的，是及时反应和灵活调整。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">最艰难的低谷：资金归零与借贷求生（2018–2019）</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：接触web3之后多久赚到的第一桶金？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>我最开始的时候都像可能都像大家刚进入交易市场一样，就是各种的指标都会去学习观看，然后去放到市场里去一一对照，然后去触碰去学习。但是前两年几乎是没有赚过特别多的钱，不光行情是震荡，我的账户资金也一直在震荡，几乎都是赚到一些钱，然后亏回去，赚到一些钱亏回去。一直是这样子，持续了大概能有将近两年的时间。</p>
+                        <p>那个时候不好意思去管家里人张口，还是选择了自己去扛一扛。最后当借来的钱也亏得七七八八以后，整个人的心态其实已经快要临近到崩盘了。我觉得那个阶段如果我要再去输两回，真的是心态应该会直接崩塌。</p>
+                        <p>最初和很多新人一样，我试过各种指标，一边学习一边实战，但前两年几乎没赚到大钱，账户资金一直在震荡，行情波动时赚一点亏一点，反复折腾了将近两年。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：不过好在是现在算是熬过来了。那个时候你是怎么操作的呢？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>因为那个时候一八年是我刚开始接触合约，那个时候对于整个合约市场并不了解。就可能跟大家现在很多的兄弟啊，刚进入这个圈子里一样，其实对于杠杆并没有很多的敬畏之心。我会不受控制地去开高位的杠杆，就比如说不管是十倍，二十倍，甚至更有甚者开五十倍，一百倍。真的当时我开的最高的应该也就十到二十倍。但是那个时候就真的是对于市场没有一丁点的敬畏之心。就会不停地去想要梭哈，想让自己的资金快速翻倍。因为当时的市场也是会有人赚到钱的，大家都是从那个阶段过来的。当你去看到一些别人在赚钱的过程，你会感觉到非常的焦虑。然后你会觉得为什么别人可以我不可以。但事实上当你去踏出这一步以后，你发现你真的不可以。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">关键转折点：顿悟时刻与牛市财富爆发（2020–2021）</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：什么时候开始在交易上突然觉得好像"开窍了"，以及有了真正意义上的突破？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>最早接触交易的时候，其实我对滚仓这些概念还不太了解，基本都是在玩一些小的山寨币。我第一次赚到几十万是通过孙哥的项目TRON和BTT代币，但后来也基本亏在了这上面。说起来，"开窍"这个东西确实会有——就是在某一个瞬间，会突然觉得自己可以突破此前所有的交易瓶颈，交易开始变得越来越顺利，就像是如鱼得水的感觉。或者说是类似于武侠小说里，那种高手突然顿悟的一刻，在一瞬之间跨越了一个门槛。</p>
+                        <p>让大家闻风丧胆的"312"事件，其实是我的转折点。当时比特币从1万多最低跌到3791，我在6500多时开始尝试参与。由于加了杠杆，BTC行情持续下跌到4000多时，账户资产大幅缩水，我不停减仓控制风险，仓位爆仓价降到3000以下，幸亏交易所当时拔网线，恐慌停止蔓延。让我"开窍"的时刻，也就是在"312"之后的牛市阶段。当时我一直在100万这个关口徘徊很久，心理上对突破整数位有种执念。某天看盘的时候突然对一个币产生了非常强烈的直觉"就是它，它会不停地涨。"虽然现在回忆不起是哪个币了，但当时的那种感觉非常清晰。此后市场企稳震荡，进入了2021年超级大牛市，我也终于赚到"第一桶金"。我那时杠杆也开得比较高，大概5到10倍，突破后不断加仓、滚仓，从不到100万做到三、四百万。那一波几乎就是我真正做起来的起点，之后顺着整轮牛市一直滚仓，最终做到小两千万。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p>让大家闻风丧胆的"312"事件，其实是我的转折点。让我"开窍"的时刻，也就是在"312"之后的牛市阶段。</p>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">惨痛复盘：暴富后的膨胀与崩塌</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：大家都说靠运气赚来的钱，最后会靠认知还回去。那么，你在24岁左右赚到的千万资产都留住了吗？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>我一直觉得，如果没有我父母，那一波暴富的经历，最后我可能连一分钱都留不下。二十出头突然赚到千万资产，会让人产生一种"我就是天才"的错觉。那个时候我内心极度膨胀，虽然表面上很克制，但内心确实觉得自己未来可以轻松赚到五千万、一个亿。我没有跟朋友炫耀这些，但我会和爸妈讲。对于孩子来说，父母的认同感是最重要的。我爸最开始甚至以为我干了违法的事，反复确认是否合法，确认合法后第一句话就是："赶紧提现去买房买车。"但我根本听不进去，甚至后来连他电话都不接。</p>
+                        <p>最后是我妈劝动了我。她一向温柔、无条件支持我，跟我说："你爸是为你好，你听一次吧。"我最终妥协，刚好赶上牛市顶点，把一半资金套现买了车房。而剩下的一千多万，在半年内亏得干干净净。事后回头看，如果没有那套房、那辆车，我可能再也站不起来了。正是这些不动产支撑了我，给了我重新出发的底气——即使账户归零，我知道我还剩下一点什么。交易这条路上，性格决定上限。有的人暴富后开始变得保守，只想着守住财富。但我不是。我始终奔跑在认知兑现财富的路上，哪怕中间摔跤，也知道要继续向前。幸运的是，我的原生家庭，给了我这样一颗不服输的心。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>关键时刻：</strong></p>
+                    <p>• 24岁赚到千万资产，内心极度膨胀</p>
+                    <p>• 父亲劝告：买房买车</p>
+                    <p>• 最终妥协：一半资金套现，剩下1000多万半年内亏光</p>
+                    <p>• 反思：没有不动产支撑，可能再也站不起来</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER TWO</div>
+            <h2 class="chapter-title">一战成名——1年9个月五万起步到上亿资产</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">从100万1000万：全靠了Ordi，操作手法大揭秘</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：从100万赚到了1000万的关键节点、做了操作？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>除了50万之后，最关键的阶段是通过Ordi这个币，我将资金从100万增长到1000万。但到了1000万这个节点，我经历了一段较长时间的停滞期。资产就像市场的震荡行情一样，在一个区间内上下波动，始终难以突破。大概徘徊了几个月，那段时间我非常想突破1000万的瓶颈，但市场行情并不理想。无论我怎么交易、怎么盯盘，突破始终无望。</p>
+                        <p>我不断反思：问题到底出在哪里？是市场不适合我？还是我的心态出了问题？最终我意识到，是心态的问题。因为我过于急切地想突破1000万这个整数位，这个目标在心里种下了很大的压力，反而成了阻碍。后来我总结，心态必须平和，不要急躁，要耐心等待适合自己的行情，只有做到水到渠成，才能实现真正的突破。</p>
+                        <p>Ordi这个币是在铭文和BRC-20刚出现时，我非常看好的一个标的。它最初上线的平台是一家小型交易所。多年来，除了OKX和币安，我几乎没用过其他小交易所，因为资金安全对我来说至关重要。直到Ordi出来时，其他平台尚未上线，我才开始使用这家交易所。最初转入的资金不多，大概三十多万，买在最高点附近，约30美元。随后经历了一段漫长的阴跌，我在20多美元时感觉走势异常，于是止损出场，亏损了十几万。因为做了杠杆合约，亏损相对较大，之后我就把资金全部提了回来。</p>
+                        <p>后来Ordi上线了OKX，经历了几个月的震荡盘整，接着铭文浪潮兴起，价格从3美元一路涨到了100美元。但我没有吃到从3涨到30美元的首波十倍涨幅。因为我的交易习惯是不太善于抓住起涨点，所以这部分利润基本没参与。当价格涨到30美元时，我判断行情远未结束。当时外部环境和市场趋势都很好，正值小牛市，于是我在30美元盘整期间开始建底仓，杠杆高达2到3倍。随后每次突破，我都继续加仓，最终仓位达到了十多倍。这是因为我有足够安全的利润垫底。比如：我在30美元建仓，当价格突破33美元时加仓，均价大约变成31.5美元；再涨到37美元时继续加仓。虽然杠杆较高，但整体开仓成本仍处于一个相对安全的位置。具体的价格和K线我现在记不太清楚了，要对着电脑才能详细说明。不过我之后可以更详细地介绍我是如何通过不断滚仓操作，把资金从几十万滚动到1000万的。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你当时是浮盈加仓，浮盈加仓的比例一般会设置多少？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>几乎都是一比一的加仓比例。举个例子，刚开始我用的是两倍杠杆，行情突破时，我会再加两倍杠杆；到了后期，遇到一个重要阻力位时，我的杠杆已经相当于最初资金的4倍了，下一次突破，我会再加四倍杠杆。就是不停地滚仓。那一波行情，我记得是从30多美元涨到50多，甚至涨到了60美元，这一段我赚了几百万。之后从60美元开始进入震荡期，这段震荡其实比较符合我的交易风格，我就在震荡中不停地高抛低吸，通过这段操作又赚了一些资金。随后，价格从60美元涨到了90多美元，这一段我也赚了一点，但幅度不大。再之后，价格从90美元开始一路下跌，我的1000万资产也就是从这一波下跌开始停顿下来的。第一波1000万的回撤，正是出在Ordi身上。因为它持续下跌，最终我选择止损离场。后来我发现，它的趋势已经发生了转变，在里面继续做震荡短线，已经无法盈利了。所以我就把所有资金从Ordi撤出，转而开始做其他主流币种，比如比特币、以太坊之类的。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>ORDI操作核心：</strong></p>
+                    <p>• 只做龙头，不碰"弟弟币"</p>
+                    <p>• 在30美元盘整期建底仓，杠杆2-3倍</p>
+                    <p>• 每次突破一比一加仓，最终达十多倍</p>
+                    <p>• 震荡中高抛低吸，积累利润垫</p>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：铭文那段时间特别火热的时候，我记得也有很多其他币种出现，你有没有考虑去做Ordi之外的项目？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>没有。除了Ordi以外，我基本没有接触过其他的。我唯一操作的就是它。我始终只交易龙头，当时我就认定Ordi是整个铭文系的龙头。既然是龙头，我就不会去碰那些"弟弟币"，比如什么"小龙""龙二""龙三"这些，我都不会去做。对我来说，只做最强的。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">上亿盈利：三次爆仓后靠贷款5万元，靠做BTC和ETH波段翻身</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你用一年九个月的时间，把5万赚到了一个亿。你是把钱全部提现之后，又用五万的小资金去尝试操作吗？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>不是的。2021年爆仓后，我几乎归零了，连本金都没有。因为房产还未下证，卖房抵押不现实，我最终借款凑了几万块，从2021年年底开始重新交易。这段期间，我靠这笔资金做出过几百万的收益，但最终没守住。过程中反复盈利和亏损。直到2023年中，我用账户里的一百万左右在一次交易中加仓，一开始看对了方向，但由于贪婪和加杠杆，最终追高失败，几天内市值跌去七八成，爆仓时心态彻底崩溃，"破罐子破摔"，导致亏光。调整了几个月后，我在2023年10月又借了5万元最后一次尝试。这一次，我没有频繁提现，开始更加谨慎操作，把钱投在OKX上做主流币和一些山寨币，最高做到50万。过去我也一直在用实盘记录交易，从牛市到熊市大概经历过三到五次爆仓。反思后我意识到，爆仓的关键不是技术，而是心态崩盘。这一次，我吸取了所有教训，开始真正重视仓位管理和风控。我的所有数据都公开透明，大家都能看到我从几十万做到一个亿的全过程，也因此得到了很多人的信任和支持。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你在三次爆仓之后有做过反思吗？后来交易上有什么改变？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>每次爆仓之后我都有认真复盘。第一次是在2021年，当时我有1000多万在场内，却因为盲目乐观、过度自信而全部爆仓。我坚信比特币会涨到十万，认为自己一定能用这笔钱赚到五千万，结果行情反转我完全没察觉，是一种年少轻狂的自负心态。第二次爆仓其实和第一次很像，又是因为过度自信，在连续追高中觉得自己判断非常准，结果同样以失败告终。第三次则是在山寨币上追高，被"断头刀"砍得很惨。当时我没有及时止损，心存侥幸想着会不会反弹一下，结果只是短暂弱反，随后一路暴跌，最终心理防线被彻底击穿。这几次复盘让我意识到，爆仓的根本原因不是行情，而是我的自负和情绪。后来我改变了策略，每当自己出现"行情一定按我预期走"的想法时，我就会强迫自己冷静，避免在这种情绪下开高倍杠杆。我总结出一个经验：不要在单一币种上用太高杠杆。高杠杆下，一旦行情稍有波动，比如下跌3%、5%，就可能面临重创。你会被套牢，错失调整和转移资金的机会，眼睁睁看着市场给出其他赚钱机会却无能为力。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>三次爆仓反思：</strong></p>
+                    <p>• 第一次：1000多万，盲目乐观、过度自信</p>
+                    <p>• 第二次：连续追高，觉得自己判断非常准</p>
+                    <p>• 第三次：山寨币追高，被"断头刀"砍惨</p>
+                    <p><strong>根本原因：</strong>不是行情，而是自负和情绪</p>
+                    <p><strong>教训：</strong>不要在单一币种上用太高杠杆</p>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你从一千万做到一个亿，是怎么实现的？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>从一千万到一个亿，其实和我之前讲的一样，我没有任何一笔交易是靠单一重仓获取超额收益的。就像我常说的，"盈亏同源"——如果从一千万开始，我就想靠一单交易赚到五千万，那我亏损的概率一定远远高于盈利的概率。所以，从一千万到五千万的过程，主要还是通过不断做以太坊和比特币的波段来完成的。几乎是和做Ordi一模一样的方式。我会判断某个区间是震荡区间，然后用三倍杠杆去做比特币或以太坊的波段，高抛低吸、来回操作。比如说开几千万的仓位，在这两个市场里完全可以做到顺利开平仓，没有任何滑点，流动性非常好，这也是我选择继续用这套模式做波段的原因。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER THREE</div>
+            <h2 class="chapter-title">交易哲学与实操方法——强者恒强，只做龙头</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">如何选择标的&赛道：只做龙头、以及最火的赛道</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你平时是怎么选币的？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>从一开始到现在，我一直非常坚定地遵循一个逻辑：<strong>我只买龙头，只做龙头</strong>。我会在加密市场的涨幅榜上去筛选那些我认为还有潜力的强势币，甚至是那种第一波已经涨了一轮、目前处于第二波震荡横盘期的币种，这个阶段我会选择介入。因为在这个市场里，我一直有一个很清晰的判断——<strong>强就是强，弱就是弱</strong>。强势币通常会持续强势，而弱势币就真的很难起来。</p>
+                        <p>很多人喜欢等强势币涨多了之后，去埋伏一些还没涨的弱币，觉得低位可能轮动涨一波。这种策略在牛市全面普涨的阶段可能有效，但在结构性行情里是非常危险的。它一方面会占用你的资金，另一方面，当你看着别人买的币都在涨，而你手里的币不动，你会很焦虑，甚至频繁换车。结果就是：该涨的时候你没进去，然后轮到它涨的时候你又因中途跳车错过了，所以说最后这一轮下来，你并没有赚到什么钱。然后看到别人赚钱，你会非常焦虑。所以，我只做最强的币种。之前会去做除了BTC和ETH之外的标的，但是到了现在这个资金体量以后就不会再做了。因为小币深度确实不够，大资金体量的开/平仓都会造成整个币价的波动，所以只能去做大币。尽管2021年我通过主流币和山寨币赚钱了，但是大家能明显的感觉到这一轮行情有多么的难做，它不会再复制像2021年这种全币普涨的的行情。越是这种时候，选币和持仓就非常重要。BTC从2.5万U到现在也近5倍涨幅了，但是ETH连它涨幅的一半都没有达到。这一轮的牛市，并没有大家认为的山寨季了。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>龙头战法核心逻辑：</strong></p>
+                    <p>• 只买龙头，不碰弱势币</p>
+                    <p>• 在涨幅榜筛选有潜力的强势币</p>
+                    <p>• 第一波上涨后的横盘期介入</p>
+                    <p>• 强者恒强，弱者恒弱</p>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你刚才提到每天会选一些币，除了主流币也会选山寨币，那你筛选币种的逻辑是怎样的？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>我只做龙头币。这个"龙头"战法很多人可能都听说过，我也是坚定地执行这一策略的。整个加密市场其实可以分成很多细分赛道，每个币种背后都有它自己的定位和故事，比如它做的具体赛道是什么、解决什么问题等等。我会在这些赛道里，优先去挑选那些板块里的龙头币。一旦我发现某个龙头币的涨幅持续、走势强势，而且它的走势也符合我的交易体系，我就会重点关注它，并寻找合适的交易机会去切入。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你会比较关注哪个赛道？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>以前资金不够大时，我主要做一些事件驱动的方向，比如以太坊升级，或者各种质押相关的项目之类的。现在我会选择当前市场最热门、最火的赛道去参与。举个例子，在我这波实盘资金从100万增长到500万的过程中，实际上我几乎是只通过Ordi这一个币种赚取了超额利润。单是在Ordi一个币上，我就赚了接近1000万，完成了从100万到1000万的资金跨越。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：二级市场确实越来越难了，你有没有想过切换链上赛道？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>从我刚接触市场开始，我就一直专注于二级市场。无论是2017年火爆的ICO，还是其他项目，只要是公募，我都没有参与过，也从未投过任何项目。对于套利、链上的其他细分领域，我也没有研究过。因为我一直觉得，只要在二级市场专注做好自己的交易，完成目标就足够了。我也加了一些群，看到有朋友在链上赚了钱。但我个人不太想跳出自己的舒适圈。我一直认为，二级市场是我最熟悉、最专注的领域。如果要去尝试别的方向，比如链上，我还得重新学习、重新了解，对我来说既麻烦又耗精力。舒适圈这么舒服，为什么要跳出去呢？虽然二级市场并不完美，但至少我能看懂、能理解，而且已经给我带来了正向反馈。我不需要去一个完全陌生的赛道重新开始或者盲目追逐机会。我一直相信"盈亏同源"——从做合约开始就是这样。如果我通过合约赚到钱，也有可能用同样的方式亏掉。链上也一样。如果我拿很小一部分资金去"打金"，如果真的中了百倍、千倍，那我可能就会形成路径依赖，总想着能不能在这么大的圈子里再找到几个"金矿"。但链上的复杂度我并不了解，不过估计不低于二级市场。所以我觉得，暂时还是不参与为好。这两年虚拟货币操作的确难度很大，这一点大多数人都知道。而我在这两年资金持续翻倍，得以积累了超额的资产。我认为，二级市场其实一直没有遇到很大的瓶颈，只是它本身确实不好做。因为我是一个震荡型交易员，主要做短线交易，震荡行情更适合我。我会判断市场是否处于震荡区间，然后用较高杠杆去利用波动赚取收益。大多数人可能是做现货，一个点赚一个点，亏一个点。但如果我判断市场在震荡区间，我会用三倍杠杆做短线反复交易。这样的话，只要行情配合，我就能获得不错的收益。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">风控系统：大资金体量应该做主流币，盈利后要进行部分提现</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你之后有没有因为在Ordi上赚钱而产生路径依赖？比如尝试复制类似的交易模式，结果出现亏损？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>没有。因为我从Ordi撤出来之后，资产体量已经接近一千万了。这个时候我就基本不再通过其他山寨币合约去尝试复制那种模式了。我认为，一旦到了这个资金体量，如果还去做山寨币，一方面是深度不够，另一方面是仓位一旦开得太大，持仓信息在交易所其实相对透明，容易被针对。所以，当你资金体量达到一定规模之后，就必须专注于比特币、以太坊、Solana这种能容纳大资金、且不容易被操控的主流币种。像比特币和以太坊这种市场，不是你几千万，甚至上亿的资金就能左右得了的。做这种市场，才是安全且稳定的选择。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>资金体量管理原则：</strong></p>
+                    <p>• 1000万以下：可以做山寨币合约</p>
+                    <p>• 1000万以上：专注主流币（BTC、ETH、SOL）</p>
+                    <p>• 原因：深度不够 + 持仓透明度风险</p>
+                    <p>• 大资金只能做不被操控的市场</p>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：很多人在仓位变大之后，可能会选择更稳健的方式，比如降低杠杆、减少开仓量，或者分散到别的方向。你这方面没有调整吗？还是和以前一样？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>还是一样。因为这就像我刚才说的，是性格底色决定的——我本身就是一个性格比较激进的人，胆子大、心态也好。我可以承受自己设置的盈亏预期。比如我开一个仓位，事先就会评估好我能赚多少、亏多少，确保都在可控范围内。即使真的出现较大亏损，我也有信心能快速调整状态，等待下一次合适的机会重新入场。因为这些年不断地复盘和打磨，我的交易体系已经比较稳定了，现在只是不断地剥离杂质，让它越来越趋向一个可持续盈利的模型。而我也已经验证了这个模型是有效的，那接下来我唯一要做的就是相信它，并坚定执行。真正做到知行合一是非常难得的。一旦你真正下场、仓位一旦建立，情况就完全变了。这就是为什么市场上分析师往往不被待见——因为你口头上讲得再好，和你真正实盘下单操作，是完全两个世界。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：在经历过这么多次爆仓之后，还会担心继续开这么大的仓位吗？比如哪天真的遇到一次黑天鹅事件？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>确实，我之前给自己设定了一个阶段性目标，比如先做到5000万，然后这一次是想做到一个亿。刚好这段时间，实盘交易的收益也确实突破了一个亿。那在这个阶段性目标完成之后，我会更倾向于去做一些"守城"操作，也就是把资金适当分散，不再把所有资金都集中在合约一个篮子里。虽然之前我也做过资产隔离，比如提现出一部分，其实整体的现金流还是比较充足的。不动产也很稳定，所以就算现在把市场里的资金全部亏掉或清空掉，也不会对我的生活造成太大影响。我依然有底气继续在市场里做交易。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：如何设置自己的止盈止损线？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>我最早的时候，其实是有一套比较严格的止损标准。比如说，如果我交易的山寨币跌幅超过15%，也就是我的整体资产缩水15%的时候，我就会果断止损。但后来我发现，这种方式在山寨币上并不适用，因为它们的波动实在太大了。按照这个逻辑去操作，结果就是我总在止损，资金反而越止越少。于是，我的止损策略开始变得更加灵活，更多是根据市场的具体情况来决定。尤其是现在，我整个交易体系只看裸K，不再使用任何技术指标。我个人认为，K线本身就能最直观地反映市场的支撑位、压力位和趋势转折点。所以，我的止盈止损判断，基本都是依据K线结构中的支撑与阻力来做的。一开始我也和大家一样，读了很多书，研究了各种技术指标，像波浪理论、均线系统、缠论等等。但后来我发现，这些指标基本都是滞后的。当它提示"可以买入"时，市场往往已经涨了一段，趋势已经形成。如果我依赖这些信号去操作，我就永远落后于市场。所以，后来我就逐步把这些技术指标全部从我的系统中剥离，只专注于看裸K——看K线图，用最直观的方式告诉我，应该怎么操作。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>技术指标 vs 裸K：</strong></p>
+                    <p>• 所有指标都是滞后的</p>
+                    <p>• 指标提示买入时，市场已经涨了一段</p>
+                    <p>• 依赖指标 = 永远落后于市场</p>
+                    <p>• 解决方案：剥离所有指标，只看裸K</p>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">交易频率&胜率：取决于盈利点，绑定一个返佣码真的可以省手续费</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你波段交易的频率大概是多少？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>这个频率其实很难有一个明确的界定。就像我之前说的，我会选择在高波动之后的震荡区间，去做短线的波段交易。那这个时候，波段的频率其实取决于你盈利的点。不要去设定一个特别精准的预期，比如说接到单之后就一定要赚一个点、两个点。相反，你可以选择"有盈利就跑"。当你的盈利能够覆盖掉交易手续费时，其实就可以选择止盈了。而且虽然手续费比较高，我还是建议大家去绑定一个返佣码，不管是找谁都可以，真的可以省下很多。我自己之前没有绑定返佣，所以在现在实盘用的那两个账户里，光是手续费就贡献了好几百万。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你怎么把控做波段的节奏？比如什么时候空仓、什么时候开仓之类的？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>说实话，我做波段并没有一个完全成型的交易体系，真的就是靠盘感操作。看K线图、支撑位和阻力位，然后通过盘感判断，比如觉得行情走强了就买入，或者提前挂单。提前挂单这个点我觉得大家都可以试试：当行情在相对平静，或者是经历高波动之后进入震荡期，你可以在图上找到一些之前的重要支撑位或阻力位，然后去挂一些多单或者空单。真的很容易接到。接到之后，第一目标就是"指令出场"，不要想着通过这一单赚很多利润。这点特别关键。我现在几乎每次挂单都能成交在一个还不错的位置，然后看到盘面有盈利，我就直接平掉。这是我个人实践下来觉得挺好用的一个小技巧。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：这个胜率能达到多少？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>非常高。几乎我每次这么去挂单，只要接到了就会赚到钱。但前提是一定要在震荡区间里。你不要等到大趋势的时候去挂单，那样很容易就被行情带走。所以一定要提前判断清楚当前的行情是不是处于震荡期。如果真的是震荡趋势，你再去挂单，胜率就会非常高。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>高胜率秘诀：</strong></p>
+                    <p>• 只在震荡区间挂单</p>
+                    <p>• 提前判断行情：震荡 vs 趋势</p>
+                    <p>• 在重要支撑位/阻力位挂单</p>
+                    <p>• 接到后立刻平仓，不贪心</p>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">走势判断：主要看看裸K和量价，做到知行合一</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：什么样的走势，或者说什么样的结构，才算是符合你的交易体系？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>其实我的交易体系非常简单，就像我之前说的，我一直信奉"大道至简"。所有花里胡哨的技术指标我基本都剥离掉了，完全从交易系统中排除。最后留下的，其实就是大家耳熟能详、谁都能理解的东西——<strong>看裸K</strong>，比如头肩底、楔形、三角形、上涨结构这些。到现在为止，我做交易仍然主要参考这些形态。但我认为相比多数人，<strong>我最强的一点是执行力非常强</strong>。虽然不能说我能100%做到知行合一，但只要我认定一个形态符合我的交易体系，我就会非常严格地去执行，并且完全相信它。因为很多人其实也能看懂这些形态。比如说，走出了一个头肩底，大家都会看，也知道该怎么测涨幅——从最低点到最高点去算一个目标位。很多人甚至能提前建仓，也确实等到了突破，但等真正上涨途中，可能中间出现一个小的回调，就会把他们吓跑了。最后这个形态确实走出来了，趋势也对了，但他们可能并没有赚到钱。原因就在于，在盯盘的过程中，会不断质疑自己，甚至被人性控制——比如想："它是不是还要跌？回调结束了吗？" 然后在还没确认前就把仓位丢掉了。结果等趋势真正拉起来、回调结束时，那波最核心的上涨，他们没能吃到。但我的执行力真的非常强。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>执行力 vs 分析能力：</strong></p>
+                    <p>很多人能看懂形态，也能提前建仓</p>
+                    <p>但中途小幅回调就被吓跑，错过最核心上涨</p>
+                    <p><strong>我的优势：</strong>执行力非常强，严格按体系执行</p>
+                    <p><strong>知行合一：</strong>认定符合就严格执行，完全相信</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER FOUR</div>
+            <h2 class="chapter-title">交易生活——物质已满足，接下来是带人赚钱</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">赚钱之后：不怕质疑，想要把交易体系分享给大家</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：赚到钱以后你的状态怎么样？交易上有什么变化吗？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>其实在这个市场里，我见过很多所谓的"天才"，但大多都是昙花一现。你刚开始时，可能觉得五十万、一百万已经是一笔很大的资产了，但当你真正达到这个阶段后，会发现你内心的贪婪欲望会不断侵蚀你的大脑，告诉你："不够，还远远不够，你要赚更多，甚至要赚到一千万、五千万、一个亿。"所以这个时候，就看一个人的性格了，能不能压得住心里的欲望，决定了你能走多远。</p>
+                        <p>这么多年下来，我印象最深刻的只有一个人。那是我刚进圈的时候，我们都加了一个KOL的群。我记得特别清楚，他用五万本金在2017年那波牛市里，通过合约滚仓，最终把五万滚到了两千万。他是我见过唯一一个赚到钱后立刻收手的人。他没有被贪婪驱使，直接提现，把所有资金都取出来了。直到今天，八年过去了，我依然觉得他给我留下的印象最深刻。因为像2021年那波超级大趋势，很多人也靠趋势赚到了千万资产，但如果他们继续留在市场，到2024年甚至2025年，大部分人已经亏回去了七七八八，真正能守住的非常少。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你在各种平台分享自己赚到一个亿的故事时，当时也面临了很多质疑，怎么面对这些质疑声？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>这种情况很常见。用实盘的话，大家都可能说是作假。当时我刚开始在社交平台分享时，确实有很多人质疑，说是假数据，或者称我是平台的"鹰犬"，或者说就是为了'造神"。出现这些话题以后，自从币安开始实盘项目，这些质疑声基本消失了。因为无论个人多厉害，也不可能和交易所串通篡改交易数据。实盘数据完全连接交易账户，所有历史盈亏、走势和资金曲线都记录得清清楚楚，因此质疑声几乎为零。实盘开启，战绩可查。我的实盘数据就摆在这里。你觉得交易所是假的，就去交易所查；如果你觉得交易所也是假的，那我只能建议你换个赛道，这条路不适合你做交易。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：很多人可能会觉得你已经赚了这么多钱了，为什么还愿意出来分享？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>我觉得这就是大多数人所处的一个误区。很多人都会去告诉别人，你有钱了应该怎么样：应该去买豪车，应该去买楼房，应该去买名表，应该去买各种各样的奢侈品。但我想说，这些东西只是从大众社会意义上演化而来的，是你所能听到、看到的一些内容，并不代表每个人都应该这样。至少我不是，所以我去分享，去做这些内容。因为我觉得，它们可以更好地填补我内心的空虚感。我觉得我找到了自己热爱的、并且有意义的事情——这就是我做社交媒体分享的意义所在。</p>
+                        <p>因为我之前一直有想过，像大家现在在这个"最高难度"的阶段进入市场，虽然机会变得越来越少，但风险其实也在变小——不会再像以前的大牛市那样。因为大牛市，往往伴随着大熊市，而很少有人能在牛市中守住胜利的果实，我自己也是在2018年、2019年那两年，经历了太多的挫折和失败。现在回想起来，我觉得如果能，把我的交易体系分享给大家，让大家少走一些弯路，那也算是对多年前自己的回馈吧。</p>
+                        <p>在现在这样艰难的市场环境下，虽然大家都说"很难"，但依然有人在赚钱。只不过，这些万中无一的"神"，并不是我们想象中的那种一夜暴富，也不是靠幸运得来的。他们真正的秘诀，是八年如一日的坚持和专注——无论是对自己的交易体系，还是对所选择的赛道，甚至是对自己所崇敬的榜样——他们始终保持着极高的专注度。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">交易员的日常生活：只有交易足够刺激，其他事情变得无聊</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你每天盯盘多长时间，才能训练出这样的盘感？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>其实这个过程很漫长。我前五六年，甚至直到现在，即便已经赚到钱了、取得了一些结果，我还是保持每天长时间盯盘的习惯。只要坐在电脑前，只要是交易时间，我几乎不会分心做其他事。早期更是没有任何社交，几乎把所有兴趣和精力都投入在交易上。可以说，除了吃饭、睡觉，其他时间都花在盯盘和复盘上了。可能正是因为这几年如一日的高强度盯盘，盘感才慢慢训练出来。当然，我觉得盘感这东西确实有点玄学。就我个人经验来说，它有一部分是可以训练出来的，但我也相信，它确实也有一部分来自天赋。因为我确实能明显感受到，尤其是最近几年，在盘感这一块，我比很多人都要敏锐。每天盯盘十几个小时，可能有点夸张，但肯定是超过正常的工作时间的，比如八小时那种，是肯定不止的。</p>
+                        <p>我觉得这已经不算是"自律"了，更像是一种长期养成下来的习惯。我已经完全适应了这种生活节奏。每天早上醒来，洗漱完之后，我的第一件事就是坐到电脑前开始看市场。我每天都会把整个加密货币市场的涨幅榜过一遍，包括主流币和之前我关注过的山寨币。从大周期到小周期，比如日线、4小时、1小时、15分钟，我都会全部看一遍。然后从中筛选出我认为今天或未来几天还有交易价值的币种，把它们加入到自选列表里。选完币之后，早上的准备工作就算结束了。</p>
+                        <p>接下来，我会做一些自己的事。因为我没有什么其他兴趣爱好，平时就看看游戏直播，或者约朋友一起打打游戏。当然，这个过程中，我一般是双屏操作，一边打游戏，一边继续盯盘。有交易机会出现时，我会立刻暂停游戏，转而进行交易操作。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你白天的生活就像你刚才说的那样，主要就是盯盘、跟朋友玩玩游戏，没有其他业余活动？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>我没有其他特别的业余生活，因为这么多年一直在做交易、做合约，这个过程把你的"阈值"拔得太高了——就是你在这种高度刺激之下，很难再对其他事情提起兴趣，会觉得很多事情都比较无聊。我是真的更享受交易带来的那种感觉。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：尤其是合约类的交易员，因为要承受巨大的波动，所以其实晚上都是不太能睡安稳觉的，你也是吗？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>从实盘交易开始，这一年以来我的睡眠质量其实还是蛮好的。只要没有大幅波动的行情，我几乎都可以睡个整觉，很少会在半夜起来看手机行情。只不过像最近行情比较好，作息也比较健康，那就会比如说半夜起来上洗手间的时候，顺便看一下手机。因为现在的行情已经完全"美股化"了，它的大幅波动几乎都发生在深夜，其实这对我们亚洲人的休息时间是非常不友好的我个人这几年，除了交易，真的没有其他兴趣爱好。因为我本身就是一个物质欲很低的人，不喜欢名车，也不喜欢名表，对任何奢侈品也都不感兴趣。所以我觉得，找到一个自己真正喜欢的事情去做，来填补一下精神上的空缺，其实已经非常好了。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你很享受交易这种"一个人的狂欢"的感觉？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>其实也没有刻意去承受"孤独"，但在做交易的时候，那种状态本身就让我觉得很舒服、很开心。比如K线的涨跌，你的情绪会随着它起伏波动。但如果不做交易，现在能让我产生情绪波动的事情真的太少了。而在交易过程中，我能清晰地感觉到自己还保持着强烈的冲劲，这种"还在路上"的感觉，非常强烈，也让我很坚定地走下去。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">带单计划：全力以赴带单，回馈相信和支持我的人</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：做到如此大资金体量之后，在交易方面有新的规划吗？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>因为我一直是一个好胜心极强、非常要强的人。做任何事情，我都希望做到最好。虽然现在已经从五万做到一个亿，或许还称不上最顶尖，但我相信自己已经不比其他人差。对我来说，这一阶段的目标已经完成，接下来的重心会转向带单。自从我开始做实盘分享之后，很多兄弟看到我的数据，更愿意相信和支持我。做到现在也将近三个月了，有这么多人关注和支持，我非常感激。因此我希望通过带单，回馈一直支持我的兄弟们。无论是带他们赚到钱，还是让他们在过程中学到东西，对我而言，都是非常有意义的事情。</p>
+                        <p>所以我会把"带单"当作下一个阶段的核心目标。不仅要把实盘成绩做到最好，带单也要做到最好。正如你说的，想要把带单做好，最直观的表现就是战绩，能带着相信你的人真正赚到钱。最厉害的，不是自己赚钱，而是能带着别人一起赚，我也是这样认为的。而且这些年来我一直对自己很有信心，无论是交易还是其他方面，我都相信自己可以做到最好。所以这次做带单，我也会全力以赴，争取做到最好。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>带单理念：</strong></p>
+                    <p>• 最厉害的，不是自己赚钱，而是能带着别人一起赚</p>
+                    <p>• 全力以赴把实盘成绩和带单都做到最好</p>
+                    <p>• 回馈一直支持和相信我的人</p>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：除了带别人赚钱、分享经验之外，你自己在资产管理方面会有哪些新的安排？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>我一直都有一个现货账户，虽然金额不算大，但持仓时间已经很久了。我也会不定期往里加一点仓位。因为我觉得自己是通过加密市场赚到现在的这些资金的，所以我希望继续用这种长期加仓的方式，保留我对这个市场最初的那种信念。就算未来比特币涨到20万、30万，我的现货账户不会动，只会继续长期持有。至于期货方面，如果哪天行情突然急转直下，或者确认进入熊市，我可能会做一些套保操作，但不会去减持。至于其他资产配置，可能会考虑配置一点美股或者理财类产品，但比例不会太高。我还是希望保持对加密市场的专注度，以及我在交易这条路上的持续投入。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER FIVE</div>
+            <h2 class="chapter-title">后市展望</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">市场趋势判断：等到美联储确定降息，BTC才有可能触发一波大幅的回调</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：那你觉得现在这个势已经形成了吗？你怎么看后续整个市场的发展？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>当然已经形成了。从比特币突破历史新高开始，这个势就已经确立了。你要做的就是相信它，它可以带着你走向一个更高的阶段。其实，从那个时间点开始，海外机构就一直在不断增持。我个人认为，整个市场的关键在于——<strong>现货买盘的力量实在太强了</strong>。所以你问比特币还能涨到哪？我只能说，真正的节点，可能要等到美联储确定降息的那一天，才有可能触发一波像样的、大幅的回调。在那之前，只要它没有有效跌破11万美元的新高，我都不会认为比特币的趋势已经结束。相反，我只会选择在每一次回调中继续加仓。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：你觉得山寨机会如期而至了吗？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>从比特币突破新高开始，我就一直相信会有轮动，而且现在其实已经在进行中了。但要说重现上一轮大牛市那种行情，我觉得是不可能了。这一轮的逻辑是，你单独做一个币种，能走出翻倍行情就已经很不错了。所以我的策略是，尽可能地抓住这波可能轮动到山寨币的阶段，然后在美联储正式降息之前把它卖掉。这应该是对大部分人来说最好的交易方式。千万不要频繁操作，来回买卖、做波段，那种方式做不来。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：后面的市场你自己会怎么操作？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>如果比特币继续回调的话，我会选择在下方的区间加仓。我的加仓区间设定在历史新高到11.5万美元之间，我会在这个区间内分阶段挂单加仓。如果它真的出现一波深度回调，回到11万美元这个位置，那时候我的整体仓位可能会加到三倍左右。但如果比特币真的跌破11万，那我就需要重新去思考整个趋势是不是已经走坏了。因为那种情况下，市场可能会回到像去年那种非常难操作、窄幅震荡的区间里。那时候策略也得随之调整，不能再去谈什么大的格局，而是只能按区间做波段。赚一点就走、盈利就撤，不能再死扛了。</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>后市操作策略：</strong></p>
+                    <p>• 回调加仓区间：历史新高 - 11.5万美元</p>
+                    >• 关键支撑位：11万美元</p>
+                    <p>• 跌破11万 = 趋势走坏，重新评估</p>
+                    <p>• 趋势走坏后：转为窄幅震荡，赚一点就走</p>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">给新人的建议：赚钱不易，对市场保持敬畏</h3>
+
+                <div class="dialogue">
+                    <div class="question">Mia：如果有人想成为下一个你，你觉得应该怎么做？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>因为二级市场特别是合约市场本身，就是一条非常艰难的道路。真的可以说是"一将功成万骨枯"。一个人能成功，背后可能就是无数人亏得倾家荡产。我觉得大多数人在这条路上，并不具备必要的天赋，也很难真的走到最后。所以，最重要的一点是要认清自己，找到最适合自己的路径。这个路径不一定非要是合约交易。</p>
+                        <p>至于其他交易员，其实我接触得并不多。一直到最近开始做分享后，才逐渐认识了一些实盘成绩不错的同行。在这之前，我几乎是完全独自走的这条路。所以我想说，如果你想在交易这条路上走得更远，最重要的几点是：相信自己、持续学习、保持专注。如果你不够专注，不够热爱，那在经历了很多波折和挫折之后，你可能很难坚持下去。</p>
+                        <p>而我之所以能坚持下来，也和当时的阶段有关。那时我还年轻，能承受更高的风险。就算在23岁、25岁这个年纪背负了债务，我也相信未来还有足够的时间和机会去弥补。而很多兄弟们不一样，他们已经成家了，可能每个月靠着固定的工资生活，却想通过交易赚取额外收入或改善生活，这种情况下再去做交易真的会非常困难。因为你不仅要面对市场的风险，还要承受巨大的心理和生活压力。上有老、下有小，根本无法全身心投入到交易里。这也让我意识到，我能走到今天的一个关键因素，就是在正确的时间进入了这个行业，并且可以全力以赴地投入。如果我在早期就已经结婚生子，面对家庭和孩子的责任，也许我也不会有现在的精力专注于交易。</p>
+                    </div>
+                </div>
+
+                <div class="dialogue">
+                    <div class="question">Mia：八年如一日的专注，才造就了现在的你？</div>
+                    <div class="answer">
+                        <p><strong>予与：</strong>很多人是通过我实盘五万做到一个亿，然后才关注我，觉得我是不是所谓的"万中无一的天才"。如果单从结果来看，我目前达到的资金体量确实可以算是天才，但我从来不觉得自己是天才。因为我背后的付出，大家都不会知道，没有人知道我为了走到今天这一步付出了多少。所以我觉得大家还是应该专注于自己的领域，享受对交易的热爱，这样才能尽量减少焦虑。我想告诉大家，我并不是在这两年之内一蹴而就赚到这个一个亿的。在达到这个目标之前，我付出了很多，也经历了很多。其实这条路，并不像我们想象中那么容易。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-quote">
+                "予与的八年，是三次归零后翻盘的韧性，是'浮亏不加仓'的纪律对抗人性贪婪的清醒，更是把热爱淬炼成体系的修行。"
+            </div>
+            <div class="disclaimer">
+                <strong>免责声明</strong><br>
+                本内容仅供参考，仅代表作者观点，不代表OKX立场。本内容无意提供投资建议或投资推荐；购买、出售或持有数字资产的要约或招揽；财务、会计、法律或税务建议。我们不保证该等信息的准确性、完整性或有用性。持有的数字资产（包括稳定币和NFTs）涉及高风险，可能会大幅波动。您应该根据您的财务状况仔细考虑交易或持有数字资产是否适合您。<br><br>
+                🎙️ 这里是OKX《对话交易员》专注探寻顶级交易员的心路历程与实战逻辑。
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop">↑</button>
+
+    <script>
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

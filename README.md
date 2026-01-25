@@ -41,6 +41,37 @@
 - CSS 动画使用 GPU 加速
 - 移动端自适应加载
 
+## 🛠️ 脚本工具
+
+项目包含多个自动化脚本，用于生成和维护HTML页面（位于 `scripts/` 文件夹）：
+
+### 页面生成器 (generate_*.py)
+从Markdown文件自动生成HTML页面：
+- `generate_chenxiao.py` - 从"陈晓文章.md"生成页面
+- `generate_dinghongbo.py` - 生成丁洪波页面
+- `generate_livermore.py` - 生成利弗莫尔页面
+- `generate_tonybible.py` - 生成Tony圣经页面
+- `generate_tonyquotes.py` - 生成Tony语录页面
+- `generate_57questions.py` - 生成57问页面
+- `generate_tendisciplines.py` - 生成十大纪律页面
+- `generate_strategy.py` - 生成策略解读页面
+- `generate_sixlessons.py` - 生成六堂课页面
+- `generate_otherquotes.py` - 生成其他语录页面
+- `generate_pages.py` - 通用页面生成器
+
+### 维护脚本 (update_*.py, fix_*.py)
+批量修改HTML文件：
+- `update_nav.py` - 批量更新导航栏
+- `update_footer.py` - 更新页面footer
+- `fix_footer_text.py` - 批量替换文本内容
+- `reorder_nav.py` - 重新排列导航菜单
+
+**使用示例**：
+```bash
+cd scripts
+python3 generate_chenxiao.py  # 生成陈晓文章页面
+```
+
 ## 🛠️ 技术栈
 
 - **HTML5** - 语义化标签
@@ -53,20 +84,33 @@
 
 ```
 trading-website/
-├── index.html              # 首页
-├── styles.css              # 全局样式和响应式设计
-├── ten-disciplines.html    # 十大纪律
-├── 57-questions.html       # 57问
-├── livermore.html          # 利弗莫尔
-├── ding-hongbo.html        # 丁洪波
-├── tony-bible.html         # Tony圣经
-├── tony-quotes.html        # Tony语录
-├── strategy-reading.html   # 策略解读
-├── six-lessons.html        # 六堂课
-├── chen-xiao.html          # 陈晓文章
-├── other-quotes.html       # 其他语录
-├── README.md               # 项目说明文档
-└── .gitignore              # Git 忽略文件
+├── index.html                  # 首页
+├── styles.css                  # 全局样式和响应式设计
+├── README.md                   # 项目说明文档
+├── .gitignore                  # Git 忽略文件
+│
+├── trading-mastery/            # 交易心法页面
+│   ├── ten-disciplines.html    # 十大纪律
+│   ├── 57-questions.html       # 57问
+│   ├── livermore.html          # 利弗莫尔
+│   ├── ding-hongbo.html        # 丁洪波
+│   ├── tony-bible.html         # Tony圣经
+│   ├── tony-quotes.html        # Tony语录
+│   ├── strategy-reading.html   # 策略解读
+│   ├── six-lessons.html        # 六堂课
+│   ├── chen-xiao.html          # 陈晓文章
+│   └── other-quotes.html       # 其他语录
+│
+├── okx-talks/                  # OKX访谈页面
+│   ├── Wesley.html             # Wesley访谈
+│   ├── aoyin.html              # 熬鹰访谈
+│   ├── rgwbd.html              # 如果我不懂访谈
+│   └── yuyu.html               # 予与访谈
+│
+└── scripts/                    # 页面生成和维护脚本
+    ├── generate_*.py           # HTML页面生成脚本
+    ├── update_*.py             # 批量更新脚本
+    └── fix_*.py                # 修复脚本
 ```
 
 ## 🎯 设计系统

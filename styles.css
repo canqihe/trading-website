@@ -233,13 +233,21 @@ section {
     font-size: clamp(36px, 5vw, 64px);
     font-weight: 900;
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 16px;
     letter-spacing: -2px;
     background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-yellow) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     position: relative;
+}
+
+.section-subtitle {
+    font-size: 18px;
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 60px;
+    font-weight: 400;
 }
 
 /* Introduction Cards */

@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wesley：15岁500个比特币 | 对话交易员</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --accent-gold: #d4a853;
+            --accent-gold-light: #f0c77a;
+            --accent-orange: #e87d3e;
+            --accent-orange-dark: #c46228;
+            --text-primary: #f5f5f0;
+            --text-secondary: #a0a0a8;
+            --text-muted: #6a6a75;
+            --border-color: #2a2a35;
+            --border-gold: rgba(212, 168, 83, 0.3);
+            --shadow-gold: rgba(212, 168, 83, 0.15);
+            --glow-gold: rgba(212, 168, 83, 0.08);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-gold);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent-gold);
+            letter-spacing: 0.05em;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold-light);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, var(--glow-gold) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(232, 125, 62, 0.05) 0%, transparent 40%);
+            animation: heroGlow 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-5%, -5%) rotate(5deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s ease forwards;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 50%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s ease 0.15s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s ease 0.3s forwards;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeSlideUp 0.8s ease 0.45s forwards;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .meta-value a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .meta-value a:hover {
+            color: var(--accent-gold-light);
+        }
+
+        .timeline-section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, transparent 0%, var(--border-gold) 10%, var(--border-gold) 90%, transparent 100%);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            position: relative;
+            margin-bottom: 4rem;
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--bg-primary);
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            background: var(--accent-gold);
+            box-shadow: 0 0 20px var(--glow-gold);
+        }
+
+        .timeline-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            max-width: 400px;
+            margin: 0 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 40px var(--shadow-gold);
+        }
+
+        .timeline-year {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .quote-section {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-section::before {
+            content: '"';
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20rem;
+            color: var(--border-gold);
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .quotes-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .quote-card:hover {
+            border-color: var(--border-gold);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .quote-source {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: normal;
+        }
+
+        .content-section {
+            padding: 6rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .chapter {
+            margin-bottom: 6rem;
+        }
+
+        .chapter-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .subsection {
+            margin-bottom: 3rem;
+        }
+
+        .subsection-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .dialogue {
+            margin-bottom: 2.5rem;
+        }
+
+        .question {
+            font-weight: 500;
+            color: var(--accent-gold-light);
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .answer {
+            color: var(--text-secondary);
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        .answer p {
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.1) 0%, rgba(232, 125, 62, 0.05) 100%);
+            border-left: 3px solid var(--accent-gold);
+            padding: 1.5rem 2rem;
+            border-radius: 0 8px 8px 0;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--text-primary);
+        }
+
+        .highlight-box p {
+            margin-bottom: 0.8rem;
+        }
+
+        .stats-section {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-gold);
+            transform: scale(1.02);
+        }
+
+        .stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        footer {
+            padding: 4rem 2rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-gold);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .disclaimer {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            z-index: 99;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent-gold-light);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px var(--shadow-gold);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                padding-left: 50px;
+                padding-right: 0;
+                justify-content: flex-start;
+            }
+
+            .timeline-item::before {
+                left: 20px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .quote-text {
+                font-size: 1.2rem;
+            }
+
+            .chapter-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="../index.html" class="nav-logo">OKX 对话交易员</a>
+        <ul class="nav-links">
+            <li><a href="#hero">首页</a></li>
+            <li><a href="#timeline">时间线</a></li>
+            <li><a href="#quotes">金句</a></li>
+            <li><a href="#journey">完整访谈</a></li>
+        </ul>
+        <button class="mobile-menu-btn">☰</button>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-tag">对话交易员交易员 · 第30+期</div>
+            <h1 class="hero-title">15岁500个比特币<br>从爆亏到亿级基金掌舵人</h1>
+            <p class="hero-subtitle">
+                15岁用压岁钱买下500个比特币，少年时期白手起家。<br>
+                管理数亿美元规模基金，2025年靠aster空投斩获440万枚代币。
+            </p>
+            <div class="hero-meta">
+                <div class="meta-item">
+                    <div class="meta-label">嘉宾</div>
+                    <div class="meta-value"><a href="https://x.com/CryptoApprenti1" target="_blank">@Wesley</a></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">主持人</div>
+                    <div class="meta-value"><a href="https://x.com/mia_okx" target="_blank">@Mia</a></div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">收益率</div>
+                    <div class="meta-value">500+</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">比特币持有</div>
+                    <div class="meta-value">500个</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="timeline-section" id="timeline">
+        <div class="section-header">
+            <div class="section-label">JOURNEY</div>
+            <h2 class="section-title">成长轨迹</h2>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2015</div>
+                    <div class="timeline-title">初识比特币 · 少年起步</div>
+                    <div class="timeline-desc">用不到100元人民币在比特币中国买入一两百个比特币，正式踏入加密圈。</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2015</div>
+                    <div class="timeline-title">炒股亏损 · 专注加密</div>
+                    <div class="timeline-desc">比特币卖出炒股，遭遇2015股灾，从此不再碰A股，专注加密市场。</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2022</div>
+                    <div class="timeline-title">2000万亏损 · 转向德扑</div>
+                    <div class="timeline-desc">比特币从6万9跌到5万多，两天亏2000万美金。开始学习德扑，将GTO理论融入交易。</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">10月11日</div>
+                    <div class="timeline-title">黑天鹅事件 · 爆仓500万</div>
+                    <div class="timeline-desc">做多生态币ETF，交易所宕机导致流动性枯竭，爆仓500多万美金。</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2025</div>
+                    <div class="timeline-title">Aster空投 · 440万代币</div>
+                    <div class="timeline-desc">存款不到3000万美金获440万枚aster空投，白得500万美金，管理数亿美元基金。</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="quote-section" id="quotes">
+        <div class="section-header">
+            <div class="section-label">QUOTES</div>
+            <h2 class="section-title">交易金句</h2>
+        </div>
+        <div class="quotes-grid">
+            <div class="quote-card">
+                <div class="quote-text">资金管理排第一，大部分现货，少部分杠杆</div>
+                <div class="quote-source">— 交易铁律</div>
+            </div>
+            <div class="quote-card">
+                <div class="quote-text">趋势为王：宏观基本面+K线结构+心态</div>
+                <div class="quote-source">— 交易原则</div>
+            </div>
+            <div class="quote-card">
+                <div class="quote-text">不路径依赖，市场在变策略也要变</div>
+                <div class="quote-source">— 适应市场</div>
+            </div>
+            <div class="quote-card">
+                <div class="quote-text">Meme币本质是共识，它值多少钱取决于大家相信它值多少钱</div>
+                <div class="quote-source">— 共识核心</div>
+            </div>
+            <div class="quote-card">
+                <div class="quote-text">比特币是长期配置首选，有生之年能看到100万美金</div>
+                <div class="quote-source">— 投资建议</div>
+            </div>
+            <div class="quote-card">
+                <div class="quote-text">别对暴富有太大执念，健康和安全最重要</div>
+                <div class="quote-source">— 人生哲学</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">15岁</div>
+                <div class="stat-label">起步年龄</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">比特币持有</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">440万</div>
+                <div class="stat-label">Aster代币</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">数亿</div>
+                <div class="stat-label">基金规模</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" id="journey">
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER ONE</div>
+            <h2 class="chapter-title">童年启蒙：从悠悠球冠军到比特币早期玩家</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">15岁的比特币初体验：红包钱开启的加密投资之路</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：听说你接触加密很早，这和你小时候的经历有关？</div>
+                    <div class="answer">
+                        <p>当时痴迷悠悠球，国内没多少人研究技术，我就跟着做科研的爸爸学翻墙，从国外学悠悠球技巧带回国内，最后拿了重庆市第一、广东省第二，还成了电视剧《火力少年王》演员的悠悠球教练。那时候每天放学练几个小时，中指都练出了骨质增生，现在想起来，那种钻研的毅力从小学就埋下了。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">早期投资：比特币中国买200个比特币</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：你是怎么第一次接触比特币的？</div>
+                    <div class="answer">
+                        <p>我家里条件比较好，爸妈对我的资金管理很开放。上初中前，我每年能收到1-3万红包，爸爸从不干涉我怎么用，让我自己管理资金。那时候为了赚零花钱，在大P网（paxful）用比特币买亚马逊礼品卡，再到淘宝高价卖出套利，慢慢就接触到了比特币。</p>
+                        <p>后来在比特币中国（李启元创立，莱特币创始人李启威的哥哥）上，用不到100元人民币的价格买了一两百个比特币，算是正式踏入加密圈。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">早期踩坑：炒股亏损，专注加密</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：早期投资有没有踩过坑？</div>
+                    <div class="answer">
+                        <p>有。之前比特币涨到三四千人民币的时候，我卖掉去炒股，结果赶上2015年那波股灾，尤其是乐视，直接跌停，把我从比特币里赚的钱全亏完了。从那以后，我再也不买A股了，只专注加密市场。现在回头看，年轻时候的试错很重要，让我明白不同市场的风险边界。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER TWO</div>
+            <h2 class="chapter-title">交易与德扑：策略同源，在信息不对称中赚"长期EV"</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">熊市入局德扑：经历2000万亏损，找到德扑来"解压+策略修炼场"</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：2022年为什么转向德扑圈？</div>
+                    <div class="answer">
+                        <p>那一波是比特币涨到最高大概6万9美金的时候，我还在加仓做多，总觉得能涨到十万美金。结果之后比特币很快就跌到5万多美金，就两三天时间，跌得特别快，最后只能止损离场，算下来亏了大概2000万美金。</p>
+                        <p>现在回头看，主要是牛市里太贪婪、太上头了，本来已经赚了不少，也离场了，结果被当时市场的FOMO情绪感染，又重新进去做，才导致这么大的亏损。当时想找个既能放松又有策略性的事。德扑刚好符合——它不是纯赌，而是信息不对称的博弈，和交易很像。而且就算每天输几万，一年也输不到2000万，比交易亏损可控，能让我暂时忘记熊市的压力。这种"风险边界清晰"的特性，让我慢慢从熊市的焦虑里走了出来，甚至开始从德扑里琢磨交易策略。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">德扑策略能用到交易里吗？</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：德扑的策略能用到交易里吗？</div>
+                    <div class="answer">
+                        <p>完全可以。德扑和交易都是信息不对称博弈，不像象棋、围棋信息透明。核心就是GTO（博弈论最优解）理论，不是靠单一决策赢，而是按概率分配动作，追求长期正EV（期望值）。比如德扑里10%概率加注、20%概率弃牌，交易里也是，不会死磕一个方向，而是按概率布局，保证长期盈利。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">从新手到差点拿WSP亚军：中国最好的牌手当教练</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：你从德扑新手做到差点拿世界扑克大赛（WSP）亚军，中间付出了哪些努力？</div>
+                    <div class="answer">
+                        <p>一开始只是上电视节目玩票，因为我个性比较张扬，喜欢在牌桌上炫技，节目组觉得有看点，就经常邀请我。但真的想打好后，我就请了一个中国最好的牌手来当我的教练，然后不断的学习，因为扑克的学习也是一个很枯燥的过程，就跟数学题一样，你还要记很多东西要背很多东西。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER THREE</div>
+            <h2 class="chapter-title">黑天鹅应对：500万美金爆仓后，靠震荡策略快速回血</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">10月11日黑天鹅：爆仓500万美金的亲身经历</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：10月11日的黑天鹅事件，你当时的亲身经历是怎样的？能具体说说爆仓的过程吗？</div>
+                    <div class="answer">
+                        <p>当时我觉得美国政府该宣布莱特币、Solana、dogecoin这三个币的ETF结果了，我判断肯定能过，所以一直在做多。结果当天dogecoin跌了70%，LiteCoin从130跌到最低51，我就在51这个价位爆仓了，所有账户加起来爆了500多万美金，还不算现货的亏损。后来才知道是某个交易所系统宕机，做市商不挂单，瞬间没了流动性，本来不会爆的仓位也爆了。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">快速回血：震荡策略的应用</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：亏了这么多钱，你是怎么快速调整心态回血的？</div>
+                    <div class="answer">
+                        <p>我觉得纠结过去的亏损没意义，还会影响后续判断，人得向前看。我翻出《周期》这本书，里面有句话让我印象很深，就是人和事都是有一个周期的，那我们人也不可能一直保持在巅峰，那从巅峰下落以后，你如何去稳住自己的心态，然后冲击另一个新高，是一件很重要的事。</p>
+                        <p>那对这个市场来说，这次暴跌第一直接原因是因为X安宕机，还有一些催化剂就是美股暴跌，然后叠加川普的贸易战的那些非常激进的发言。</p>
+                        <p>而从市场多空博弈的角度上来讲，多头积累也太多，包括像我们这样做多生态币的多头，一瞬间把我们所有的杠杆全部清光。这个暴跌是需要很大的动能的，我们就是这一笔暴跌的动能，那动能已经没有了，以后这个市场就会结束暴跌的趋势，转成一个震荡。所以我在暴跌以后就是按照震荡来做，就是在接近底部的时候，我就去做多。然后反弹到上一波接近压力位的时候，我就去做空，所以就做了几笔交易，结果还不错。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">亏损后的复盘与策略调整</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：亏损后会复盘吗？会怎么调整交易策略？</div>
+                    <div class="answer">
+                        <p>肯定会复盘。比如亏2000万那次，复盘就知道是自己贪婪、被FOMO情绪影响，还有路径依赖的问题；黑天鹅那次，就意识到交易所风险和极端行情下流动性的重要性。</p>
+                        <p>调整策略方面，现在做交易以现货为主，杠杆加得很少，以前还加十倍杠杆，现在最多加0.5倍、一倍，避免爆仓风险。而且会根据行情变，比如黑天鹅后判断是震荡期，就用震荡思路做，不再死扛趋势。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER FOUR</div>
+            <h2 class="chapter-title">交易心法：趋势为王、资金管理优先，拒绝路径依赖</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">趋势交易的核心逻辑：三个维度</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：你最擅长趋势交易，这种交易模式的核心逻辑是什么？在实际操作中怎么判断趋势、把握机会？</div>
+                    <div class="answer">
+                        <p>我判断趋势主要看三个维度：宏观基本面、K线结构、心态。首先是宏观周期，比如我们现在处于加息周期还是降级周期。其次是K线，因为做的级别越大，看的K线越简单，你的胜率就会越高。第三点就是心态好，因为我赚过也亏过，所以面对大额的浮亏浮盈，我拿得住，我不会一直做波段，比如有些人涨了就想做空，跌了就做多。但我还是蛮能拿住的。这三点就是我做交易的原则。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">资金管理排第一：现货为主，少加杠杆</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：你说"资金管理排第一"，具体怎么做好资金管理？主流币和Meme币的仓位配置有什么区别？</div>
+                    <div class="answer">
+                        <p>我做资金管理，核心就是"大部分以现货为主，少部分加一点杠杆"。就算杠杆爆了，对我来说也不会有太多损害。以前还会加十倍杠杆，现在能加个零点几倍都已经顶天了，不会再像以前那么激进。</p>
+                        <p>标的选择上，大资金做趋势交易时，一般会选前十或前十五的币种，上了ETF的最好，确定性更高；Meme币的话，最重要看题材和叙事，再用Bubblemaps看筹码分散程度，也会看跟着哪些车头跑。但Meme币我只小仓位玩，比如之前买某安的4，就只买了15万美金，最高点能有500万美金回报，但没拿住，见好就收。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">拒绝路径依赖：市场在变，策略也要变</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：你经历过好几轮牛熊，怎么做到"不路径依赖"？比如上一轮好用的策略，这一轮为什么不能照搬？</div>
+                    <div class="answer">
+                        <p>路径依赖长期来看很可怕。比如2017年靠ICO赚了钱，要是18年还继续做ICO，肯定亏完；上一轮牛市滚仓策略特别好用，比如从比特币突破2万开始滚，能一直滚到6万，但这一轮就不行了，因为市场走得很粘稠，回调特别多，甚至可能直接反转，再用滚仓就容易爆仓。</p>
+                        <p>市场一直在变，迭代越来越快，不学习就会落后。我现在会多听散户的声音，比如进社区、看推特上的KOL观点，结合自己的经验判断，不会守着旧策略不放。比如这一轮很多人还拿"钻石手"那套，结果坐了过山车，就是因为没看到市场结构跟以前不一样了。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">对量化交易的看法：一次黑天鹅就能亏完</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：你是学计算机的话，没有考虑过自己去做量化交易吗？因为量化交易是不是会更稳健低回撤？</div>
+                    <div class="answer">
+                        <p>我觉得这个跟学计算机没什么直接联系，因为我在币圈十几年，很多做量化的，最后都亏完，这一次（10月11日黑天鹅）很多做市商亏光了，就是因为交易所宕机这种情况。你可能一直保持一年赚百分之几十，然后一次宕机、一次黑天鹅就把你全部亏完。</p>
+                        <p>我觉得量化可以慢慢赚，但是它承受不了一次黑天鹅。霍华德·马克斯说过，投资里风险和收益成正比，真正收益大的东西风险应该小，风险大的东西不好，因为很容易亏完。而且现在更多专业机构介入量化领域，像我如果要做量化，宁愿把钱给一些专业的机构，他们做的会比我更好，我自己去做不是我擅长的地方。我始终对量化有一点偏见，还是因为我见过太多做量化的基金亏完的，所以导致我对这个东西非常有偏见。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER FIVE</div>
+            <h2 class="chapter-title">Meme币交易：实操案例与标的筛选标准</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">从WIF开始：早期布局Solana Meme生态</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：这轮牛市你回归加密交易后，在Meme币交易上有不少亮眼表现，大概是从什么时候开始接触并玩Meme币的？</div>
+                    <div class="answer">
+                        <p>这一轮我从WIF就开始了。因为我在美国，所以跟西方一开始玩Solana那帮老外混得还比较熟，所以什么Meme币都买，什么都玩过。包括佩佩，还有之前dogecoin那条狗的主人收养的新狗叫Neiro，这个Meme相关的标的我早期也买了。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">某安的"4"：少赚400万美金的教训</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：在Meme币交易里，有没有印象比较深的具体操作经历？</div>
+                    <div class="answer">
+                        <p>有，比如"4"，我是在它市值1500万美金的时候买了1%，但没拿住，少赚了大概400万美金。一开始买了10万，后来又买了5万。现在这15万的持仓大概值200万美金，最高点的时候值500万美金。说明我对Meme币标的的敏感度还是挺高的。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">Azuki NFT：公开操作赚500万美金</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：还有Azuki这个NFT，你是公开操作的。上一轮熊市，你公开卖掉了一波，这笔交易大概赚了500万美金，链上都能看到。</div>
+                    <div class="answer">
+                        <p>当时我是Azuki持仓全球第13的大户，因为Azuki有持仓排名，我的地址因为头像很有名，那个头像当时最贵快100万美金，我就留着当收藏了没卖，把其他一些稀有的、地板价的，包括一些小豆子卖掉了。现在我还保留了几个很稀有的Azuki头像，大概也值快100万美金，算是在上一轮熊市抄底并成功逃顶的一次不错的交易。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">Meme币筛选标准：叙事+共识</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：你是怎么学习Meme币交易逻辑，又是怎么筛选Meme币标的的？</div>
+                    <div class="answer">
+                        <p>其实就是多接触、多听大家的意见，不带着偏见去了解。首先要接地气，融入散户群体，我没事会加很多群，自己也有社区，会听听群里大家对不同Meme币的看法；也会看推特上各种我喜欢的KOL的分享，他们也会讲一些Meme币的动态。</p>
+                        <p>Meme币说白了就是"共识"的问题，它值多少钱，本质上是大家相信它值多少钱。所以我会先听大家对这个Meme币的"叙事"是什么，再结合我自己的交易经验去评估这个叙事能不能打动我——这其实是个比较主观的判断，如果这个叙事能打动我，我就会考虑买入。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">保持敏锐度：资源+不排斥新事物</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：你总能及时抓住新Meme币的机会，保持敏锐度的关键是什么？</div>
+                    <div class="answer">
+                        <p>一方面是身边的资源，比如有些偏社区属性的标的，是朋友推荐的。像aster，当时是我一个学弟，他是aster里的重要工作人员，让我去支持一下，我就存了不到3000万美金，他们当时给20%的年化，我也没管能拿到多少空投，没想到后来项目就彻底起飞了，最后还白拿了空投，卖了500万美金，也算是运气，可能也是多帮人的意外收获。</p>
+                        <p>另一方面就是不排斥新事物，不管是Meme币还是NFT，只要是新的、有社区热度的标的，我都会去主动了解，不会一开始就否定，再结合前面说的信息收集，就能及时抓住机会。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER SIX</div>
+            <h2 class="chapter-title">对新手的建议：比特币是长期配置首选，暴富别执念</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">新手资产配置：比特币是唯一选择</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：如果新手只有5000U甚至更少的资金，想做资产配置，你会给什么具体建议？</div>
+                    <div class="answer">
+                        <p>如果是做长期资产配置，我只会建议买比特币。我觉得我们有生之年一定能看到比特币涨到100万美金。不管什么时候买，长期拿着都靠谱，不用去碰那些不知名的山寨币，风险太大。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">想快速致富？先问自己优势在哪里</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：如果新手想快速致富，比如你一样从少年时期白手起家，你会怎么劝他们？</div>
+                    <div class="answer">
+                        <p>首先得说，我不是靠快速致富起来的，也是踩中了早期加密市场的红利，再加上长期积累才做到现在。现在币圈的红利已经差不多了，不像以前随便买个山寨币都能赚钱，想赚钱得先问自己"优势在哪里"，你凭什么比别人多赚钱？想清楚这个之前，别盲目冲，先学习、等好机会，小心才能活下来。很多新手一开始赚点钱就飘，加杠杆乱操作，最后都是亏完，还不如先学会不亏。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">心态和生活：健康和安全最重要</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：除了交易技巧，你觉得新手还需要注意什么？比如心态、生活方面。</div>
+                    <div class="answer">
+                        <p>最核心的是别对暴富有太大执念，交易只是生活的一部分。现在对我来说，健康和安全最重要。我每天24小时都有安保，一年要花几十万美金在安全上。钱再多，没了健康和安全也没用。另外要保持学习的心态，币圈迭代太快，不学习就会落后。我现在还一直在看书、跟其他交易员交流，就算管理着亿级基金，也不敢停下学习的脚步。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-number">CHAPTER SEVEN</div>
+            <h2 class="chapter-title">书单推荐与未来规划：用影响力为华人发声</h2>
+
+            <div class="subsection">
+                <h3 class="subsection-title">《周期》：人和事都有周期，跌落后如何冲新高</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：你经常推荐《周期》这本书，这本书里的哪些观点对你影响最大？除了交易类书籍，你还喜欢看什么书？</div>
+                    <div class="answer">
+                        <p>《周期》里最核心的就是讲"人和事都有周期"——不管是市场、股票，还是人，都不可能一直保持巅峰，跌下去之后怎么稳住心态、再冲新高，这对交易特别重要。霍华德·马克斯写这本书，是把他几十年给投资人的备忘录整理出来的，连巴菲特都爱读他的备忘录，内容特别扎实，值得反复看。</p>
+                        <p>除了交易书，我喜欢看小说，比如《雪中悍刀行》《道诡异仙》——这些小说，现在都拍成电视剧了，里面的主角都有反叛精神，讲究知行合一、行正事，对我的性格影响挺大的。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3 class="subsection-title">未来规划：积累影响力，为华人华裔发声</h3>
+                <div class="dialogue">
+                    <div class="question">Mia：你现在还活跃在加密一线，未来有什么规划？</div>
+                    <div class="answer">
+                        <p>我现在想积累更多影响力。不是为了钱，是觉得这个时代影响力太重要了，能解决很多光靠钱解决不了的事。更重要的是，我想为华人华裔做些事，提升我们在美国的地位。在美国，华人愿意站出来发声的太少了，大家都习惯闷声发大财，但其实需要有人站出来争取权益。</p>
+                        <p>比如未来如果有机会，我想试试当议员，像马斯克、特朗普那样，用影响力做些实事，就算有风险，做对的事也值得。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><footer>
+        <div class="footer-content">
+            <div class="footer-quote">
+                "资金管理排第一，趋势为王，不路径依赖。保持学习，健康和安全最重要。"
+            </div>
+            <div class="disclaimer">
+                <strong>免责声明</strong><br>
+                本内容仅供参考，仅代表作者观点，不代表OKX立场。本内容无意提供投资建议或投资推荐；购买、出售或持有数字资产的要约或招揽；财务、会计、法律或税务建议。我们不保证该等信息的准确性、完整性或有用性。持有的数字资产（包括稳定币和NFTs）涉及高风险，可能会大幅波动。您应该根据您的财务状况仔细考虑交易或持有数字资产是否适合您。<br><br>
+                🎙️ 这里是OKX《对话交易员》专注探寻顶级交易员的心路历程与实战逻辑。
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop">↑</button>
+
+    <script>
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
