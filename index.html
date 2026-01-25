@@ -22,48 +22,33 @@
                 <li><a href="#okx-talks">OKX访谈</a></li>
             </ul>
         </div>
+        <style>
+            /* Homepage-specific navbar styles */
+            .navbar {
+                transform: translateY(-100%);
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .navbar.visible {
+                transform: translateY(0);
+            }
+        </style>
     </nav>
 
     <!-- Hero Section -->
     <header class="hero">
         <div class="hero-content">
             <h1 class="hero-title">
-                交易心法
-                <span class="highlight">TRADING MASTERY</span>
+                交易智慧
+                <span class="highlight">TRADING WISDOM</span>
             </h1>
-            <p class="hero-subtitle">融合法师Tony、陈晓、丁洪波、利弗莫尔等交易大师的智慧结晶。市场是一个猛兽遍布的丛林,而这里可以告诉你最真实的丛林法则。</p>
+            <p class="hero-subtitle">融合法师Tony、陈晓、丁洪波、利弗莫尔等交易大师的智慧结晶，以及OKX顶级交易员的真实访谈。市场是一个猛兽遍布的丛林，而这里可以告诉你最真实的丛林法则。</p>
         </div>
     </header>
-
-    <!-- Introduction -->
-    <section class="intro">
-        <div class="container">
-            <h2 class="section-title">核心价值</h2>
-            <div class="intro-grid">
-                <div class="intro-card">
-                    <div class="card-icon">📖</div>
-                    <h3>交易心法</h3>
-                    <p>如何看待市场,如何选择交易时机,如何看待大经济环境,如何做好资金管理,如何预测市场走向,怎样判断多空,如何做合约,如何滚仓,什么时候应该止损,什么时候应该止盈。</p>
-                </div>
-                <div class="intro-card">
-                    <div class="card-icon">🎯</div>
-                    <h3>丛林法则</h3>
-                    <p>市场是一个猛兽遍布的丛林,而这里可以告诉你最真实的丛林法则。在丛林中,知道如何生存比拥有强大的爪牙更重要。交易胜在心理,而不是胜在技术。</p>
-                </div>
-                <div class="intro-card">
-                    <div class="card-icon">⚡</div>
-                    <h3>核心理念</h3>
-                    <p>技术分析可以学,而交易心法不可学,只能修,修炼的那个修。技术分析会失效,而交易心法永不失效,正确的交易心态都是相似的,而正确的交易技术各有各的正确。</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Trading Mastery Section -->
     <section id="trading-mastery" class="content-nav">
         <div class="container">
             <h2 class="section-title">交易心法</h2>
-            <p class="section-subtitle">融合多位交易大师的智慧结晶</p>
             <div class="content-grid">
                 <a href="trading-mastery/57-questions.html" class="content-item">
                     <div class="content-number">01</div>
@@ -123,27 +108,26 @@
     <section id="okx-talks" class="content-nav">
         <div class="container">
             <h2 class="section-title">OKX访谈</h2>
-            <p class="section-subtitle">对话顶级交易员的真实历程</p>
             <div class="content-grid">
-                <a href="okx-talks/Wesley.html" class="content-item">
+                <a href="okx-talks/yuyu.html" class="content-item">
                     <div class="content-number">01</div>
-                    <h3>Wesley</h3>
-                    <p>15岁500个比特币的交易之路</p>
-                </a>
-                <a href="okx-talks/aoyin.html" class="content-item">
-                    <div class="content-number">02</div>
-                    <h3>熬鹰</h3>
-                    <p>从3K到4000万的交易历程</p>
+                    <h3>予与</h3>
+                    <p>1年9个月从5万到1亿</p>
                 </a>
                 <a href="okx-talks/rgwbd.html" class="content-item">
-                    <div class="content-number">03</div>
+                    <div class="content-number">02</div>
                     <h3>如果我不懂</h3>
                     <p>从7k到A9的交易智慧</p>
                 </a>
-                <a href="okx-talks/yuyu.html" class="content-item">
+                <a href="okx-talks/aoyin.html" class="content-item">
+                    <div class="content-number">03</div>
+                    <h3>熬鹰</h3>
+                    <p>从3K到4000万的交易历程</p>
+                </a>
+                <a href="okx-talks/Wesley.html" class="content-item">
                     <div class="content-number">04</div>
-                    <h3>予与</h3>
-                    <p>1年9个月从5万到1亿</p>
+                    <h3>Wesley</h3>
+                    <p>15岁500个比特币的交易之路</p>
                 </a>
             </div>
         </div>
@@ -172,7 +156,17 @@
                 </div>
                 <div class="footer-section">
                     <h4>社交</h4>
-                    <p>关注 <a href="https://x.com/nfa_trader" target="_blank" rel="noopener" class="footer-link">@nfa_trader</a> 获取更多交易智慧</p>
+                    <a href="https://x.com/nfa_trader" target="_blank" rel="noopener" class="footer-link" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); transition: all 0.3s ease; text-decoration: none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF" style="transition: transform 0.3s ease;">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                    <style>
+                        .footer-section a:hover {
+                            background: rgba(252, 211, 3, 0.2) !important;
+                            transform: scale(1.1);
+                        }
+                    </style>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -182,7 +176,7 @@
     </footer>
 
     <script>
-        // Particle System
+        // Particle System with scroll fade effect
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -287,15 +281,100 @@
             animationId = requestAnimationFrame(animate);
         }
 
+        // Scroll-based fade effect for particles
+        function updateParticleOpacity() {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const heroHeight = windowHeight;
+
+            // Calculate opacity based on scroll position
+            // Full opacity when at top, fades out as you scroll down
+            let opacity = Math.max(0, 1 - (scrollY / (heroHeight * 0.7)));
+
+            canvas.style.opacity = opacity;
+        }
+
         // Initialize
         resizeCanvas();
         initParticles();
         animate();
 
+        // Initial navbar check
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > window.innerHeight * 0.3) {
+            navbar.classList.add('visible');
+        }
+
         // Handle resize
         window.addEventListener('resize', () => {
             resizeCanvas();
             initParticles();
+        });
+
+        // Handle scroll
+        window.addEventListener('scroll', () => {
+            updateParticleOpacity();
+
+            // Show/hide navbar on scroll
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > window.innerHeight * 0.3) {
+                navbar.classList.add('visible');
+            } else {
+                navbar.classList.remove('visible');
+            }
+        });
+
+        // Apple-style scroll-driven card animations
+        const contentItems = document.querySelectorAll('.content-item');
+        const animatedItems = new Set();
+
+        // Set initial state
+        contentItems.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(80px)';
+            item.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+        });
+
+        // Update cards on scroll
+        function updateCardsOnScroll() {
+            const windowHeight = window.innerHeight;
+            const triggerBottom = windowHeight * 0.85;
+
+            contentItems.forEach((item) => {
+                // Skip if already animated
+                if (animatedItems.has(item)) return;
+
+                const itemTop = item.getBoundingClientRect().top;
+
+                if (itemTop < triggerBottom) {
+                    // Calculate progress (0 to 1)
+                    const progress = Math.min(1, Math.max(0, (triggerBottom - itemTop) / 400));
+
+                    // Apply transform based on progress
+                    item.style.opacity = progress;
+                    item.style.transform = `translateY(${80 * (1 - progress)}px)`;
+
+                    // Mark as fully animated when progress reaches 1
+                    if (progress >= 1) {
+                        animatedItems.add(item);
+                    }
+                }
+            });
+        }
+
+        // Initial check
+        updateCardsOnScroll();
+
+        // Update on scroll with requestAnimationFrame for smooth performance
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateCardsOnScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
         });
     </script>
 </body>
