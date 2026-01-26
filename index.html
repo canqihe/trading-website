@@ -10,8 +10,8 @@
     <!-- Grid Background -->
     <div class="grid-background"></div>
 
-    <!-- Particle Canvas -->
-    <canvas id="particleCanvas"></canvas>
+    <!-- Particle Canvas (已禁用) -->
+    <!-- <canvas id="particleCanvas"></canvas> -->
 
     <!-- Navigation -->
     <nav class="navbar">
@@ -36,6 +36,12 @@
 
     <!-- Hero Section -->
     <header class="hero">
+        <!-- Video Background -->
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="assets/videos/t.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+
         <div class="hero-content">
             <h1 class="hero-title">
                 交易智慧
@@ -176,7 +182,8 @@
     </footer>
 
     <script>
-        // Particle System with scroll fade effect
+        // Particle System with scroll fade effect (已禁用)
+        /*
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -315,6 +322,25 @@
         window.addEventListener('scroll', () => {
             updateParticleOpacity();
 
+            // Show/hide navbar on scroll
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > window.innerHeight * 0.3) {
+                navbar.classList.add('visible');
+            } else {
+                navbar.classList.remove('visible');
+            }
+        });
+        */
+        // End of Particle System (已禁用)
+
+        // Initial navbar check
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > window.innerHeight * 0.3) {
+            navbar.classList.add('visible');
+        }
+
+        // Handle scroll - navbar visibility
+        window.addEventListener('scroll', () => {
             // Show/hide navbar on scroll
             const navbar = document.querySelector('.navbar');
             if (window.scrollY > window.innerHeight * 0.3) {
