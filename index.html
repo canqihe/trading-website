@@ -3,404 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>交易之王 - 交易智慧宝典</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>交易智慧 TRADING WISDOM</title>
+    <link rel="stylesheet" href="styles-redesigned.css">
 </head>
 <body>
-    <!-- Grid Background -->
-    <div class="grid-background"></div>
-
-    <!-- Particle Canvas (已禁用) -->
-    <!-- <canvas id="particleCanvas"></canvas> -->
-
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <ul class="nav-menu">
-                <li><a href="index.html" class="active">首页</a></li>
-                <li><a href="#trading-mastery">交易心法</a></li>
-                <li><a href="#okx-talks">OKX访谈</a></li>
-            </ul>
-        </div>
-        <style>
-            /* Homepage-specific navbar styles */
-            .navbar {
-                transform: translateY(-100%);
-                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            .navbar.visible {
-                transform: translateY(0);
-            }
-        </style>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="hero">
-        <!-- Video Background -->
+    <!-- Video Background (Hero Only) -->
+    <div class="video-wrapper">
         <video class="hero-video" autoplay muted loop playsinline>
             <source src="assets/videos/t.mp4" type="video/mp4">
         </video>
-        <div class="hero-overlay"></div>
+        <div class="video-overlay"></div>
+    </div>
 
-        <div class="hero-content">
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav-inner">
+            <div class="nav-brand">TW</div>
+            <div class="nav-links">
+                <a href="#mastery" class="nav-link">交易心法</a>
+                <a href="#interviews" class="nav-link">OKX访谈</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Video -->
+    <header class="hero">
+        <div class="hero-inner">
+            <div class="hero-label">
+                <span>交易心法 · 实战经验</span>
+            </div>
             <h1 class="hero-title">
-                交易智慧
-                <span class="highlight">TRADING WISDOM</span>
+                <span class="title-main">交易智慧</span>
+                <span class="title-sub">TRADING WISDOM</span>
             </h1>
-            <p class="hero-subtitle">融合法师Tony、陈晓、丁洪波、利弗莫尔等交易大师的智慧结晶，以及OKX顶级交易员的真实访谈。市场是一个猛兽遍布的丛林，而这里可以告诉你最真实的丛林法则。</p>
+            <p class="hero-text">
+                法师Tony · 陈晓 · 丁洪波 · 利弗莫尔<br>
+                以及OKX顶级交易员的真实访谈
+            </p>
         </div>
     </header>
 
-    <!-- Trading Mastery Section -->
-    <section id="trading-mastery" class="content-nav">
-        <div class="container">
-            <h2 class="section-title">交易心法</h2>
-            <div class="content-grid">
-                <a href="trading-mastery/57-questions.html" class="content-item">
-                    <div class="content-number">01</div>
-                    <h3>57问</h3>
-                    <p>期货操盘的57个核心问题详解</p>
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Section: Trading Mastery -->
+        <section id="mastery" class="section">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <h2 class="section-title">交易心法</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="grid">
+                <a href="trading-mastery/57-questions.html" class="card">
+                    <span class="card-index">01</span>
+                    <h3 class="card-title">57问</h3>
+                    <p class="card-desc">期货操盘的57个核心问题详解</p>
                 </a>
-                <a href="trading-mastery/ten-disciplines.html" class="content-item">
-                    <div class="content-number">02</div>
-                    <h3>十大纪律</h3>
-                    <p>期货操盘必须遵守的十条铁律</p>
+
+                <a href="trading-mastery/ten-disciplines.html" class="card">
+                    <span class="card-index">02</span>
+                    <h3 class="card-title">十大纪律</h3>
+                    <p class="card-desc">期货操盘必须遵守的十条铁律</p>
                 </a>
-                <a href="trading-mastery/ding-hongbo.html" class="content-item">
-                    <div class="content-number">03</div>
-                    <h3>丁洪波理念</h3>
-                    <p>江浙第一操盘手的交易思路</p>
+
+                <a href="trading-mastery/ding-hongbo.html" class="card">
+                    <span class="card-index">03</span>
+                    <h3 class="card-title">丁洪波理念</h3>
+                    <p class="card-desc">江浙第一操盘手的交易思路</p>
                 </a>
-                <a href="trading-mastery/tony-bible.html" class="content-item">
-                    <div class="content-number">04</div>
-                    <h3>Tony圣经</h3>
-                    <p>法师Tony的交易核心心法</p>
+
+                <a href="trading-mastery/tony-bible.html" class="card">
+                    <span class="card-index">04</span>
+                    <h3 class="card-title">Tony圣经</h3>
+                    <p class="card-desc">法师Tony的交易核心心法</p>
                 </a>
-                <a href="trading-mastery/tony-quotes.html" class="content-item">
-                    <div class="content-number">05</div>
-                    <h3>Tony语录</h3>
-                    <p>43条经典交易格言</p>
+
+                <a href="trading-mastery/tony-quotes.html" class="card">
+                    <span class="card-index">05</span>
+                    <h3 class="card-title">Tony语录</h3>
+                    <p class="card-desc">43条经典交易格言</p>
                 </a>
-                <a href="trading-mastery/strategy-reading.html" class="content-item">
-                    <div class="content-number">06</div>
-                    <h3>策略解读</h3>
-                    <p>《期货交易策略》深度解读</p>
+
+                <a href="trading-mastery/strategy-reading.html" class="card">
+                    <span class="card-index">06</span>
+                    <h3 class="card-title">策略解读</h3>
+                    <p class="card-desc">《期货交易策略》深度解读</p>
                 </a>
-                <a href="trading-mastery/chen-xiao.html" class="content-item">
-                    <div class="content-number">07</div>
-                    <h3>陈晓文章</h3>
-                    <p>5篇经典交易文章</p>
+
+                <a href="trading-mastery/chen-xiao.html" class="card">
+                    <span class="card-index">07</span>
+                    <h3 class="card-title">陈晓文章</h3>
+                    <p class="card-desc">5篇经典交易文章</p>
                 </a>
-                <a href="trading-mastery/six-lessons.html" class="content-item">
-                    <div class="content-number">08</div>
-                    <h3>六堂课</h3>
-                    <p>陈晓炒币课程完整笔记</p>
+
+                <a href="trading-mastery/six-lessons.html" class="card">
+                    <span class="card-index">08</span>
+                    <h3 class="card-title">六堂课</h3>
+                    <p class="card-desc">陈晓炒币课程完整笔记</p>
                 </a>
-                <a href="trading-mastery/livermore.html" class="content-item">
-                    <div class="content-number">09</div>
-                    <h3>利弗莫尔</h3>
-                    <p>9点启示与投机智慧</p>
+
+                <a href="trading-mastery/livermore.html" class="card">
+                    <span class="card-index">09</span>
+                    <h3 class="card-title">利弗莫尔</h3>
+                    <p class="card-desc">9点启示与投机智慧</p>
                 </a>
-                <a href="trading-mastery/other-quotes.html" class="content-item">
-                    <div class="content-number">10</div>
-                    <h3>其他语录</h3>
-                    <p>经典交易语录集锦</p>
+
+                <a href="trading-mastery/other-quotes.html" class="card">
+                    <span class="card-index">10</span>
+                    <h3 class="card-title">其他语录</h3>
+                    <p class="card-desc">经典交易语录集锦</p>
                 </a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- OKX Talks Section -->
-    <section id="okx-talks" class="content-nav">
-        <div class="container">
-            <h2 class="section-title">OKX访谈</h2>
-            <div class="content-grid">
-                <a href="okx-talks/yuyu.html" class="content-item">
-                    <div class="content-number">01</div>
-                    <h3>予与</h3>
-                    <p>1年9个月从5万到1亿</p>
+        <!-- Section: OKX Interviews -->
+        <section id="interviews" class="section">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <h2 class="section-title">OKX访谈</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="interviews">
+                <a href="okx-talks/yuyu.html" class="interview-card">
+                    <div class="interview-bg">
+                        <span class="interview-number">01</span>
+                    </div>
+                    <div class="interview-content">
+                        <h3 class="interview-name">予与</h3>
+                        <div class="interview-stats">
+                            <span class="stat">
+                                <strong>1年9个月</strong>
+                                <small>时间</small>
+                            </span>
+                            <span class="stat highlight">
+                                <strong>5万 → 1亿</strong>
+                                <small>资产</small>
+                            </span>
+                        </div>
+                    </div>
                 </a>
-                <a href="okx-talks/rgwbd.html" class="content-item">
-                    <div class="content-number">02</div>
-                    <h3>如果我不懂</h3>
-                    <p>从7k到A9的交易智慧</p>
+
+                <a href="okx-talks/rgwbd.html" class="interview-card">
+                    <div class="interview-bg">
+                        <span class="interview-number">02</span>
+                    </div>
+                    <div class="interview-content">
+                        <h3 class="interview-name">如果我不懂</h3>
+                        <p class="interview-growth">7K → A9</p>
+                    </div>
                 </a>
-                <a href="okx-talks/aoyin.html" class="content-item">
-                    <div class="content-number">03</div>
-                    <h3>熬鹰</h3>
-                    <p>从3K到4000万的交易历程</p>
+
+                <a href="okx-talks/aoyin.html" class="interview-card">
+                    <div class="interview-bg">
+                        <span class="interview-number">03</span>
+                    </div>
+                    <div class="interview-content">
+                        <h3 class="interview-name">熬鹰</h3>
+                        <p class="interview-growth">3K → 4000万</p>
+                    </div>
                 </a>
-                <a href="okx-talks/Wesley.html" class="content-item">
-                    <div class="content-number">04</div>
-                    <h3>Wesley</h3>
-                    <p>15岁500个比特币的交易之路</p>
+
+                <a href="okx-talks/Wesley.html" class="interview-card">
+                    <div class="interview-bg">
+                        <span class="interview-number">04</span>
+                    </div>
+                    <div class="interview-content">
+                        <h3 class="interview-name">Wesley</h3>
+                        <p class="interview-growth">500 BTC @ 15岁</p>
+                    </div>
                 </a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Quote Section -->
-    <section class="quote-section">
-        <div class="container">
-            <blockquote class="big-quote">
-                交易胜在心理,而不是胜在技术。技术分析会失效,而交易心法永不失效。
-            </blockquote>
-        </div>
-    </section>
+        <!-- Quote -->
+        <section class="quote-section">
+            <div class="quote-box">
+                <span class="quote-mark">"</span>
+                <blockquote>
+                    交易胜在心理，而不是胜在技术。<br>
+                    技术分析会失效，而交易心法永不失效。
+                </blockquote>
+            </div>
+        </section>
+    </main>
 
-        <!-- Footer -->
+    <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>关于</h4>
-                    <p>融合交易圈多位交易大师的智慧，分享交易心法与实战经验，帮助交易者建立正确的交易心态。</p>
-                </div>
-                <div class="footer-section">
-                    <h4>声明</h4>
-                    <p>市场有风险，投资需谨慎。本网站内容仅供参考学习，不构成任何投资建议。</p>
-                </div>
-                <div class="footer-section">
-                    <h4>社交</h4>
-                    <a href="https://x.com/nfa_trader" target="_blank" rel="noopener" class="footer-link" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); transition: all 0.3s ease; text-decoration: none;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF" style="transition: transform 0.3s ease;">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                        </svg>
-                    </a>
-                    <style>
-                        .footer-section a:hover {
-                            background: rgba(252, 211, 3, 0.2) !important;
-                            transform: scale(1.1);
-                        }
-                    </style>
-                </div>
+        <div class="footer-inner">
+            <div class="footer-col">
+                <h4>TRADING WISDOM</h4>
+                <p>融合交易圈多位大师的智慧，分享交易心法与实战经验。</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 CanQ. All rights reserved. 仅供学习交流，不构成投资建议。</p>
+            <div class="footer-col">
+                <h4>声明</h4>
+                <p>市场有风险，投资需谨慎。本网站内容仅供参考学习。</p>
             </div>
+            <div class="footer-col">
+                <h4>社交</h4>
+                <a href="https://x.com/nfa_trader" target="_blank" class="footer-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 CanQ. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Particle System with scroll fade effect (已禁用)
-        /*
-        const canvas = document.getElementById('particleCanvas');
-        const ctx = canvas.getContext('2d');
-
-        let particles = [];
-        let animationId;
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height + 10;
-                this.speed = Math.random() * 2 + 0.5;
-                this.radius = Math.random() * 2 + 1;
-                this.opacity = Math.random() * 0.5 + 0.3;
-                this.wobble = Math.random() * Math.PI * 2;
-                this.wobbleSpeed = Math.random() * 0.02 + 0.01;
-            }
-
-            update() {
-                this.y -= this.speed;
-                this.wobble += this.wobbleSpeed;
-                this.x += Math.sin(this.wobble) * 0.5;
-
-                if (this.y < -10) {
-                    this.reset();
-                }
-            }
-
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.opacity;
-
-                // Create gradient for each particle
-                const gradient = ctx.createRadialGradient(
-                    this.x, this.y, 0,
-                    this.x, this.y, this.radius
-                );
-                gradient.addColorStop(0, 'rgba(0, 153, 255, 1)');
-                gradient.addColorStop(0.5, 'rgba(0, 153, 255, 0.5)');
-                gradient.addColorStop(1, 'rgba(0, 153, 255, 0)');
-
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fill();
-
-                ctx.restore();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            const particleCount = Math.floor((canvas.width * canvas.height) / 15000);
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = new Particle();
-                particle.y = Math.random() * canvas.height;
-                particles.push(particle);
-            }
-        }
-
-        function connectParticles() {
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 120) {
-                        ctx.save();
-                        ctx.globalAlpha = (120 - distance) / 120 * 0.15;
-                        ctx.strokeStyle = 'rgba(0, 153, 255, 0.5)';
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                        ctx.restore();
-                    }
-                }
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-
-            connectParticles();
-
-            animationId = requestAnimationFrame(animate);
-        }
-
-        // Scroll-based fade effect for particles
-        function updateParticleOpacity() {
-            const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const heroHeight = windowHeight;
-
-            // Calculate opacity based on scroll position
-            // Full opacity when at top, fades out as you scroll down
-            let opacity = Math.max(0, 1 - (scrollY / (heroHeight * 0.7)));
-
-            canvas.style.opacity = opacity;
-        }
-
-        // Initialize
-        resizeCanvas();
-        initParticles();
-        animate();
-
-        // Initial navbar check
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > window.innerHeight * 0.3) {
-            navbar.classList.add('visible');
-        }
-
-        // Handle resize
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            initParticles();
-        });
-
-        // Handle scroll
-        window.addEventListener('scroll', () => {
-            updateParticleOpacity();
-
-            // Show/hide navbar on scroll
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > window.innerHeight * 0.3) {
-                navbar.classList.add('visible');
-            } else {
-                navbar.classList.remove('visible');
-            }
-        });
-        */
-        // End of Particle System (已禁用)
-
-        // Initial navbar check
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > window.innerHeight * 0.3) {
-            navbar.classList.add('visible');
-        }
-
-        // Handle scroll - navbar visibility
-        window.addEventListener('scroll', () => {
-            // Show/hide navbar on scroll
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > window.innerHeight * 0.3) {
-                navbar.classList.add('visible');
-            } else {
-                navbar.classList.remove('visible');
-            }
-        });
-
-        // Apple-style scroll-driven card animations
-        const contentItems = document.querySelectorAll('.content-item');
-        const animatedItems = new Set();
-
-        // Set initial state
-        contentItems.forEach((item, index) => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateY(80px)';
-            item.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-        });
-
-        // Update cards on scroll
-        function updateCardsOnScroll() {
-            const windowHeight = window.innerHeight;
-            const triggerBottom = windowHeight * 0.85;
-
-            contentItems.forEach((item) => {
-                // Skip if already animated
-                if (animatedItems.has(item)) return;
-
-                const itemTop = item.getBoundingClientRect().top;
-
-                if (itemTop < triggerBottom) {
-                    // Calculate progress (0 to 1)
-                    const progress = Math.min(1, Math.max(0, (triggerBottom - itemTop) / 400));
-
-                    // Apply transform based on progress
-                    item.style.opacity = progress;
-                    item.style.transform = `translateY(${80 * (1 - progress)}px)`;
-
-                    // Mark as fully animated when progress reaches 1
-                    if (progress >= 1) {
-                        animatedItems.add(item);
-                    }
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
             });
-        }
+        }, { threshold: 0.1 });
 
-        // Initial check
-        updateCardsOnScroll();
+        document.querySelectorAll('.card, .interview-card, .section-header').forEach(el => {
+            observer.observe(el);
+        });
 
-        // Update on scroll with requestAnimationFrame for smooth performance
-        let ticking = false;
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        const navbar = document.getElementById('navbar');
+        const masterySection = document.getElementById('mastery');
+
         window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    updateCardsOnScroll();
-                    ticking = false;
-                });
-                ticking = true;
+            const masteryRect = masterySection.getBoundingClientRect();
+            const threshold = window.innerHeight * 0.5;
+
+            if (masteryRect.top < threshold) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
+        });
+
+        // Mouse follow effect for cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', `${x}%`);
+                card.style.setProperty('--mouse-y', `${y}%`);
+            });
         });
     </script>
 </body>
