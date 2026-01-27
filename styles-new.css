@@ -48,10 +48,11 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image:
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 60px 60px;
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(0, 255, 136, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(184, 41, 221, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 255, 136, 0.02) 0%, transparent 70%),
+        #050507;
     pointer-events: none;
     z-index: -1;
 }
@@ -121,6 +122,7 @@ body {
     padding: 60px 40px;
     position: relative;
     gap: 80px;
+    min-height: 100vh;
 }
 
 /* ========================================
@@ -131,10 +133,17 @@ body {
     width: 280px;
     flex-shrink: 0;
     position: sticky;
-    top: 100px;
-    height: calc(100vh - 150px);
+    top: 20px;
+    align-self: flex-start;
+    z-index: 100;
+    max-height: calc(100vh - 40px);
     overflow-y: auto;
-    padding-right: 20px;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.content-sidebar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .sidebar-title {
