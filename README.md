@@ -19,6 +19,7 @@
 - **大师智慧** - 利弗莫尔、丁洪波等传奇交易者的经验之谈
 - **实战策略** - 具体的交易策略解读和案例分析
 - **OKX访谈** - 顶级交易员的真实访谈记录
+- **Futures Skill** - 期货智能分析工具介绍页（66个品种、18.7万条历史数据、智能涨跌分析）
 
 ## ✨ 主要特点
 
@@ -81,6 +82,9 @@ trading-website/
 │   ├── rgwbd.html                  # 如果我不懂访谈
 │   ├── aoyin.html                  # 熬鹰访谈
 │   └── Wesley.html                 # Wesley访谈
+│
+├── futures-skill/                  # Futures Skill 专题页
+│   └── index.html                  # 期货智能分析系统
 │
 └── assets/                         # 资源文件
     └── videos/                     # 视频资源
@@ -229,6 +233,11 @@ vercel
 5. 开启 Pull Request
 
 ## 📝 版本历史
+
+### v2.1.0 (2026-03-22)
+- ✨ 新增 `futures-skill/index.html` 专题页入口说明
+- 🔗 首页将 Futures Skill 入口调整至底部社交区域（X 按钮旁）
+- 📝 更新 README 项目结构与核心内容说明
 
 ### v2.0.0 (2026-01-27)
 - ✨ 完全重设计为赛博朋克风格
