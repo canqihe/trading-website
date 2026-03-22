@@ -561,7 +561,34 @@ body {
     transition: all 0.3s ease;
 }
 
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-skill-link {
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
 .footer-link:hover {
+    background: rgba(0, 255, 136, 0.15);
+    color: #00FF88;
+    transform: translateY(-2px);
+}
+
+.footer-skill-link:hover {
     background: rgba(0, 255, 136, 0.15);
     color: #00FF88;
     transform: translateY(-2px);
