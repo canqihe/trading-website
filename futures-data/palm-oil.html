@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>棕榈油(P0)历史数据深度分析 | 期货大数据</title>
+    <link rel="stylesheet" href="../styles-redesigned.css">
+    <style>
+        /* ========================================
+           FUTURES DATA PAGE STYLES
+           ======================================== */
+
+        .data-hero {
+            position: relative;
+            padding: 180px 40px 120px;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(184, 41, 221, 0.05) 0%, transparent 50%),
+                var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-hero-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .data-title-main {
+            font-size: clamp(48px, 10vw, 88px);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, var(--text), rgba(255, 255, 255, 0.5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .data-title-sub {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .data-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .data-meta-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .data-meta-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .data-meta-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .data-meta-value .accent {
+            color: var(--accent-green);
+        }
+
+        .data-meta-value.danger {
+            color: var(--accent-pink);
+        }
+
+        /* ========================================
+           DATA STATS CARDS
+           ======================================== */
+
+        .stats-section {
+            padding: 80px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            padding: 32px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .stat-card-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .stat-card-value {
+            font-size: 40px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .stat-card-value.success {
+            color: var(--accent-green);
+        }
+
+        .stat-card-value.danger {
+            color: var(--accent-pink);
+        }
+
+        .stat-card-value.accent {
+            color: var(--accent-purple);
+        }
+
+        .stat-card-change {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           CONTENT SECTIONS
+           ======================================== */
+
+        .content-section {
+            padding: 80px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .content-section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .content-section-title {
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+
+        .content-section-desc {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           DATA TABLE
+           ======================================== */
+
+        .table-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table thead {
+            background: rgba(0, 255, 136, 0.05);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            padding: 18px 24px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .data-table th:last-child {
+            text-align: right;
+        }
+
+        .data-table td {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .data-table td:last-child {
+            text-align: right;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .data-table .highlight-row {
+            background: rgba(255, 46, 151, 0.05);
+            border-left: 2px solid var(--accent-pink);
+        }
+
+        .data-table .highlight-row td:first-child {
+            color: var(--accent-pink);
+            font-weight: 600;
+        }
+
+        .data-table .safe-row {
+            background: rgba(0, 255, 136, 0.03);
+            border-left: 2px solid var(--accent-green);
+        }
+
+        .data-table .safe-row td:first-child {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .trend-up { color: var(--accent-green) !important; }
+        .trend-down { color: var(--accent-pink) !important; }
+
+        /* ========================================
+           SEASONAL CARDS
+           ======================================== */
+
+        .seasonal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .seasonal-card {
+            padding: 36px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .seasonal-card:hover {
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .seasonal-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .seasonal-quarter {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .seasonal-name {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .seasonal-badge {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        .seasonal-badge.positive {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .seasonal-badge.negative {
+            background: rgba(255, 46, 151, 0.15);
+            color: var(--accent-pink);
+        }
+
+        .seasonal-badge.neutral {
+            background: rgba(136, 136, 153, 0.15);
+            color: var(--text-muted);
+        }
+
+        .seasonal-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .seasonal-stat {
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .seasonal-stat-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .seasonal-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .seasonal-stat-value.positive {
+            color: var(--accent-green);
+        }
+
+        .seasonal-stat-value.negative {
+            color: var(--accent-pink);
+        }
+
+        .seasonal-bar-wrap {
+            margin: 14px 0;
+        }
+
+        .seasonal-bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 7px;
+        }
+
+        .seasonal-bar {
+            height: 7px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .seasonal-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .seasonal-bar-fill.positive {
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.5), var(--accent-green));
+        }
+
+        .seasonal-bar-fill.negative {
+            background: linear-gradient(90deg, rgba(255, 46, 151, 0.5), var(--accent-pink));
+        }
+
+        .seasonal-note {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+        }
+
+        .seasonal-note strong {
+            color: var(--text);
+        }
+
+        /* ========================================
+           DISCOVERIES GRID
+           ======================================== */
+
+        .discoveries-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .discovery-card {
+            padding: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .discovery-card:hover {
+            border-color: rgba(184, 41, 221, 0.3);
+        }
+
+        .discovery-number {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-purple);
+            margin-bottom: 10px;
+        }
+
+        .discovery-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .discovery-content {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .discovery-content p {
+            margin-bottom: 10px;
+        }
+
+        .discovery-content strong {
+            color: var(--text);
+        }
+
+        .discovery-mini-table {
+            width: 100%;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .discovery-mini-table td {
+            padding: 5px 0;
+            border: none;
+        }
+
+        .discovery-list {
+            list-style: none;
+            margin: 10px 0;
+        }
+
+        .discovery-list li {
+            font-size: 12px;
+            color: var(--text-muted);
+            padding: 5px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .discovery-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* ========================================
+           STRATEGY CARDS
+           ======================================== */
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .strategy-card {
+            padding: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .strategy-card.danger::before {
+            background: linear-gradient(90deg, var(--accent-pink), #FF6B9D);
+        }
+
+        .strategy-card.safe::before {
+            background: linear-gradient(90deg, var(--accent-green), #5CFFAC);
+        }
+
+        .strategy-card.neutral::before {
+            background: linear-gradient(90deg, var(--accent-purple), #D94DFF);
+        }
+
+        .strategy-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding-top: 10px;
+        }
+
+        .strategy-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .strategy-card.danger .strategy-icon {
+            background: rgba(255, 46, 151, 0.15);
+            color: var(--accent-pink);
+        }
+
+        .strategy-card.safe .strategy-icon {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .strategy-card.neutral .strategy-icon {
+            background: rgba(184, 41, 221, 0.15);
+            color: var(--accent-purple);
+        }
+
+        .strategy-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .strategy-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .strategy-list {
+            list-style: none;
+        }
+
+        .strategy-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .strategy-list li:last-child {
+            border-bottom: none;
+        }
+
+        .strategy-month {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .strategy-risk {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .strategy-card.danger .strategy-risk {
+            background: rgba(255, 46, 151, 0.15);
+            color: var(--accent-pink);
+        }
+
+        .strategy-card.safe .strategy-risk {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .strategy-card.neutral .strategy-risk {
+            background: rgba(184, 41, 221, 0.15);
+            color: var(--accent-purple);
+        }
+
+        .strategy-footer {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           STRATEGY SUMMARY
+           ======================================== */
+
+        .strategy-summary {
+            max-width: 600px;
+            margin: 40px auto 0;
+        }
+
+        .strategy-summary-card {
+            padding: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .strategy-summary-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .strategy-summary-table {
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .strategy-summary-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .strategy-summary-table td:last-child {
+            text-align: right;
+        }
+
+        .strategy-summary-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ========================================
+           PAGE FOOTER
+           ======================================== */
+
+        .page-footer {
+            padding: 70px 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .page-footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .page-footer-disclaimer {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .page-footer-disclaimer strong {
+            color: var(--accent-purple);
+        }
+
+        .page-footer-meta {
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+
+        @media (max-width: 1024px) {
+            .discoveries-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .data-hero {
+                padding: 120px 24px 80px;
+            }
+
+            .data-meta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-section {
+                padding: 60px 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-section {
+                padding: 60px 24px;
+            }
+
+            .seasonal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .discoveries-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-table {
+                font-size: 12px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 14px 18px;
+            }
+
+            .stat-card-value {
+                font-size: 32px;
+            }
+
+            .seasonal-name {
+                font-size: 20px;
+            }
+
+            .discovery-title {
+                font-size: 16px;
+            }
+
+            .strategy-title {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card-value {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="data-hero">
+        <div class="data-hero-inner">
+            <h1 class="data-title-main">棕榈油历史数据<br>20年全景洞察</h1>
+            <p class="data-title-sub">
+                基于2007-2026年共20年的期货交易数据，深度解析棕榈油市场的季节性规律、价格波动特征与交易机会。
+            </p>
+            <div class="data-meta-grid">
+                <div class="data-meta-item">
+                    <div class="data-meta-label">数据跨度</div>
+                    <div class="data-meta-value"><span class="accent">20</span> 年</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">分析月份</div>
+                    <div class="data-meta-value"><span class="accent">240</span> 个</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">关键发现</div>
+                    <div class="data-meta-value"><span class="accent">15</span> 项</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Stats -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-label">必跌月份</div>
+                <div class="stat-card-value danger">3月</div>
+                <div class="stat-card-change">下跌概率 68.4%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">最安全月份</div>
+                <div class="stat-card-value success">10月</div>
+                <div class="stat-card-change">下跌概率仅 21.1%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">最强季度</div>
+                <div class="stat-card-value accent">Q4</div>
+                <div class="stat-card-change">平均涨幅 +1.68%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">价格引力区</div>
+                <div class="stat-card-value">4K-8K</div>
+                <div class="stat-card-change">71.5%时间分布</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Monthly Statistics -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">各月涨跌统计</h2>
+            <p class="content-section-desc">按下跌概率排序，发现隐藏的月度规律</p>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>月份</th>
+                        <th>统计年数</th>
+                        <th>上涨/下跌</th>
+                        <th>下跌概率</th>
+                        <th>平均涨跌</th>
+                        <th>累计涨跌</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td>3月 🔴</td>
+                        <td>19</td>
+                        <td>6 / 13</td>
+                        <td class="trend-down">68.4%</td>
+                        <td class="trend-down">-1.12%</td>
+                        <td class="trend-down">-21.26%</td>
+                    </tr>
+                    <tr>
+                        <td>1月</td>
+                        <td>19</td>
+                        <td>7 / 12</td>
+                        <td>63.2%</td>
+                        <td class="trend-down">-0.40%</td>
+                        <td class="trend-down">-7.67%</td>
+                    </tr>
+                    <tr>
+                        <td>4月</td>
+                        <td>18</td>
+                        <td>7 / 11</td>
+                        <td>61.1%</td>
+                        <td class="trend-down">-0.70%</td>
+                        <td class="trend-down">-12.55%</td>
+                    </tr>
+                    <tr>
+                        <td>6月</td>
+                        <td>18</td>
+                        <td>7 / 11</td>
+                        <td>61.1%</td>
+                        <td class="trend-down">-1.60%</td>
+                        <td class="trend-down">-28.80%</td>
+                    </tr>
+                    <tr>
+                        <td>9月</td>
+                        <td>18</td>
+                        <td>7 / 11</td>
+                        <td>61.1%</td>
+                        <td class="trend-down">-2.43%</td>
+                        <td class="trend-down">-43.76%</td>
+                    </tr>
+                    <tr>
+                        <td>12月</td>
+                        <td>19</td>
+                        <td>9 / 10</td>
+                        <td>52.6%</td>
+                        <td class="trend-up">+0.87%</td>
+                        <td class="trend-up">+16.46%</td>
+                    </tr>
+                    <tr>
+                        <td>7月</td>
+                        <td>18</td>
+                        <td>9 / 9</td>
+                        <td>50.0%</td>
+                        <td class="trend-up">+0.31%</td>
+                        <td class="trend-up">+5.49%</td>
+                    </tr>
+                    <tr>
+                        <td>11月</td>
+                        <td>19</td>
+                        <td>11 / 8</td>
+                        <td>42.1%</td>
+                        <td class="trend-up">+1.56%</td>
+                        <td class="trend-up">+29.60%</td>
+                    </tr>
+                    <tr>
+                        <td>8月</td>
+                        <td>18</td>
+                        <td>11 / 7</td>
+                        <td>38.9%</td>
+                        <td class="trend-up">+0.33%</td>
+                        <td class="trend-up">+6.00%</td>
+                    </tr>
+                    <tr>
+                        <td>5月</td>
+                        <td>18</td>
+                        <td>11 / 7</td>
+                        <td>38.9%</td>
+                        <td class="trend-up">+0.68%</td>
+                        <td class="trend-up">+12.17%</td>
+                    </tr>
+                    <tr>
+                        <td>2月</td>
+                        <td>19</td>
+                        <td>13 / 6</td>
+                        <td>31.6%</td>
+                        <td class="trend-up">+3.20%</td>
+                        <td class="trend-up">+60.85%</td>
+                    </tr>
+                    <tr class="safe-row">
+                        <td>10月 🟢</td>
+                        <td>19</td>
+                        <td>15 / 4</td>
+                        <td class="trend-up">21.1%</td>
+                        <td class="trend-up">+2.63%</td>
+                        <td class="trend-up">+49.92%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Seasonal Patterns -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">季节性规律</h2>
+            <p class="content-section-desc">季度涨跌特征与年内极值分布</p>
+        </div>
+
+        <div class="seasonal-grid">
+            <!-- Q1 -->
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <div>
+                        <div class="seasonal-quarter">Quarter 1</div>
+                        <div class="seasonal-name">Q1 波动期</div>
+                    </div>
+                    <span class="seasonal-badge neutral">震荡</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat">
+                        <div class="seasonal-stat-label">下跌概率</div>
+                        <div class="seasonal-stat-value">54.4%</div>
+                    </div>
+                    <div class="seasonal-stat">
+                        <div class="seasonal-stat-label">平均涨跌</div>
+                        <div class="seasonal-stat-value positive">+0.56%</div>
+                    </div>
+                </div>
+                <div class="seasonal-bar-wrap">
+                    <div class="seasonal-bar-label">
+                        <span>下跌风险</span>
+                        <span>54.4%</span>
+                    </div>
+                    <div class="seasonal-bar">
+                        <div class="seasonal-bar-fill negative" style="width: 54.4%"></div>
+                    </div>
+                </div>
+                <div class="seasonal-bar-wrap">
+                    <div class="seasonal-bar-label">
+                        <span>平均收益</span>
+                        <span>+0.56%</span>
+                    </div>
+                    <div class="seasonal-bar">
+                        <div class="seasonal-bar-fill positive" style="width: 33%"></div>
+                    </div>
+                </div>
+                <div class="seasonal-note">
+                    <strong>特点：</strong>整体波动较大，<strong>3月是明显下跌坑</strong>（下跌概率68.4%），1-2月相对较好。
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <div>
+                        <div class="seasonal-quarter">Quarter 2</div>
+                        <div class="seasonal-name">Q2 增产季</div>
+                    </div>
+                    <span class="seasonal-badge negative">偏空</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat">
+                        <div class="seasonal-stat-label">下跌概率</div>
+                        <div class="seasonal-stat-value">53.7%</div>
+                    </div>
+                    <div class="seasonal-stat">
+                        <div class="seasonal-stat-label">平均涨跌</div>
+                        <div class="seasonal-stat-value negative">-0.54%</div>
+                    </div>
+                </div>
+                <div class="seasonal-bar-wrap">
+                    <div class="seasonal-bar-label">
+                        <span>下跌风险</span>
+                        <span>53.7%</span>
+                    </div>
+                    <div class="seasonal-bar">
+                        <div class="seasonal-bar-fill negative" style="width: 53.7%"></div>
+                    </div>
+                </div>
+                <div class="seasonal-bar-wrap">
+                    <div class="seasonal-bar-label">
+                        <span>平均收益</span>
+                        <span>-0.54%</span>
+                    </div>
+                    <div class="seasonal-bar">
+                        <div class="seasonal-bar-fill negative" style="width: 32%"></div>
+                    </div>
+                </div>
+                <div class="seasonal-note">
+                    <strong>特点：</strong>棕榈油增产季，整体偏弱。<strong>4-6月组合下跌概率66.7%</strong>，6月跌幅最大。
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <div>
+                        <div class="seasonal-quarter">Quarter 3</div>
+                        <div class="seasonal-name">Q3 震荡期</div>
+                    </div>
+                    <span class="seasonal-badge negative">偏弱</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat">
+                        <div class="seasonal-stat-label">下跌概率</div>
+                        <div class="seasonal-stat-value">50.0%</div>
+                    </div>
+                    <div class="seasonal-stat">
+                        <div class="seasonal-stat-label">平均涨跌</div>
+                        <div class="seasonal-stat-value negative">-0.60%</div>
+                    </div>
+                </div>
+                <div class="seasonal-bar-wrap">
+                    <div class="seasonal-bar-label">
+                        <span>下跌风险</span>
+                        <span>50.0%</span>
+                    </div>
+                    <div class="seasonal-bar">
+                        <div class="seasonal-bar-fill negative" style="width: 50%"></div>
+                    </div>
+                </div>
+                <div class="seasonal-bar-wrap">
+                    <div class="seasonal-bar-label">
+                        <span>平均收益</span>
+                        <span>-0.60%</span>
+                    </div>
+                    <div class="seasonal-bar">
+                        <div class="seasonal-bar-fill negative" style="width: 35%"></div>
+                    </div>
+                </div>
+                <div class="seasonal-note">
+                    <strong>特点：</strong>震荡下行，<strong>9月风险较高</strong>（历史上多次单月暴跌超10%）。
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <div>
+                        <div class="seasonal-quarter">Quarter 4</div>
+                        <div class="seasonal-name">Q4 最强季</div>
+                    </div>
+                    <span class="seasonal-badge positive">偏多</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat">
+                        <div class="seasonal-stat-label">下跌概率</div>
+                        <div class="seasonal-stat-value positive">38.6%</div>
+                    </div>
+                    <div class="seasonal-stat">
+                        <div class="seasonal-stat-label">平均涨跌</div>
+                        <div class="seasonal-stat-value positive">+1.68%</div>
+                    </div>
+                </div>
+                <div class="seasonal-bar-wrap">
+                    <div class="seasonal-bar-label">
+                        <span>下跌风险</span>
+                        <span>38.6%</span>
+                    </div>
+                    <div class="seasonal-bar">
+                        <div class="seasonal-bar-fill positive" style="width: 38.6%"></div>
+                    </div>
+                </div>
+                <div class="seasonal-bar-wrap">
+                    <div class="seasonal-bar-label">
+                        <span>平均收益</span>
+                        <span>+1.68%</span>
+                    </div>
+                    <div class="seasonal-bar">
+                        <div class="seasonal-bar-fill positive" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div class="seasonal-note">
+                    <strong>特点：</strong>全年最安全季度！<strong>10月下跌概率仅21.1%</strong>，年内最高价最常出现在12月（7次）。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 15 Discoveries -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">15大惊人发现</h2>
+            <p class="content-section-desc">数据背后隐藏的惊人规律</p>
+        </div>
+
+        <div class="discoveries-grid">
+            <!-- 发现 #01 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #01</div>
+                <h3 class="discovery-title">单日暴跌多于暴涨</h3>
+                <div class="discovery-content">
+                    <table class="discovery-mini-table">
+                        <tr><td>单日涨幅 >5%</td><td><strong>7次</strong></td></tr>
+                        <tr><td>单日跌幅 &lt;-5%</td><td><strong>12次</strong></td></tr>
+                    </table>
+                    <p style="font-size: 11px; margin-top: 8px;">最大单日涨幅: +8.04% (2022-03-09)<br>最大单日跌幅: -7.31% (2008-10-24)</p>
+                </div>
+            </div>
+
+            <!-- 发现 #02 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #02</div>
+                <h3 class="discovery-title">连续涨跌基本平衡</h3>
+                <div class="discovery-content">
+                    <table class="discovery-mini-table">
+                        <tr><td>连续2个月上涨</td><td><strong>56次</strong></td></tr>
+                        <tr><td>连续2个月下跌</td><td><strong>50次</strong></td></tr>
+                    </table>
+                    <p style="font-size: 11px; margin-top: 8px;">相邻月份同向概率: <strong>52.0%</strong>（无明显惯性）</p>
+                </div>
+            </div>
+
+            <!-- 发现 #03 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #03</div>
+                <h3 class="discovery-title">年内极值月份规律</h3>
+                <div class="discovery-content">
+                    <table class="discovery-mini-table">
+                        <tr><td>年内最高价</td><td><strong>12月</strong> (7次)</td></tr>
+                        <tr><td>年内最高价</td><td>3月 (5次)</td></tr>
+                        <tr><td>年内最低价</td><td>11月 (4次)</td></tr>
+                        <tr><td>年内最低价</td><td>1月 (4次)</td></tr>
+                    </table>
+                    <p style="font-size: 11px; margin-top: 8px;"><strong>12月效应：</strong>年内最高价最常出现在年末</p>
+                </div>
+            </div>
+
+            <!-- 发现 #04 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #04</div>
+                <h3 class="discovery-title">暴跌远多于暴涨</h3>
+                <div class="discovery-content">
+                    <table class="discovery-mini-table">
+                        <tr><td>单月涨幅 >15%</td><td><strong>6次</strong></td></tr>
+                        <tr><td>单月跌幅 &lt;-10%</td><td><strong>15次</strong></td></tr>
+                    </table>
+                    <p style="font-size: 11px; margin-top: 8px;">极端下跌风险是极端上涨的<strong>2.5倍</strong></p>
+                    <ul class="discovery-list">
+                        <li>最大单月涨幅: +23.40% (2008-02)</li>
+                        <li>最大单月跌幅: -19.49% (2022-06)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 发现 #05 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #05</div>
+                <h3 class="discovery-title">年度涨跌分布</h3>
+                <div class="discovery-content">
+                    <table class="discovery-mini-table">
+                        <tr><td>统计年份</td><td><strong>20年</strong></td></tr>
+                        <tr><td>上涨年数</td><td><strong>9年</strong></td></tr>
+                        <tr><td>下跌年数</td><td><strong>11年</strong></td></tr>
+                    </table>
+                    <ul class="discovery-list">
+                        <li>最佳: 2009年 <strong>+42.11%</strong></li>
+                        <li>最差: 2008年 <strong>-46.22%</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 发现 #06 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #06</div>
+                <h3 class="discovery-title">价格"引力区间"</h3>
+                <div class="discovery-content">
+                    <table class="discovery-mini-table">
+                        <tr><td>4000-6000</td><td><strong>39.1%</strong></td></tr>
+                        <tr><td>6000-8000</td><td><strong>32.4%</strong></td></tr>
+                        <tr><td>8000-10000</td><td>23.7%</td></tr>
+                        <tr><td>&gt;10000</td><td>4.9%</td></tr>
+                    </table>
+                    <p style="font-size: 11px; margin-top: 8px;"><strong>71.5%的时间</strong>价格在4000-8000区间</p>
+                </div>
+            </div>
+
+            <!-- 发现 #07 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #07</div>
+                <h3 class="discovery-title">极端振幅年份</h3>
+                <div class="discovery-content">
+                    <p>平均单月振幅: <strong>11.67%</strong></p>
+                    <p>最大单月振幅: <strong>37.79%</strong></p>
+                    <p>振幅 &gt;20% 的月份: <strong>19次</strong></p>
+                    <p style="font-size: 11px; margin-top: 8px;">市场在某些时期波动极其剧烈</p>
+                </div>
+            </div>
+
+            <!-- 发现 #08 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #08</div>
+                <h3 class="discovery-title">2008年 - 历史最极端年份</h3>
+                <div class="discovery-content">
+                    <p><strong>振幅 &gt;20% 的月份: 7次</strong></p>
+                    <ul class="discovery-list">
+                        <li>2月: +23.40% (最大单月涨幅)</li>
+                        <li>10月: -19.27% (最大单月跌幅)</li>
+                        <li>7月: -17.77%</li>
+                        <li>9月: -12.11%</li>
+                    </ul>
+                    <p style="font-size: 11px; margin-top: 8px;">完美演绎金融危机的极端波动</p>
+                </div>
+            </div>
+
+            <!-- 发现 #09 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #09</div>
+                <h3 class="discovery-title">2022年过山车</h3>
+                <div class="discovery-content">
+                    <p><strong>1-4月连续上涨:</strong> +37.85%</p>
+                    <p><strong>5-6月暴跌:</strong> -20.63%</p>
+                    <p>4月振幅: 27.78%</p>
+                    <p style="font-size: 11px; margin-top: 8px;">地缘冲突先推高，后预期兑现暴跌</p>
+                </div>
+            </div>
+
+            <!-- 发现 #10 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #10</div>
+                <h3 class="discovery-title">"4月魔咒" 🔥</h3>
+                <div class="discovery-content">
+                    <p style="color: var(--accent-pink);"><strong>首次连续3年4月跌幅超10%</strong></p>
+                    <ul class="discovery-list">
+                        <li>2023年4月: <strong>-10.02%</strong></li>
+                        <li>2024年4月: <strong>-10.59%</strong></li>
+                        <li>2025年4月: <strong>-10.30%</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 发现 #11 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #11</div>
+                <h3 class="discovery-title">"1月定全年"效应</h3>
+                <div class="discovery-content">
+                    <p>1月涨跌与全年涨跌同向: <strong>63.2%</strong></p>
+                    <p style="font-size: 11px; margin-top: 8px;">1月走势对全年有一定参考价值</p>
+                </div>
+            </div>
+
+            <!-- 发现 #12 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #12</div>
+                <h3 class="discovery-title">"极端年份次年效应"</h3>
+                <div class="discovery-content">
+                    <p><strong>年度涨幅 &gt;30%:</strong> 2009, 2010, 2019</p>
+                    <p><strong>年度跌幅 &lt;-15%:</strong> 2008, 2011, 2014, 2017</p>
+                    <p style="font-size: 11px; margin-top: 8px;">仅2008→2009大反转，其他继续下跌</p>
+                </div>
+            </div>
+
+            <!-- 发现 #13 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #13</div>
+                <h3 class="discovery-title">"9月魔咒"</h3>
+                <div class="discovery-content">
+                    <p>历史上<strong>4次</strong>9月单月暴跌 &gt;10%:</p>
+                    <ul class="discovery-list">
+                        <li>2008年9月: <strong>-12.11%</strong></li>
+                        <li>2011年9月: <strong>-10.83%</strong></li>
+                        <li>2012年9月: <strong>-11.15%</strong></li>
+                        <li>2022年9月: <strong>-16.46%</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 发现 #14 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #14</div>
+                <h3 class="discovery-title">"12月效应"</h3>
+                <div class="discovery-content">
+                    <p>12月平均涨跌幅: <strong style="color: var(--accent-green);">+0.87%</strong></p>
+                    <p>12月上涨概率: <strong>47.4%</strong></p>
+                    <p><strong>年内最高价</strong>最常出现在12月 (7次)</p>
+                </div>
+            </div>
+
+            <!-- 发现 #15 -->
+            <div class="discovery-card">
+                <div class="discovery-number">发现 #15</div>
+                <h3 class="discovery-title">连续月份组合效应</h3>
+                <div class="discovery-content">
+                    <table class="discovery-mini-table">
+                        <tr><td>Q1组合(1-3月)</td><td>下跌概率 52.6%</td></tr>
+                        <tr><td><strong>4-6月组合</strong></td><td><strong>下跌概率 66.7%</strong></td></tr>
+                        <tr><td>9月单独</td><td>下跌概率 61.1%</td></tr>
+                    </table>
+                    <p style="font-size: 11px; margin-top: 8px;"><strong>4-6月组合</strong>是最高风险的连续月份组合</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trading Strategy -->
+    <section class="content-section" style="border-bottom: none;">
+        <div class="content-section-header">
+            <h2 class="content-section-title">交易策略参考</h2>
+            <p class="content-section-desc">基于历史数据的策略建议</p>
+        </div>
+
+        <div class="strategy-grid">
+            <div class="strategy-card danger">
+                <div class="strategy-header">
+                    <div class="strategy-icon">⚠️</div>
+                    <h3 class="strategy-title">高风险时期</h3>
+                </div>
+                <p class="strategy-desc">建议回避或谨慎参与</p>
+                <ul class="strategy-list">
+                    <li>
+                        <span class="strategy-month">3月</span>
+                        <span class="strategy-risk">极高</span>
+                    </li>
+                    <li>
+                        <span class="strategy-month">4月</span>
+                        <span class="strategy-risk">高</span>
+                    </li>
+                    <li>
+                        <span class="strategy-month">6月</span>
+                        <span class="strategy-risk">高</span>
+                    </li>
+                    <li>
+                        <span class="strategy-month">9月</span>
+                        <span class="strategy-risk">高</span>
+                    </li>
+                    <li>
+                        <span class="strategy-month">1月</span>
+                        <span class="strategy-risk">高</span>
+                    </li>
+                </ul>
+                <div class="strategy-footer">3月下跌概率68.4%，历史最强下跌月份</div>
+            </div>
+
+            <div class="strategy-card safe">
+                <div class="strategy-header">
+                    <div class="strategy-icon">✓</div>
+                    <h3 class="strategy-title">低风险时期</h3>
+                </div>
+                <p class="strategy-desc">相对安全，可考虑参与</p>
+                <ul class="strategy-list">
+                    <li>
+                        <span class="strategy-month">10月</span>
+                        <span class="strategy-risk">极低</span>
+                    </li>
+                    <li>
+                        <span class="strategy-month">2月</span>
+                        <span class="strategy-risk">低</span>
+                    </li>
+                    <li>
+                        <span class="strategy-month">5月</span>
+                        <span class="strategy-risk">中低</span>
+                    </li>
+                    <li>
+                        <span class="strategy-month">8月</span>
+                        <span class="strategy-risk">中低</span>
+                    </li>
+                    <li>
+                        <span class="strategy-month">11月</span>
+                        <span class="strategy-risk">中</span>
+                    </li>
+                </ul>
+                <div class="strategy-footer">10月下跌概率仅21.1%，全年最安全</div>
+            </div>
+
+            <div class="strategy-card neutral">
+                <div class="strategy-header">
+                    <div class="strategy-icon">📊</div>
+                    <h3 class="strategy-title">价格回归策略</h3>
+                </div>
+                <p class="strategy-desc">基于价格引力区间的回归概率</p>
+                <ul class="strategy-list">
+                    <li>
+                        <span class="strategy-month">价格 &gt; 8000</span>
+                        <span class="strategy-risk">考虑做空</span>
+                    </li>
+                    <li>
+                        <span class="strategy-month">价格 &lt; 5000</span>
+                        <span class="strategy-risk">考虑做多</span>
+                    </li>
+                    <li>
+                        <span class="strategy-month">4000-8000</span>
+                        <span class="strategy-risk">观望为主</span>
+                    </li>
+                </ul>
+                <div class="strategy-footer">基于历史价格引力区间的统计规律</div>
+            </div>
+        </div>
+
+        <div class="strategy-summary">
+            <div class="strategy-summary-card">
+                <h4 class="strategy-summary-title">季节性策略总结</h4>
+                <table class="strategy-summary-table">
+                    <tr>
+                        <td><strong>Q1 (1-3月)</strong></td>
+                        <td>谨慎，3月是坑</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Q2 (4-6月)</strong></td>
+                        <td style="color: var(--accent-pink);">偏空，4-6月组合下跌概率66.7%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Q3 (7-9月)</strong></td>
+                        <td>震荡，9月风险高</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Q4 (10-12月)</strong></td>
+                        <td style="color: var(--accent-green);">偏多，最安全季度</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <div class="page-footer-content">
+            <div class="page-footer-disclaimer">
+                <p style="margin-bottom: 12px;"><strong>数据来源</strong>：期货数据库 | 品种代码: P0 (棕榈油连续) | 交易所: DCE (大连商品交易所)</p>
+                <p>⚠️ <strong>风险提示</strong>：历史数据仅供参考，不构成投资建议。实际交易请结合基本面、政策面、资金面综合分析。</p>
+            </div>
+            <div class="page-footer-meta">
+                生成时间: 2026-03-23 | 数据范围: 2007-2026 (20年)
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

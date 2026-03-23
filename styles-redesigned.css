@@ -478,6 +478,151 @@ body {
 }
 
 /* ========================================
+   FUTURES DATA SECTION
+   ======================================== */
+
+.data-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+}
+
+.data-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 48px 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(30px);
+    overflow: hidden;
+}
+
+.data-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.data-card.featured {
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.03), rgba(184, 41, 221, 0.03));
+    border-color: rgba(0, 255, 136, 0.15);
+}
+
+.data-card.featured:hover {
+    border-color: rgba(0, 255, 136, 0.4);
+    transform: translateY(-4px);
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 80px rgba(0, 255, 136, 0.08);
+}
+
+.data-card.coming-soon {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.data-card.coming-soon:hover {
+    transform: none;
+    border-color: var(--border);
+}
+
+.data-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--bg);
+}
+
+.data-icon {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(184, 41, 221, 0.1));
+    border-radius: 20px;
+    color: var(--accent-green);
+}
+
+.data-card.coming-soon .data-icon {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-muted);
+}
+
+.data-content {
+    flex: 1;
+}
+
+.data-code {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-green);
+    margin-bottom: 8px;
+    display: block;
+}
+
+.data-card.coming-soon .data-code {
+    color: var(--text-muted);
+}
+
+.data-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+}
+
+.data-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.data-stats {
+    display: flex;
+    gap: 24px;
+}
+
+.data-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.data-stat strong {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.data-stat small {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+.data-stat.highlight strong {
+    color: var(--accent-green);
+}
+
+/* ========================================
    QUOTE SECTION
    ======================================== */
 

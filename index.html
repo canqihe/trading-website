@@ -22,6 +22,7 @@
             <div class="nav-links">
                 <a href="#mastery" class="nav-link">交易心法</a>
                 <a href="#interviews" class="nav-link">OKX访谈</a>
+                <a href="#data" class="nav-link">期货大数据</a>
             </div>
         </div>
     </nav>
@@ -176,6 +177,59 @@
             </div>
         </section>
 
+        <!-- Section: Futures Data -->
+        <section id="data" class="section">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2 class="section-title">期货大数据</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="data-grid">
+                <a href="futures-data/palm-oil.html" class="data-card featured">
+                    <div class="data-badge">首发品种</div>
+                    <div class="data-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="data-content">
+                        <span class="data-code">P0</span>
+                        <h3 class="data-title">棕榈油</h3>
+                        <p class="data-desc">2007-2026年 20年历史数据深度分析</p>
+                        <div class="data-stats">
+                            <span class="data-stat">
+                                <strong>240</strong>
+                                <small>月度数据</small>
+                            </span>
+                            <span class="data-stat">
+                                <strong>15</strong>
+                                <small>核心发现</small>
+                            </span>
+                            <span class="data-stat highlight">
+                                <strong>68.4%</strong>
+                                <small>3月下跌概率</small>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="data-card coming-soon">
+                    <div class="data-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                    </div>
+                    <div class="data-content">
+                        <span class="data-code">More</span>
+                        <h3 class="data-title">更多品种</h3>
+                        <p class="data-desc">陆续更新中，敬请期待...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Quote -->
         <section class="quote-section">
             <div class="quote-box">
@@ -227,7 +281,7 @@
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.card, .interview-card, .section-header').forEach(el => {
+        document.querySelectorAll('.card, .interview-card, .data-card, .section-header').forEach(el => {
             observer.observe(el);
         });
 
