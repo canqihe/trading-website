@@ -555,7 +555,9 @@ body {
     background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(184, 41, 221, 0.1));
     border-radius: 20px;
     color: var(--accent-green);
-    font-size: 36px;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
 }
 
 .data-card.coming-soon .data-icon {
@@ -565,20 +567,6 @@ body {
 
 .data-content {
     flex: 1;
-}
-
-.data-code {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent-green);
-    margin-bottom: 8px;
-    display: block;
-}
-
-.data-card.coming-soon .data-code {
-    color: var(--text-muted);
 }
 
 .data-title {

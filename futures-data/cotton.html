@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>棉花期货(CF0)深度分析报告 | 期货大数据</title>
+    <link rel="stylesheet" href="../styles-redesigned.css">
+    <style>
+        /* ========================================
+           COTTON FUTURES PAGE STYLES
+           ======================================== */
+
+        .data-hero {
+            position: relative;
+            padding: 180px 40px 120px;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+                var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-hero-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .data-title-main {
+            font-size: clamp(48px, 10vw, 88px);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, var(--text), rgba(255, 255, 255, 0.5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .data-title-sub {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .data-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .data-meta-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .data-meta-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .data-meta-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .data-meta-value .accent {
+            color: var(--accent-green);
+        }
+
+        .data-meta-value.danger {
+            color: var(--accent-pink);
+        }
+
+        /* ========================================
+           STATS CARDS
+           ======================================== */
+
+        .stats-section {
+            padding: 80px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            padding: 28px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .stat-card-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .stat-card-value {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .stat-card-value.success {
+            color: var(--accent-green);
+        }
+
+        .stat-card-value.danger {
+            color: var(--accent-pink);
+        }
+
+        .stat-card-value.accent {
+            color: var(--accent-purple);
+        }
+
+        .stat-card-value.warning {
+            color: #FFB800;
+        }
+
+        .stat-card-change {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           CONTENT SECTIONS
+           ======================================== */
+
+        .content-section {
+            padding: 80px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .content-section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .content-section-title {
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+
+        .content-section-title .star {
+            color: var(--accent-green);
+        }
+
+        .content-section-desc {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           EXECUTIVE SUMMARY
+           ======================================== */
+
+        .executive-summary {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .executive-summary p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .executive-summary p:last-child {
+            margin-bottom: 0;
+        }
+
+        .executive-summary strong {
+            color: var(--text);
+        }
+
+        /* ========================================
+           KEY INSIGHTS CARDS
+           ======================================== */
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .insight-card {
+            padding: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .insight-card.green::before {
+            background: linear-gradient(90deg, var(--accent-green), #5CFFAC);
+        }
+
+        .insight-card.pink::before {
+            background: linear-gradient(90deg, var(--accent-pink), #FF6B9D);
+        }
+
+        .insight-card.purple::before {
+            background: linear-gradient(90deg, var(--accent-purple), #D94DFF);
+        }
+
+        .insight-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .insight-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .insight-content {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .insight-highlight {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .insight-card.green .insight-highlight {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .insight-card.pink .insight-highlight {
+            background: rgba(255, 46, 151, 0.15);
+            color: var(--accent-pink);
+        }
+
+        .insight-card.purple .insight-highlight {
+            background: rgba(184, 41, 221, 0.15);
+            color: var(--accent-purple);
+        }
+
+        /* ========================================
+           DATA TABLE
+           ======================================== */
+
+        .table-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table thead {
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .data-table th:last-child {
+            text-align: right;
+        }
+
+        .data-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .data-table td:last-child {
+            text-align: right;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .data-table .highlight-row {
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .data-table .highlight-row td:first-child {
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        .data-table .danger-row {
+            background: rgba(255, 46, 151, 0.05);
+            border-left: 3px solid var(--accent-pink);
+        }
+
+        .data-table .danger-row td:first-child {
+            color: var(--accent-pink);
+            font-weight: 700;
+        }
+
+        .trend-up { color: var(--accent-green) !important; }
+        .trend-down { color: var(--accent-pink) !important; }
+
+        /* ========================================
+           SEASONAL HEATMAP
+           ======================================== */
+
+        .seasonal-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .seasonal-card {
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            text-align: center;
+            position: relative;
+        }
+
+        .seasonal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .seasonal-card.positive::before {
+            background: linear-gradient(90deg, var(--accent-green), #5CFFAC);
+        }
+
+        .seasonal-card.negative::before {
+            background: linear-gradient(90deg, var(--accent-pink), #FF6B9D);
+        }
+
+        .seasonal-card.neutral::before {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+        }
+
+        .seasonal-month {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .seasonal-prob {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .seasonal-prob.positive {
+            color: var(--accent-green);
+        }
+
+        .seasonal-prob.negative {
+            color: var(--accent-pink);
+        }
+
+        .seasonal-avg {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .seasonal-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .seasonal-card.positive .seasonal-badge {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .seasonal-card.negative .seasonal-badge {
+            background: rgba(255, 46, 151, 0.15);
+            color: var(--accent-pink);
+        }
+
+        .seasonal-card.neutral .seasonal-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           PRICE DISTRIBUTION
+           ======================================== */
+
+        .price-dist-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .price-dist-card {
+            padding: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            text-align: center;
+            position: relative;
+        }
+
+        .price-dist-card.featured {
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .price-dist-card.featured::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-green);
+        }
+
+        .price-dist-range {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .price-dist-percent {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .price-dist-percent.high {
+            color: var(--accent-green);
+        }
+
+        .price-dist-percent.low {
+            color: var(--text-muted);
+        }
+
+        .price-dist-days {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .price-dist-label {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        /* ========================================
+           YEARLY VOLATILITY
+           ======================================== */
+
+        .volatility-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .volatility-card {
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .volatility-card.high {
+            border-color: rgba(255, 46, 151, 0.3);
+        }
+
+        .volatility-card.low {
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .volatility-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .volatility-year {
+            font-size: 32px;
+            font-weight: 900;
+        }
+
+        .volatility-badge {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .volatility-card.high .volatility-badge {
+            background: rgba(255, 46, 151, 0.15);
+            color: var(--accent-pink);
+        }
+
+        .volatility-card.low .volatility-badge {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .volatility-range {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .volatility-amp {
+            font-size: 42px;
+            font-weight: 900;
+        }
+
+        .volatility-card.high .volatility-amp {
+            color: var(--accent-pink);
+        }
+
+        .volatility-card.low .volatility-amp {
+            color: var(--accent-green);
+        }
+
+        /* ========================================
+           WEEKLY EFFECT
+           ======================================== */
+
+        .weekly-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .weekly-card {
+            padding: 20px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .weekly-card.best {
+            border-color: rgba(0, 255, 136, 0.3);
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        .weekly-card.worst {
+            border-color: rgba(255, 46, 151, 0.3);
+            background: rgba(255, 46, 151, 0.03);
+        }
+
+        .weekly-day {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .weekly-prob {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .weekly-card.best .weekly-prob {
+            color: var(--accent-green);
+        }
+
+        .weekly-card.worst .weekly-prob {
+            color: var(--accent-pink);
+        }
+
+        .weekly-avg {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           STRATEGY CARDS
+           ======================================== */
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .strategy-card {
+            padding: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .strategy-card.safe::before {
+            background: linear-gradient(90deg, var(--accent-green), #5CFFAC);
+        }
+
+        .strategy-card.danger::before {
+            background: linear-gradient(90deg, var(--accent-pink), #FF6B9D);
+        }
+
+        .strategy-card.neutral::before {
+            background: linear-gradient(90deg, var(--accent-purple), #D94DFF);
+        }
+
+        .strategy-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-top: 8px;
+        }
+
+        .strategy-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .strategy-card.safe .strategy-icon {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .strategy-card.danger .strategy-icon {
+            background: rgba(255, 46, 151, 0.15);
+            color: var(--accent-pink);
+        }
+
+        .strategy-card.neutral .strategy-icon {
+            background: rgba(184, 41, 221, 0.15);
+            color: var(--accent-purple);
+        }
+
+        .strategy-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .strategy-content {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .strategy-content p {
+            margin-bottom: 10px;
+        }
+
+        .strategy-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .strategy-winrate {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        /* ========================================
+           EXTREME EVENTS TABLE
+           ======================================== */
+
+        .extreme-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .extreme-table {
+            width: 100%;
+            font-size: 13px;
+        }
+
+        .extreme-table th {
+            padding: 14px 16px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .extreme-table td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .extreme-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .extreme-table .rank-1 {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 3px solid #FFD700;
+        }
+
+        .extreme-table .rank-1 td:first-child {
+            color: #FFD700;
+            font-weight: 700;
+        }
+
+        .extreme-table .rank-2 {
+            background: rgba(192, 192, 192, 0.1);
+            border-left: 3px solid #C0C0C0;
+        }
+
+        .extreme-table .rank-2 td:first-child {
+            color: #C0C0C0;
+            font-weight: 700;
+        }
+
+        .extreme-table .rank-3 {
+            background: rgba(205, 127, 50, 0.1);
+            border-left: 3px solid #CD7F32;
+        }
+
+        .extreme-table .rank-3 td:first-child {
+            color: #CD7F32;
+            font-weight: 700;
+        }
+
+        /* ========================================
+           CONCLUSION BOX
+           ======================================== */
+
+        .conclusion-box {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(184, 41, 221, 0.05));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        .conclusion-title {
+            font-size: 24px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .conclusion-list {
+            list-style: none;
+        }
+
+        .conclusion-list li {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .conclusion-list li:last-child {
+            border-bottom: none;
+        }
+
+        .conclusion-list strong {
+            color: var(--text);
+        }
+
+        /* ========================================
+           PAGE FOOTER
+           ======================================== */
+
+        .page-footer {
+            padding: 70px 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .page-footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .page-footer-disclaimer {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .page-footer-disclaimer strong {
+            color: var(--accent-purple);
+        }
+
+        .page-footer-meta {
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+
+        @media (max-width: 1024px) {
+            .insights-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .price-dist-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .data-meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .seasonal-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .weekly-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .data-hero {
+                padding: 120px 24px 80px;
+            }
+
+            .stats-section {
+                padding: 60px 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-section {
+                padding: 60px 24px;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .seasonal-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .price-dist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .volatility-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .weekly-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-table {
+                font-size: 12px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 12px 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-meta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .weekly-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="data-hero">
+        <div class="data-hero-inner">
+            <h1 class="data-title-main">棉花期货深度分析报告</h1>
+            <p class="data-title-sub">
+                基于2005-2026年共21年、5,160个交易日的完整历史数据，深度解析棉花期货的季节性规律、价格波动特征与交易策略。
+            </p>
+            <div class="data-meta-grid">
+                <div class="data-meta-item">
+                    <div class="data-meta-label">数据跨度</div>
+                    <div class="data-meta-value"><span class="accent">21</span> 年</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">交易日数</div>
+                    <div class="data-meta-value"><span class="accent">5,160</span> 天</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">当前价格</div>
+                    <div class="data-meta-value"><span class="accent">15,280</span> 元</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">历史均价</div>
+                    <div class="data-meta-value">15,825</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Stats -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-label">历史最高</div>
+                <div class="stat-card-value success">34,240</div>
+                <div class="stat-card-change">2011-02-17</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">历史最低</div>
+                <div class="stat-card-value danger">9,990</div>
+                <div class="stat-card-change">2016-02-29</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">日均波动</div>
+                <div class="stat-card-value accent">0.805%</div>
+                <div class="stat-card-change">日内振幅</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">最大涨幅</div>
+                <div class="stat-card-value success">+10.62%</div>
+                <div class="stat-card-change">单日最大</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">最大跌幅</div>
+                <div class="stat-card-value danger">-14.80%</div>
+                <div class="stat-card-change">单日最大</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executive Summary -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">核心发现摘要</h2>
+            <p class="content-section-desc">棉花期货三大惊人特征</p>
+        </div>
+
+        <div class="insights-grid">
+            <div class="insight-card green">
+                <div class="insight-icon">📈</div>
+                <div class="insight-title">季节性明显</div>
+                <div class="insight-content">
+                    12月-1月上涨概率高达54.8%，是全年最强窗口期；3月上涨概率仅44.1%，是全年最弱月份。
+                </div>
+                <div class="insight-highlight">岁末多头策略</div>
+            </div>
+
+            <div class="insight-card pink">
+                <div class="insight-icon">🎢</div>
+                <div class="insight-title">波动率高</div>
+                <div class="insight-content">
+                    日均波动率0.805%，极端波动可达±14%。2010年波幅高达109.16%，2022年波幅76.25%。
+                </div>
+                <div class="insight-highlight">严格止损</div>
+            </div>
+
+            <div class="insight-card purple">
+                <div class="insight-icon">📊</div>
+                <div class="insight-title">区间震荡为主</div>
+                <div class="insight-content">
+                    64%的时间在12,000-16,000元区间震荡，37.97%的时间集中在14,000-16,000元核心区间。
+                </div>
+                <div class="insight-highlight">区间交易策略</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seasonal Analysis -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">季节性规律分析 <span class="star">★</span></h2>
+            <p class="content-section-desc">月度涨跌概率与交易策略</p>
+        </div>
+
+        <div class="seasonal-grid">
+            <div class="seasonal-card positive">
+                <div class="seasonal-month">12月</div>
+                <div class="seasonal-prob positive">54.8%</div>
+                <div class="seasonal-avg">平均涨幅 +0.10%</div>
+                <div class="seasonal-badge">强势月份</div>
+            </div>
+            <div class="seasonal-card positive">
+                <div class="seasonal-month">1月</div>
+                <div class="seasonal-prob positive">54.7%</div>
+                <div class="seasonal-avg">平均涨幅 +0.12%</div>
+                <div class="seasonal-badge">强势月份</div>
+            </div>
+            <div class="seasonal-card negative">
+                <div class="seasonal-month">3月</div>
+                <div class="seasonal-prob negative">44.1%</div>
+                <div class="seasonal-avg">平均跌幅 -0.10%</div>
+                <div class="seasonal-badge">最弱月份</div>
+            </div>
+            <div class="seasonal-card neutral">
+                <div class="seasonal-month">11月</div>
+                <div class="seasonal-prob negative">46.1%</div>
+                <div class="seasonal-avg">平均跌幅 -0.02%</div>
+                <div class="seasonal-badge">弱势月份</div>
+            </div>
+            <div class="seasonal-card neutral">
+                <div class="seasonal-month">4月</div>
+                <div class="seasonal-prob">49.5%</div>
+                <div class="seasonal-avg">平均涨幅 +0.09%</div>
+                <div class="seasonal-badge">中性</div>
+            </div>
+            <div class="seasonal-card neutral">
+                <div class="seasonal-month">9月</div>
+                <div class="seasonal-prob">50.5%</div>
+                <div class="seasonal-avg">平均涨幅 +0.03%</div>
+                <div class="seasonal-badge">中性</div>
+            </div>
+            <div class="seasonal-card neutral">
+                <div class="seasonal-month">10月</div>
+                <div class="seasonal-prob">48.5%</div>
+                <div class="seasonal-avg">平均涨幅 +0.07%</div>
+                <div class="seasonal-badge">中性</div>
+            </div>
+            <div class="seasonal-card neutral">
+                <div class="seasonal-month">6月</div>
+                <div class="seasonal-prob">49.9%</div>
+                <div class="seasonal-avg">平均跌幅 -0.02%</div>
+                <div class="seasonal-badge">高波动</div>
+            </div>
+        </div>
+
+        <div class="table-wrapper" style="margin-top: 32px;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>月份</th>
+                        <th>样本年数</th>
+                        <th>上涨月数</th>
+                        <th>下跌月数</th>
+                        <th>平均涨跌幅</th>
+                        <th>最大涨幅</th>
+                        <th>最大跌幅</th>
+                        <th>上涨概率</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row"><td>12月</td><td>21</td><td>253</td><td>199</td><td>+0.10%</td><td>+3.88%</td><td>-6.18%</td><td>54.8%</td></tr>
+                    <tr class="highlight-row"><td>1月</td><td>21</td><td>220</td><td>172</td><td>+0.12%</td><td>+4.17%</td><td>-3.60%</td><td>54.7%</td></tr>
+                    <tr><td>4月</td><td>21</td><td>206</td><td>202</td><td>+0.09%</td><td>+6.40%</td><td>-4.27%</td><td>49.5%</td></tr>
+                    <tr><td>9月</td><td>21</td><td>217</td><td>206</td><td>+0.03%</td><td>+5.68%</td><td>-4.63%</td><td>50.5%</td></tr>
+                    <tr><td>10月</td><td>21</td><td>177</td><td>171</td><td>+0.07%</td><td>+8.30%</td><td>-7.90%</td><td>48.5%</td></tr>
+                    <tr><td>5月</td><td>21</td><td>202</td><td>203</td><td>-0.02%</td><td>+9.02%</td><td>-6.34%</td><td>48.4%</td></tr>
+                    <tr><td>6月</td><td>21</td><td>214</td><td>208</td><td>-0.02%</td><td>+10.62%</td><td>-9.45%</td><td>49.9%</td></tr>
+                    <tr><td>2月</td><td>21</td><td>178</td><td>177</td><td>-0.02%</td><td>+6.03%</td><td>-6.58%</td><td>49.3%</td></tr>
+                    <tr><td>7月</td><td>21</td><td>220</td><td>229</td><td>-0.06%</td><td>+7.46%</td><td>-7.63%</td><td>47.5%</td></tr>
+                    <tr><td>8月</td><td>21</td><td>223</td><td>230</td><td>0.00%</td><td>+6.04%</td><td>-4.84%</td><td>47.9%</td></tr>
+                    <tr><td>11月</td><td>21</td><td>207</td><td>230</td><td>-0.02%</td><td>+5.55%</td><td>-6.58%</td><td>46.1%</td></tr>
+                    <tr class="danger-row"><td>3月</td><td>21</td><td>211</td><td>253</td><td>-0.10%</td><td>+4.10%</td><td>-14.80%</td><td>44.1%</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Price Distribution -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">价格区间分布</h2>
+            <p class="content-section-desc">历史价格停留时间占比</p>
+        </div>
+
+        <div class="price-dist-grid">
+            <div class="price-dist-card featured">
+                <div class="price-dist-label">核心区间</div>
+                <div class="price-dist-range">14,000-16,000</div>
+                <div class="price-dist-percent high">37.97%</div>
+                <div class="price-dist-days">1,959天</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">12,000-14,000</div>
+                <div class="price-dist-percent">26.01%</div>
+                <div class="price-dist-days">1,342天</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">≥20,000</div>
+                <div class="price-dist-percent">12.03%</div>
+                <div class="price-dist-days">621天</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">16,000-18,000</div>
+                <div class="price-dist-percent">10.27%</div>
+                <div class="price-dist-days">530天</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">18,000-20,000</div>
+                <div class="price-dist-percent">8.10%</div>
+                <div class="price-dist-days">418天</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">10,000-12,000</div>
+                <div class="price-dist-percent">5.60%</div>
+                <div class="price-dist-days">289天</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Yearly Volatility -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">年度波动率分析</h2>
+            <p class="content-section-desc">高波动年份与低波动年份对比</p>
+        </div>
+
+        <div class="volatility-grid">
+            <div class="volatility-card high">
+                <div class="volatility-header">
+                    <div class="volatility-year">2010</div>
+                    <div class="volatility-badge">超高波动</div>
+                </div>
+                <div class="volatility-range">15,780 → 33,005元</div>
+                <div class="volatility-amp">109.16%</div>
+            </div>
+            <div class="volatility-card high">
+                <div class="volatility-header">
+                    <div class="volatility-year">2022</div>
+                    <div class="volatility-badge">近年高波动</div>
+                </div>
+                <div class="volatility-range">12,485 → 22,005元</div>
+                <div class="volatility-amp">76.25%</div>
+            </div>
+            <div class="volatility-card high">
+                <div class="volatility-header">
+                    <div class="volatility-year">2011</div>
+                    <div class="volatility-badge">历史最高价</div>
+                </div>
+                <div class="volatility-range">19,975 → 34,240元</div>
+                <div class="volatility-amp">71.41%</div>
+            </div>
+            <div class="volatility-card low">
+                <div class="volatility-header">
+                    <div class="volatility-year">2017</div>
+                    <div class="volatility-badge">历史最平稳</div>
+                </div>
+                <div class="volatility-range">14,590 → 16,430元</div>
+                <div class="volatility-amp">12.61%</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Weekly Effect -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">周效应分析</h2>
+            <p class="content-section-desc">周一至周五涨跌特征</p>
+        </div>
+
+        <div class="weekly-grid">
+            <div class="weekly-card best">
+                <div class="weekly-day">周一</div>
+                <div class="weekly-prob">50.7%</div>
+                <div class="weekly-avg">平均涨幅 +0.102%</div>
+            </div>
+            <div class="weekly-card">
+                <div class="weekly-day">周五</div>
+                <div class="weekly-prob">50.5%</div>
+                <div class="weekly-avg">平均涨幅 +0.005%</div>
+            </div>
+            <div class="weekly-card">
+                <div class="weekly-day">周三</div>
+                <div class="weekly-prob">49.3%</div>
+                <div class="weekly-avg">平均跌幅 -0.014%</div>
+            </div>
+            <div class="weekly-card">
+                <div class="weekly-day">周二</div>
+                <div class="weekly-prob">48.5%</div>
+                <div class="weekly-avg">平均跌幅 -0.016%</div>
+            </div>
+            <div class="weekly-card worst">
+                <div class="weekly-day">周四</div>
+                <div class="weekly-prob">47.2%</div>
+                <div class="weekly-avg">平均跌幅 -0.014%</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Extreme Events -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">历史重大波动日TOP20</h2>
+            <p class="content-section-desc">单日涨跌幅排名</p>
+        </div>
+
+        <div class="extreme-wrapper">
+            <table class="extreme-table">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>日期</th>
+                        <th>收盘价</th>
+                        <th>涨跌幅</th>
+                        <th>成交量</th>
+                        <th>持仓量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="rank-1">
+                        <td>1</td>
+                        <td>2014-03-17</td>
+                        <td>16,125</td>
+                        <td class="trend-down">-14.80%</td>
+                        <td>9,048</td>
+                        <td>51,290</td>
+                    </tr>
+                    <tr class="rank-2">
+                        <td>2</td>
+                        <td>2008-06-12</td>
+                        <td>15,155</td>
+                        <td class="trend-up">+10.62%</td>
+                        <td>11,240</td>
+                        <td>24,224</td>
+                    </tr>
+                    <tr class="rank-3">
+                        <td>3</td>
+                        <td>2008-06-11</td>
+                        <td>13,700</td>
+                        <td class="trend-down">-9.45%</td>
+                        <td>6,946</td>
+                        <td>38,968</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>2008-06-03</td>
+                        <td>15,110</td>
+                        <td class="trend-up">+9.37%</td>
+                        <td>9,260</td>
+                        <td>21,702</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>2008-06-02</td>
+                        <td>13,815</td>
+                        <td class="trend-down">-9.11%</td>
+                        <td>6,430</td>
+                        <td>49,044</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>2008-05-23</td>
+                        <td>15,590</td>
+                        <td class="trend-up">+9.02%</td>
+                        <td>19,308</td>
+                        <td>15,738</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>2006-10-30</td>
+                        <td>14,615</td>
+                        <td class="trend-up">+8.30%</td>
+                        <td>6,732</td>
+                        <td>15,186</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>2006-10-31</td>
+                        <td>13,460</td>
+                        <td class="trend-down">-7.90%</td>
+                        <td>8,558</td>
+                        <td>12,366</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>2022-07-19</td>
+                        <td>14,110</td>
+                        <td class="trend-down">-7.63%</td>
+                        <td>814,944</td>
+                        <td>283,256</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>2022-07-18</td>
+                        <td>15,275</td>
+                        <td class="trend-up">+7.46%</td>
+                        <td>615,614</td>
+                        <td>290,010</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>2021-10-15</td>
+                        <td>22,855</td>
+                        <td class="trend-up">+7.38%</td>
+                        <td>789,358</td>
+                        <td>486,342</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>2010-05-21</td>
+                        <td>18,235</td>
+                        <td class="trend-up">+6.98%</td>
+                        <td>253,082</td>
+                        <td>202,350</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>2016-02-03</td>
+                        <td>10,715</td>
+                        <td class="trend-down">-6.58%</td>
+                        <td>114,332</td>
+                        <td>333,232</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>2016-11-14</td>
+                        <td>15,200</td>
+                        <td class="trend-down">-6.58%</td>
+                        <td>1,150,658</td>
+                        <td>237,260</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>2010-11-12</td>
+                        <td>29,290</td>
+                        <td class="trend-down">-6.56%</td>
+                        <td>85,144</td>
+                        <td>85,144</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>2022-06-24</td>
+                        <td>17,230</td>
+                        <td class="trend-down">-6.54%</td>
+                        <td>671,944</td>
+                        <td>314,798</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>2020-02-03</td>
+                        <td>12,565</td>
+                        <td class="trend-down">-6.51%</td>
+                        <td>276,113</td>
+                        <td>495,085</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>2016-04-05</td>
+                        <td>10,895</td>
+                        <td class="trend-up">+6.40%</td>
+                        <td>3,434</td>
+                        <td>33,696</td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td>2005-05-13</td>
+                        <td>14,190</td>
+                        <td class="trend-down">-6.34%</td>
+                        <td>30,648</td>
+                        <td>32,416</td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td>2021-10-08</td>
+                        <td>21,255</td>
+                        <td class="trend-up">+6.25%</td>
+                        <td>34,105</td>
+                        <td>398,108</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Trading Strategy -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">交易策略建议</h2>
+            <p class="content-section-desc">基于历史数据的策略参考</p>
+        </div>
+
+        <div class="strategy-grid">
+            <div class="strategy-card safe">
+                <div class="strategy-header">
+                    <div class="strategy-icon">🎯</div>
+                    <h3 class="strategy-title">岁末多头策略</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>时间窗口</strong>：12月-1月</p>
+                    <p><strong>操作建议</strong>：偏多头思路</p>
+                    <p><strong>胜率参考</strong>：54.8%</p>
+                    <p>历史上涨概率最高，可考虑多头布局</p>
+                </div>
+                <div class="strategy-winrate">胜率 54.8%</div>
+            </div>
+
+            <div class="strategy-card danger">
+                <div class="strategy-header">
+                    <div class="strategy-icon">⚠️</div>
+                    <h3 class="strategy-title">3月防守策略</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>时间窗口</strong>：3月</p>
+                    <p><strong>操作建议</strong>：谨慎偏空/观望</p>
+                    <p><strong>风险提示</strong>：上涨概率仅44.1%</p>
+                    <p>需警惕下跌风险，历史最弱月份</p>
+                </div>
+                <div class="strategy-winrate" style="background: rgba(255, 46, 151, 0.15); color: var(--accent-pink);">胜率 44.1%</div>
+            </div>
+
+            <div class="strategy-card neutral">
+                <div class="strategy-header">
+                    <div class="strategy-icon">📊</div>
+                    <h3 class="strategy-title">区间交易策略</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>价格区间</strong>：14,000-16,000元</p>
+                    <p><strong>操作建议</strong>：高抛低吸</p>
+                    <p><strong>时间占比</strong>：37.97%</p>
+                    <p>核心震荡区间，区间交易为主</p>
+                </div>
+            </div>
+
+            <div class="strategy-card neutral">
+                <div class="strategy-header">
+                    <div class="strategy-icon">💥</div>
+                    <h3 class="strategy-title">突破策略</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>突破10,000-12,000</strong>：可考虑跟随</p>
+                    <p><strong>突破14,000-16,000</strong>：追涨需谨慎</p>
+                    <p><strong>突破20,000</strong>：警惕高位回落</p>
+                    <p>20日后平均下跌1.23%</p>
+                </div>
+            </div>
+
+            <div class="strategy-card neutral">
+                <div class="strategy-header">
+                    <div class="strategy-icon">⚡</div>
+                    <h3 class="strategy-title">日内交易策略</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>周一</strong>：上涨概率50.7%，可考虑多头</p>
+                    <p><strong>周四</strong>：上涨概率47.2%，需谨慎</p>
+                    <p><strong>周五</strong>：接近周末，表现尚可</p>
+                </div>
+            </div>
+
+            <div class="strategy-card danger">
+                <div class="strategy-header">
+                    <div class="strategy-icon">🛡️</div>
+                    <h3 class="strategy-title">风险管理</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>止损设置</strong>：≥2%（日均波动0.8%）</p>
+                    <p><strong>仓位控制</strong>：高波动年份降低仓位</p>
+                    <p><strong>关键时点</strong>：3月、6月特别注意风险</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="content-section" style="border-bottom: none;">
+        <div class="content-section-header">
+            <h2 class="content-section-title">核心结论</h2>
+            <p class="content-section-desc">交易者认知升级</p>
+        </div>
+
+        <div class="conclusion-box">
+            <h3 class="conclusion-title">棉花期货三大特征</h3>
+            <ul class="conclusion-list">
+                <li><strong>季节性明显</strong>：12月-1月强势，3月最弱</li>
+                <li><strong>波动率高</strong>：日均波动0.805%，极端波动可达±14%</li>
+                <li><strong>区间震荡为主</strong>：64%时间在12,000-16,000区间</li>
+            </ul>
+        </div>
+
+        <div class="conclusion-box" style="margin-top: 24px;">
+            <h3 class="conclusion-title">最终建议</h3>
+            <ul class="conclusion-list">
+                <li><strong>顺应季节</strong>：12月-1月偏多，3月防守</li>
+                <li><strong>敬畏波动</strong>：严格止损，控制仓位</li>
+                <li><strong>区间思维</strong>：14,000-16,000核心区间内高抛低吸</li>
+                <li><strong>突破谨慎</strong>：突破20,000后警惕回落</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <div class="page-footer-content">
+            <div class="page-footer-disclaimer">
+                <p style="margin-bottom: 12px;"><strong>数据来源</strong>：郑商所棉花连续合约 (CF0) | 数据范围: 2005-2026 (21年) | 5,160个交易日</p>
+                <p><strong>风险提示</strong>：本报告提供的数据和分析仅供参考，不构成任何投资建议。期货交易有风险，投资需谨慎。历史表现不代表未来，投资者应根据自身风险承受能力谨慎决策。</p>
+            </div>
+            <div class="page-footer-meta">
+                报告生成日期: 2026年3月24日 | 数据更新: 截至2026-03-23收盘
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Home Link -->
+    <div style="padding: 40px; text-align: center; border-top: 1px solid var(--border);">
+        <a href="../index.html#data" style="display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            返回首页
+        </a>
+    </div>
+</body>
+</html>
