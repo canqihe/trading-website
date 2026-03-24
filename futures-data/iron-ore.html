@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>铁矿石(I)深度全景洞察 | 期货大数据</title>
+    <link rel="stylesheet" href="../styles-redesigned.css">
+    <style>
+        /* ========================================
+           FUTURES DATA PAGE STYLES
+           ======================================== */
+
+        .data-hero {
+            position: relative;
+            padding: 180px 40px 120px;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(184, 41, 221, 0.05) 0%, transparent 50%),
+                var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-hero-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .data-title-main {
+            font-size: clamp(48px, 10vw, 88px);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, var(--text), rgba(255, 255, 255, 0.5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .data-title-sub {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .data-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .data-meta-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .data-meta-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .data-meta-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .data-meta-value .accent {
+            color: var(--accent-green);
+        }
+
+        .data-meta-value.danger {
+            color: var(--accent-pink);
+        }
+
+        /* ========================================
+           STATS CARDS
+           ======================================== */
+
+        .stats-section {
+            padding: 80px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            padding: 28px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .stat-card-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .stat-card-value {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .stat-card-value.success {
+            color: var(--accent-green);
+        }
+
+        .stat-card-value.danger {
+            color: var(--accent-pink);
+        }
+
+        .stat-card-value.accent {
+            color: var(--accent-purple);
+        }
+
+        .stat-card-change {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           CONTENT SECTIONS
+           ======================================== */
+
+        .content-section {
+            padding: 80px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .content-section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .content-section-title {
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+
+        .content-section-desc {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           EXECUTIVE SUMMARY
+           ======================================== */
+
+        .executive-summary {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 32px;
+            background: rgba(0, 255, 136, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            border-radius: 16px;
+        }
+
+        .executive-summary p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .executive-summary p:last-child {
+            margin-bottom: 0;
+        }
+
+        .executive-summary strong {
+            color: var(--text);
+        }
+
+        /* ========================================
+           DATA TABLE
+           ======================================== */
+
+        .table-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table thead {
+            background: rgba(0, 255, 136, 0.05);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .data-table th:last-child {
+            text-align: right;
+        }
+
+        .data-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .data-table td:last-child {
+            text-align: right;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .data-table .highlight-row {
+            background: rgba(255, 46, 151, 0.05);
+            border-left: 2px solid var(--accent-pink);
+        }
+
+        .data-table .highlight-row td:first-child {
+            color: var(--accent-pink);
+            font-weight: 600;
+        }
+
+        .data-table .safe-row {
+            background: rgba(0, 255, 136, 0.03);
+            border-left: 2px solid var(--accent-green);
+        }
+
+        .data-table .safe-row td:first-child {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .trend-up { color: var(--accent-green) !important; }
+        .trend-down { color: var(--accent-pink) !important; }
+
+        /* ========================================
+           CYCLE CARDS
+           ======================================== */
+
+        .cycle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .cycle-card {
+            padding: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cycle-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-purple));
+        }
+
+        .cycle-card.bear::before {
+            background: linear-gradient(90deg, var(--accent-pink), #FF6B9D);
+        }
+
+        .cycle-card.bull::before {
+            background: linear-gradient(90deg, var(--accent-green), #5CFFAC);
+        }
+
+        .cycle-period {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .cycle-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .cycle-price {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .cycle-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .cycle-event {
+            font-size: 12px;
+            color: var(--accent-green);
+        }
+
+        /* ========================================
+           PRICE DISTRIBUTION
+           ======================================== */
+
+        .price-dist-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .price-dist-card {
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .price-dist-range {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .price-dist-range .highlight {
+            color: var(--accent-green);
+        }
+
+        .price-dist-percent {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .price-dist-percent.high {
+            color: var(--accent-green);
+        }
+
+        .price-dist-percent.low {
+            color: var(--accent-pink);
+        }
+
+        .price-dist-values {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           SEASONAL CARDS
+           ======================================== */
+
+        .seasonal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .seasonal-card {
+            padding: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .seasonal-card:hover {
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .seasonal-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .seasonal-name {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .seasonal-badge {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        .seasonal-badge.positive {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .seasonal-badge.negative {
+            background: rgba(255, 46, 151, 0.15);
+            color: var(--accent-pink);
+        }
+
+        .seasonal-content {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .seasonal-content strong {
+            color: var(--text);
+        }
+
+        /* ========================================
+           RANKING TABLE
+           ======================================== */
+
+        .ranking-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .ranking-table {
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .ranking-table th {
+            padding: 14px 16px;
+            text-align: center;
+            background: rgba(0, 255, 136, 0.05);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ranking-table td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .ranking-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ranking-table .highlight-row {
+            background: rgba(184, 41, 221, 0.1);
+            border-left: 3px solid var(--accent-purple);
+        }
+
+        .ranking-table .highlight-row td:first-child {
+            color: var(--accent-purple);
+            font-weight: 700;
+        }
+
+        .ranking-stars {
+            color: var(--accent-green);
+        }
+
+        /* ========================================
+           STRATEGY CARDS
+           ======================================== */
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .strategy-card {
+            padding: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .strategy-card.danger::before {
+            background: linear-gradient(90deg, var(--accent-pink), #FF6B9D);
+        }
+
+        .strategy-card.safe::before {
+            background: linear-gradient(90deg, var(--accent-green), #5CFFAC);
+        }
+
+        .strategy-card.neutral::before {
+            background: linear-gradient(90deg, var(--accent-purple), #D94DFF);
+        }
+
+        .strategy-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-top: 8px;
+        }
+
+        .strategy-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .strategy-card.danger .strategy-icon {
+            background: rgba(255, 46, 151, 0.15);
+            color: var(--accent-pink);
+        }
+
+        .strategy-card.safe .strategy-icon {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .strategy-card.neutral .strategy-icon {
+            background: rgba(184, 41, 221, 0.15);
+            color: var(--accent-purple);
+        }
+
+        .strategy-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .strategy-content {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .strategy-content p {
+            margin-bottom: 10px;
+        }
+
+        .strategy-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ========================================
+           KEY METRICS
+           ======================================== */
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 700px;
+            margin: 40px auto 0;
+        }
+
+        .metrics-card {
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .metrics-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .metrics-list {
+            list-style: none;
+        }
+
+        .metrics-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .metrics-list li:last-child {
+            border-bottom: none;
+        }
+
+        .metrics-label {
+            color: var(--text-muted);
+        }
+
+        .metrics-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ========================================
+           PAGE FOOTER
+           ======================================== */
+
+        .page-footer {
+            padding: 70px 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .page-footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .page-footer-disclaimer {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .page-footer-disclaimer strong {
+            color: var(--accent-purple);
+        }
+
+        .page-footer-meta {
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+
+        @media (max-width: 1024px) {
+            .cycle-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .price-dist-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .data-meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .data-hero {
+                padding: 120px 24px 80px;
+            }
+
+            .stats-section {
+                padding: 60px 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-section {
+                padding: 60px 24px;
+            }
+
+            .seasonal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cycle-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .price-dist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-table {
+                font-size: 12px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 12px 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="data-hero">
+        <div class="data-hero-inner">
+            <h1 class="data-title-main">铁矿石深度<br>全景洞察</h1>
+            <p class="data-title-sub">
+                基于2013-2026年共12年的期货交易数据，深度解析铁矿石市场的历史周期、价格分布特征与交易机会。
+            </p>
+            <div class="data-meta-grid">
+                <div class="data-meta-item">
+                    <div class="data-meta-label">数据跨度</div>
+                    <div class="data-meta-value"><span class="accent">12</span> 年</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">交易日数</div>
+                    <div class="data-meta-value"><span class="accent">3019</span> 天</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">当前价格</div>
+                    <div class="data-meta-value"><span class="accent">819</span> 元</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">历史均价</div>
+                    <div class="data-meta-value">680</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Stats -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-label">历史最高</div>
+                <div class="stat-card-value success">1337</div>
+                <div class="stat-card-change">2021-05-12</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">历史最低</div>
+                <div class="stat-card-value danger">284</div>
+                <div class="stat-card-change">2015-12-10</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">最大涨幅</div>
+                <div class="stat-card-value accent">+371%</div>
+                <div class="stat-card-change">从底部到顶部</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">最大跌幅</div>
+                <div class="stat-card-value danger">-69%</div>
+                <div class="stat-card-change">从顶部到底部</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">日均成交</div>
+                <div class="stat-card-value">115万</div>
+                <div class="stat-card-change">手</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executive Summary -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">执行摘要</h2>
+            <p class="content-section-desc">铁矿石期货完整牛熊周期概述</p>
+        </div>
+
+        <div class="executive-summary">
+            <p>
+                铁矿石期货自2013年上市以来，经历了完整的牛熊周期转换。从<strong>2013年的历史高点911元</strong>跌至<strong>2015年的历史低点284元</strong>，跌幅高达69%；随后在<strong>2021年5月创下历史新高1337元</strong>，较底部上涨371%。
+            </p>
+            <p>
+                当前价格处于<strong>819元附近</strong>，处于历史中位偏上水平，高于历史均价约20%。市场处于2022年以来的震荡周期中，缺乏明确趋势方向，波动率处于历史低位。
+            </p>
+        </div>
+    </section>
+
+    <!-- Historical Cycles -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">历史周期分析</h2>
+            <p class="content-section-desc">五个阶段的完整牛熊周期</p>
+        </div>
+
+        <div class="cycle-grid">
+            <div class="cycle-card bear">
+                <div class="cycle-period">2013-2015</div>
+                <div class="cycle-name">熊市周期1</div>
+                <div class="cycle-price">911 → 284元</div>
+                <div class="cycle-desc">供给侧改革攻坚，中国经济增速放缓，产能过剩</div>
+                <div class="cycle-event">跌幅69%</div>
+            </div>
+
+            <div class="cycle-card">
+                <div class="cycle-period">2016-2018</div>
+                <div class="cycle-name">反弹周期</div>
+                <div class="cycle-price">284 → 550元</div>
+                <div class="cycle-desc">供需再平衡，环保限产，钢厂利润修复</div>
+                <div class="cycle-event">涨幅94%</div>
+            </div>
+
+            <div class="cycle-card">
+                <div class="cycle-period">2019年</div>
+                <div class="cycle-name">震荡周期</div>
+                <div class="cycle-price">550-650元</div>
+                <div class="cycle-desc">区间震荡，澳洲铁矿供应扰动</div>
+                <div class="cycle-event">横盘整理</div>
+            </div>
+
+            <div class="cycle-card bull">
+                <div class="cycle-period">2020-2021初</div>
+                <div class="cycle-name">疫情周期</div>
+                <div class="cycle-price">650 → 1337元</div>
+                <div class="cycle-desc">流动性驱动，疫情后刺激政策，需求爆发</div>
+                <div class="cycle-event">涨幅106%</div>
+            </div>
+
+            <div class="cycle-card bear">
+                <div class="cycle-period">2021年中</div>
+                <div class="cycle-name">牛市见顶</div>
+                <div class="cycle-price">1337 → 680元</div>
+                <div class="cycle-desc">政策调控，国储投放，保供稳价</div>
+                <div class="cycle-event">跌幅49%</div>
+            </div>
+
+            <div class="cycle-card">
+                <div class="cycle-period">2022-至今</div>
+                <div class="cycle-name">震荡周期2</div>
+                <div class="cycle-price">600-900元</div>
+                <div class="cycle-desc">双碳政策，房地产周期，结构性行情</div>
+                <div class="cycle-event">当前阶段</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Extreme Values -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">历史极值分析</h2>
+            <p class="content-section-desc">十大单日涨跌幅事件</p>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>收盘价</th>
+                        <th>涨跌幅</th>
+                        <th>日内振幅</th>
+                        <th>市场背景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td>2015-10-08</td>
+                        <td>550.5</td>
+                        <td class="trend-up">+50.0%</td>
+                        <td>6.0%</td>
+                        <td>逼仓行情</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>2015-10-09</td>
+                        <td>391.0</td>
+                        <td class="trend-down">-28.97%</td>
+                        <td>5.23%</td>
+                        <td>穿头破脚</td>
+                    </tr>
+                    <tr>
+                        <td>2015-09-07</td>
+                        <td>467.0</td>
+                        <td class="trend-up">+20.05%</td>
+                        <td>0.11%</td>
+                        <td>反弹</td>
+                    </tr>
+                    <tr>
+                        <td>2015-06-23</td>
+                        <td>509.0</td>
+                        <td class="trend-up">+17.96%</td>
+                        <td>2.17%</td>
+                        <td>异常波动</td>
+                    </tr>
+                    <tr>
+                        <td>2015-09-08</td>
+                        <td>388.5</td>
+                        <td class="trend-down">-16.81%</td>
+                        <td>2.77%</td>
+                        <td>恐慌性抛售</td>
+                    </tr>
+                    <tr>
+                        <td>2021-08-05</td>
+                        <td>888.5</td>
+                        <td class="trend-down">-16.73%</td>
+                        <td>9.57%</td>
+                        <td>政策调控</td>
+                    </tr>
+                    <tr>
+                        <td>2017-03-22</td>
+                        <td>577.0</td>
+                        <td class="trend-down">-16.07%</td>
+                        <td>5.82%</td>
+                        <td>供应冲击</td>
+                    </tr>
+                    <tr>
+                        <td>2020-04-01</td>
+                        <td>557.5</td>
+                        <td class="trend-down">-14.30%</td>
+                        <td>5.44%</td>
+                        <td>疫情冲击</td>
+                    </tr>
+                    <tr>
+                        <td>2019-07-23</td>
+                        <td>758.5</td>
+                        <td class="trend-down">-14.29%</td>
+                        <td>2.45%</td>
+                        <td>澳矿事故</td>
+                    </tr>
+                    <tr>
+                        <td>2016-08-11</td>
+                        <td>431.0</td>
+                        <td class="trend-down">-12.75%</td>
+                        <td>4.58%</td>
+                        <td>产能释放</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="max-width: 700px; margin: 24px auto 0; padding: 16px; background: rgba(255, 46, 151, 0.05); border: 1px solid var(--accent-pink); border-radius: 8px;">
+            <p style="font-size: 13px; color: var(--text); margin: 0; text-align: center;">
+                <strong style="color: var(--accent-pink);">关键发现</strong>：2015年9-10月是历史最动荡时期，多次出现10%以上涨跌；2021年后市场波动率显著下降，监管政策见效
+            </p>
+        </div>
+    </section>
+
+    <!-- Price Distribution -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">价格分布特征</h2>
+            <p class="content-section-desc">历史价格区间分布统计</p>
+        </div>
+
+        <div class="price-dist-grid">
+            <div class="price-dist-card">
+                <div class="price-dist-range">1000元+</div>
+                <div class="price-dist-percent low">4.77%</div>
+                <div class="price-dist-values">极端高价区间</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">900-1000元</div>
+                <div class="price-dist-percent">6.46%</div>
+                <div class="price-dist-values">144次出现</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">800-900元</div>
+                <div class="price-dist-percent">16.56%</div>
+                <div class="price-dist-values">500次出现</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range"><span class="highlight">700-800元</span></div>
+                <div class="price-dist-percent high">22.28%</div>
+                <div class="price-dist-values">最集中区间</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range"><span class="highlight">600-700元</span></div>
+                <div class="price-dist-percent high">14.87%</div>
+                <div class="price-dist-values">449次出现</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">500-600元</div>
+                <div class="price-dist-percent">11.39%</div>
+                <div class="price-dist-values">344次出现</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">400-500元</div>
+                <div class="price-dist-percent">16.23%</div>
+                <div class="price-dist-values">490次出现</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">300-400元</div>
+                <div class="price-dist-percent">6.99%</div>
+                <div class="price-dist-values">211次出现</div>
+            </div>
+            <div class="price-dist-card">
+                <div class="price-dist-range">0-300元</div>
+                <div class="price-dist-percent low">0.46%</div>
+                <div class="price-dist-values">极低价区</div>
+            </div>
+        </div>
+
+        <div style="max-width: 600px; margin: 32px auto 0; padding: 20px; background: rgba(0, 255, 136, 0.05); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px;">
+            <p style="font-size: 14px; color: var(--text); margin: 0; text-align: center;">
+                <strong style="color: var(--accent-green);">核心发现</strong>：600-800元是历史最集中价格区间，占比达37.15%<br>
+                当前价格819元处于800-900元区间，该区间出现频率16.56%
+            </p>
+        </div>
+    </section>
+
+    <!-- Seasonal Patterns -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">季节性规律</h2>
+            <p class="content-section-desc">月度统计特征与交易策略</p>
+        </div>
+
+        <div class="seasonal-grid">
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <div class="seasonal-name">春季偏强</div>
+                    <span class="seasonal-badge positive">做多机会</span>
+                </div>
+                <div class="seasonal-content">
+                    <p><strong>2-3月</strong>月均收盘价最高（718元、707元）</p>
+                    <p><strong>成交量规律</strong>：3-6月放量显著，春夏季成交量明显放大</p>
+                    <p><strong>交易策略</strong>：春季（2-4月）存在做多机会</p>
+                </div>
+            </div>
+
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <div class="seasonal-name">秋季偏弱</div>
+                    <span class="seasonal-badge negative">空头布局</span>
+                </div>
+                <div class="seasonal-content">
+                    <p><strong>9-10月</strong>月均收盘价最低（637元、630元）</p>
+                    <p><strong>成交量规律</strong>：9月活跃，成交量达全年次高</p>
+                    <p><strong>交易策略</strong>：秋季（9-10月）可考虑空头布局</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="max-width: 800px; margin: 24px auto 0;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>月份</th>
+                        <th>月均收盘价</th>
+                        <th>历史最低</th>
+                        <th>历史最高</th>
+                        <th>月均成交量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1月</td><td>704.94</td><td>300.5</td><td>1075.5</td><td>886,118</td></tr>
+                    <tr class="safe-row"><td>2月</td><td>718.13</td><td>324.5</td><td>1151.0</td><td>948,985</td></tr>
+                    <tr><td>3月</td><td>706.90</td><td>377.5</td><td>1174.5</td><td>1,224,176</td></tr>
+                    <tr><td>4月</td><td>676.08</td><td>370.0</td><td>1158.5</td><td>1,436,559</td></tr>
+                    <tr><td>5月</td><td>672.68</td><td>342.0</td><td>1337.0</td><td>1,372,151</td></tr>
+                    <tr><td>6月</td><td>688.57</td><td>343.5</td><td>1247.0</td><td>1,188,671</td></tr>
+                    <tr><td>7月</td><td>705.50</td><td>348.5</td><td>1244.0</td><td>1,044,996</td></tr>
+                    <tr><td>8月</td><td>658.40</td><td>360.5</td><td>1067.0</td><td>1,221,928</td></tr>
+                    <tr class="highlight-row"><td>9月</td><td>636.59</td><td>366.0</td><td>879.0</td><td>1,289,666</td></tr>
+                    <tr class="highlight-row"><td>10月</td><td>629.64</td><td>358.0</td><td>900.0</td><td>1,132,962</td></tr>
+                    <tr><td>11月</td><td>636.43</td><td>293.5</td><td>993.5</td><td>1,090,049</td></tr>
+                    <tr><td>12月</td><td>668.55</td><td>284.0</td><td>1144.5</td><td>1,154,099</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Black Metal Ranking -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">黑色系品种对比</h2>
+            <p class="content-section-desc">铁矿石在黑色系中的活跃度排名</p>
+        </div>
+
+        <div class="ranking-wrapper">
+            <table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>代码</th>
+                        <th>名称</th>
+                        <th>收盘价</th>
+                        <th>成交量</th>
+                        <th>活跃度</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>JM</td>
+                        <td>焦煤连续</td>
+                        <td>1,289.5</td>
+                        <td>1,695,879</td>
+                        <td class="ranking-stars">★★★★★</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>RB</td>
+                        <td>螺纹钢连续</td>
+                        <td>3,154.0</td>
+                        <td>1,011,355</td>
+                        <td class="ranking-stars">★★★★★</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>SM</td>
+                        <td>锰硅连续</td>
+                        <td>6,556.0</td>
+                        <td>667,813</td>
+                        <td class="ranking-stars">★★★★</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>HC</td>
+                        <td>热卷连续</td>
+                        <td>3,330.0</td>
+                        <td>472,394</td>
+                        <td class="ranking-stars">★★★</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>SF</td>
+                        <td>硅铁连续</td>
+                        <td>6,120.0</td>
+                        <td>323,783</td>
+                        <td class="ranking-stars">★★★</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>6</strong></td>
+                        <td><strong>I</strong></td>
+                        <td><strong>铁矿石连续</strong></td>
+                        <td><strong>819.0</strong></td>
+                        <td><strong>263,330</strong></td>
+                        <td class="ranking-stars">★★</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="max-width: 700px; margin: 24px auto 0; padding: 20px; background: rgba(184, 41, 221, 0.05); border: 1px solid rgba(184, 41, 221, 0.2); border-radius: 12px;">
+            <p style="font-size: 14px; color: var(--text); margin: 0; text-align: center;">
+                <strong style="color: var(--accent-purple);">铁矿石定位</strong>：成交量在黑色系中排名第6，活跃度偏低；但作为钢铁生产核心原材料，价格波动对钢厂利润影响显著
+            </p>
+        </div>
+    </section>
+
+    <!-- Risk Assessment -->
+    <section class="content-section">
+        <div class="content-section-header">
+            <h2 class="content-section-title">风险与机会评估</h2>
+            <p class="content-section-desc">当前市场特征与技术面分析</p>
+        </div>
+
+        <div class="strategy-grid">
+            <div class="strategy-card danger">
+                <div class="strategy-header">
+                    <div class="strategy-icon">⚠️</div>
+                    <h3 class="strategy-title">下行风险</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>需求持续疲软</strong>：房地产市场长期低迷，基建投资不及预期</p>
+                    <p><strong>供应增加</strong>：国产矿产量提升，废钢替代效应增强</p>
+                    <p><strong>政策调控</strong>：保供稳价政策加码，国储继续投放</p>
+                </div>
+            </div>
+
+            <div class="strategy-card safe">
+                <div class="strategy-header">
+                    <div class="strategy-icon">📈</div>
+                    <h3 class="strategy-title">上行机会</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>供应端扰动</strong>：澳洲、巴西主要矿山供应中断，天气因素影响发货</p>
+                    <p><strong>需求超预期</strong>：房地产政策放松超预期，基建投资加速</p>
+                    <p><strong>宏观环境</strong>：货币政策宽松，人民币贬值推升进口成本</p>
+                </div>
+            </div>
+
+            <div class="strategy-card neutral">
+                <div class="strategy-header">
+                    <div class="strategy-icon">📊</div>
+                    <h3 class="strategy-title">当前特征</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>价格水平</strong>：中位偏上，819元高于历史均价680元</p>
+                    <p><strong>波动率</strong>：低位，日内振幅多在2%以内</p>
+                    <p><strong>流动性</strong>：偏低，成交量26万手低于历史均值</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metrics-card">
+                <h4 class="metrics-title">支撑位</h4>
+                <ul class="metrics-list">
+                    <li><span class="metrics-label">第一支撑</span><span class="metrics-value">750元</span></li>
+                    <li><span class="metrics-label">第二支撑</span><span class="metrics-value">700元</span></li>
+                    <li><span class="metrics-label">强支撑</span><span class="metrics-value">650元</span></li>
+                </ul>
+            </div>
+            <div class="metrics-card">
+                <h4 class="metrics-title">阻力位</h4>
+                <ul class="metrics-list">
+                    <li><span class="metrics-label">第一阻力</span><span class="metrics-value">830元</span></li>
+                    <li><span class="metrics-label">第二阻力</span><span class="metrics-value">870元</span></li>
+                    <li><span class="metrics-label">强阻力</span><span class="metrics-value">900元</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trading Strategy -->
+    <section class="content-section" style="border-bottom: none;">
+        <div class="content-section-header">
+            <h2 class="content-section-title">交易策略参考</h2>
+            <p class="content-section-desc">不同周期策略与关键监控指标</p>
+        </div>
+
+        <div class="strategy-grid">
+            <div class="strategy-card neutral">
+                <div class="strategy-header">
+                    <div class="strategy-icon">⚡</div>
+                    <h3 class="strategy-title">短线交易</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>周期</strong>：1-5天</p>
+                    <p>当前波动率较低，短线机会有限</p>
+                    <p>建议等待突破信号（放量突破830或跌破750）</p>
+                    <p>严格止损，控制仓位</p>
+                </div>
+            </div>
+
+            <div class="strategy-card neutral">
+                <div class="strategy-header">
+                    <div class="strategy-icon">📈</div>
+                    <h3 class="strategy-title">波段交易</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>周期</strong>：1-4周</p>
+                    <p>区间震荡思路，750-830元高抛低吸</p>
+                    <p>关注持仓量变化，资金进场是信号</p>
+                    <p>结合螺纹钢、焦煤联动判断</p>
+                </div>
+            </div>
+
+            <div class="strategy-card neutral">
+                <div class="strategy-header">
+                    <div class="strategy-icon">🎯</div>
+                    <h3 class="strategy-title">中长期配置</h3>
+                </div>
+                <div class="strategy-content">
+                    <p><strong>周期</strong>：1-3月</p>
+                    <p>等待趋势明确后再入场</p>
+                    <p>关注房地产政策动向</p>
+                    <p>关注铁矿石港口库存变化</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="max-width: 800px; margin: 32px auto 0;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>监控指标</th>
+                        <th>关注点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>港口库存</td>
+                        <td>库存下降偏多，上升偏空</td>
+                    </tr>
+                    <tr>
+                        <td>钢厂利润</td>
+                        <td>利润改善增加需求</td>
+                    </tr>
+                    <tr>
+                        <td>澳巴发货量</td>
+                        <td>发货减少支撑价格</td>
+                    </tr>
+                    <tr>
+                        <td>房地产数据</td>
+                        <td>新开工面积影响需求</td>
+                    </tr>
+                    <tr>
+                        <td>持仓量变化</td>
+                        <td>下降趋势，资金撤离需警惕</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <div class="page-footer-content">
+            <div class="page-footer-disclaimer">
+                <p style="margin-bottom: 12px;"><strong>数据来源</strong>：AKShare + 上海金属网 | 品种代码: I (铁矿石连续) | 交易所: DCE (大连商品交易所)</p>
+                <p><strong>风险提示</strong>：本报告提供的数据和分析仅供参考，不构成任何投资建议。期货交易有风险，投资需谨慎。历史表现不代表未来，投资者应根据自身风险承受能力谨慎决策。</p>
+            </div>
+            <div class="page-footer-meta">
+                报告生成日期: 2026年3月24日 | 数据范围: 2013-2026 (12年)
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Home Link -->
+    <div style="padding: 40px; text-align: center; border-top: 1px solid var(--border);">
+        <a href="../index.html#data" style="display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.3s ease;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            返回首页
+        </a>
+    </div>
+</body>
+</html>

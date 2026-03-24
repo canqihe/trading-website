@@ -483,7 +483,7 @@ body {
 
 .data-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
 }
 
@@ -533,16 +533,16 @@ body {
 
 .data-badge {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 6px 12px;
-    background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
-    border-radius: 999px;
+    top: 16px;
+    right: 16px;
+    padding: 4px 10px;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 6px;
     font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--bg);
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--accent-green);
 }
 
 .data-icon {
@@ -555,6 +555,7 @@ body {
     background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(184, 41, 221, 0.1));
     border-radius: 20px;
     color: var(--accent-green);
+    font-size: 36px;
 }
 
 .data-card.coming-soon .data-icon {
