@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NDX 纳斯达克100历史数据深度分析 | 交易大数据</title>
+    <link rel="stylesheet" href="../styles-redesigned.css">
+    <style>
+        /* ========================================
+           NDX ANALYSIS PAGE - CYBERPUNK THEME
+           Accent: Electric Blue (#4D9FFF)
+           ======================================== */
+
+        /* HERO */
+        .data-hero {
+            position: relative;
+            padding: 120px 40px 100px;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(77, 159, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(184, 41, 221, 0.04) 0%, transparent 50%),
+                var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+        .data-hero-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+        .data-title-main {
+            font-size: clamp(48px, 10vw, 88px);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #4D9FFF, rgba(77, 159, 255, 0.5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .data-title-sub {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            max-width: 650px;
+            margin-left: auto; margin-right: auto;
+            line-height: 1.7;
+        }
+        .data-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .data-meta-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+        }
+        .data-meta-label {
+            font-size: 11px; font-weight: 600; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;
+        }
+        .data-meta-value { font-size: 24px; font-weight: 800; color: var(--text); }
+        .data-meta-value.ndx { color: #4D9FFF; }
+
+        /* SUMMARY */
+        .summary-section { padding: 80px 40px; border-bottom: 1px solid var(--border); }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .summary-card {
+            padding: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .summary-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+        }
+        .summary-card:nth-child(1)::before { background: #4D9FFF; }
+        .summary-card:nth-child(2)::before { background: var(--accent-green); }
+        .summary-card:nth-child(3)::before { background: var(--accent-purple); }
+        .summary-card:nth-child(4)::before { background: var(--accent-pink); }
+        .summary-card:nth-child(5)::before { background: #FFD700; }
+        .summary-card:nth-child(6)::before { background: #FF6B35; }
+        .summary-card:hover { border-color: rgba(77, 159, 255, 0.3); transform: translateY(-2px); }
+        .summary-num {
+            font-size: 11px; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: #4D9FFF; margin-bottom: 12px;
+        }
+        .summary-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; line-height: 1.4; }
+        .summary-text { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+        .summary-text strong { color: var(--text); }
+        .summary-highlight {
+            margin-top: 16px; padding: 12px 16px; background: rgba(77, 159, 255, 0.06);
+            border-left: 2px solid #4D9FFF; border-radius: 0 8px 8px 0;
+            font-size: 13px; color: var(--text-muted); line-height: 1.6;
+        }
+        .summary-highlight strong { color: #4D9FFF; }
+        .summary-oneshot {
+            margin-top: 48px; padding: 32px; max-width: 900px; margin-left: auto; margin-right: auto;
+            background: linear-gradient(135deg, rgba(77, 159, 255, 0.08), rgba(0, 255, 136, 0.04));
+            border: 1px solid rgba(77, 159, 255, 0.15); border-radius: 16px; text-align: center;
+        }
+        .summary-oneshot p { font-size: 18px; font-weight: 600; line-height: 1.7; }
+        .summary-oneshot strong { color: #4D9FFF; }
+
+        /* CONTENT SECTIONS */
+        .content-section { padding: 80px 40px; border-bottom: 1px solid var(--border); }
+        .content-section-header { text-align: center; margin-bottom: 48px; }
+        .content-section-title {
+            font-size: clamp(28px, 5vw, 42px); font-weight: 800;
+            letter-spacing: -0.02em; margin-bottom: 14px;
+        }
+        .content-section-title .section-num {
+            font-size: 13px; font-weight: 700; letter-spacing: 3px;
+            color: #4D9FFF; display: block; margin-bottom: 8px;
+        }
+        .content-section-desc { font-size: 15px; color: var(--text-muted); }
+
+        /* TABLES */
+        .table-wrapper {
+            max-width: 1100px; margin: 0 auto 40px; border-radius: 12px;
+            overflow: hidden; background: var(--bg-card); border: 1px solid var(--border);
+        }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .data-table thead {
+            background: rgba(77, 159, 255, 0.05); border-bottom: 1px solid var(--border);
+        }
+        .data-table th {
+            padding: 16px 16px; text-align: left; font-weight: 600; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);
+        }
+        .data-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+        .data-table tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
+        .data-table .bull { color: var(--accent-green); font-weight: 600; }
+        .data-table .bear { color: var(--accent-pink); font-weight: 600; }
+        .data-table .highlight-val { color: #4D9FFF; font-weight: 700; }
+        .data-table .safe-row {
+            background: rgba(0, 255, 136, 0.03); border-left: 2px solid var(--accent-green);
+        }
+        .data-table .danger-row {
+            background: rgba(255, 46, 151, 0.03); border-left: 2px solid var(--accent-pink);
+        }
+        .trend-up { color: var(--accent-green) !important; }
+        .trend-down { color: var(--accent-pink) !important; }
+        .ndx-color { color: #4D9FFF !important; }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+            max-width: 1000px; margin: 0 auto 40px;
+        }
+        .stat-card {
+            padding: 28px 20px; background: var(--bg-card); border: 1px solid var(--border);
+            text-align: center; border-radius: 12px; transition: all 0.3s ease;
+        }
+        .stat-card:hover { border-color: rgba(77, 159, 255, 0.2); }
+        .stat-card-label {
+            font-size: 11px; font-weight: 600; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;
+        }
+        .stat-card-value { font-size: 36px; font-weight: 900; margin-bottom: 8px; }
+        .stat-card-value.success { color: var(--accent-green); }
+        .stat-card-value.danger { color: var(--accent-pink); }
+        .stat-card-value.ndx { color: #4D9FFF; }
+        .stat-card-value.purple { color: var(--accent-purple); }
+        .stat-card-sub { font-size: 12px; color: var(--text-muted); }
+
+        /* 3-COL STATS */
+        .stats-grid-3 {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+            max-width: 800px; margin: 0 auto 40px;
+        }
+
+        /* BULLET LIST */
+        .insight-list {
+            max-width: 800px; margin: 24px auto 0;
+            list-style: none;
+        }
+        .insight-list li {
+            padding: 14px 0; border-bottom: 1px solid var(--border);
+            font-size: 15px; color: var(--text-muted); line-height: 1.7;
+            display: flex; gap: 12px; align-items: flex-start;
+        }
+        .insight-list li:last-child { border-bottom: none; }
+        .insight-list li::before {
+            content: ''; display: inline-block; width: 6px; height: 6px;
+            background: #4D9FFF; border-radius: 50%; margin-top: 8px; flex-shrink: 0;
+        }
+        .insight-list li strong { color: var(--text); }
+        .insight-list li .green { color: var(--accent-green); }
+        .insight-list li .pink { color: var(--accent-pink); }
+
+        /* FINDING BOX */
+        .finding-box {
+            max-width: 800px; margin: 32px auto 0; padding: 24px 28px;
+            background: rgba(77, 159, 255, 0.04); border: 1px solid rgba(77, 159, 255, 0.12);
+            border-radius: 12px;
+        }
+        .finding-box-title {
+            font-size: 13px; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: #4D9FFF; margin-bottom: 12px;
+        }
+        .finding-box p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+        .finding-box p strong { color: var(--text); }
+
+        /* SEASONAL HEATMAP */
+        .heatmap-wrapper { max-width: 1100px; margin: 0 auto 40px; overflow-x: auto; }
+        .heatmap-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 800px; }
+        .heatmap-table th {
+            padding: 12px 6px; text-align: center; font-weight: 600; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+        .heatmap-table th.year-th { text-align: left; padding-left: 12px; }
+        .heatmap-table td {
+            padding: 9px 6px; text-align: center; font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.03); font-size: 12px;
+        }
+        .heatmap-table td.year { color: var(--text-muted); font-weight: 500; text-align: left; padding-left: 12px; }
+        .h-green { color: var(--accent-green) !important; }
+        .h-red { color: var(--accent-pink) !important; }
+        .h-dim { opacity: 0.5; }
+
+        /* SEASONAL CARDS */
+        .seasonal-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;
+            max-width: 1200px; margin: 0 auto 40px;
+        }
+        .seasonal-card {
+            padding: 24px; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; transition: all 0.3s ease;
+        }
+        .seasonal-card:hover { border-color: rgba(77, 159, 255, 0.2); }
+        .seasonal-card-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
+        }
+        .seasonal-month { font-size: 20px; font-weight: 700; }
+        .seasonal-badge {
+            font-size: 11px; font-weight: 600; letter-spacing: 1px;
+            padding: 4px 10px; border-radius: 999px;
+        }
+        .seasonal-badge.pos { background: rgba(0,255,136,0.15); color: var(--accent-green); }
+        .seasonal-badge.neg { background: rgba(255,46,151,0.15); color: var(--accent-pink); }
+        .seasonal-badge.neu { background: rgba(136,136,153,0.15); color: var(--text-muted); }
+        .seasonal-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .seasonal-stat {
+            padding: 8px; background: rgba(255,255,255,0.02); border-radius: 6px; text-align: center;
+        }
+        .seasonal-stat-label {
+            font-size: 10px; font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase; color: var(--text-muted); margin-bottom: 3px;
+        }
+        .seasonal-stat-value { font-size: 15px; font-weight: 700; }
+
+        /* DISCOVERY CARDS */
+        .discoveries-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;
+            max-width: 1200px; margin: 0 auto;
+        }
+        .discovery-card {
+            padding: 28px; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; transition: all 0.3s ease; position: relative;
+        }
+        .discovery-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, #4D9FFF, var(--accent-green));
+        }
+        .discovery-card:hover { border-color: rgba(77, 159, 255, 0.3); }
+        .discovery-number {
+            font-size: 11px; font-weight: 600; letter-spacing: 2px;
+            text-transform: uppercase; color: #4D9FFF; margin-bottom: 10px;
+        }
+        .discovery-title { font-size: 18px; font-weight: 700; margin-bottom: 14px; line-height: 1.4; }
+        .discovery-content { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+        .discovery-content strong { color: var(--text); }
+
+        /* STRATEGY CARDS */
+        .strategy-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px;
+            max-width: 1200px; margin: 0 auto;
+        }
+        .strategy-card {
+            padding: 32px; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; position: relative; overflow: hidden;
+        }
+        .strategy-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        }
+        .strategy-card.s-ndx::before { background: linear-gradient(90deg, #4D9FFF, #80BFFF); }
+        .strategy-card.s-green::before { background: linear-gradient(90deg, var(--accent-green), #5CFFAC); }
+        .strategy-card.s-purple::before { background: linear-gradient(90deg, var(--accent-purple), #D94DFF); }
+        .strategy-card.s-pink::before { background: linear-gradient(90deg, var(--accent-pink), #FF6B9D); }
+        .strategy-card.s-gold::before { background: linear-gradient(90deg, #FFD700, #FFE44D); }
+        .strategy-card:hover { border-color: rgba(77, 159, 255, 0.2); }
+        .strategy-head {
+            display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-top: 8px;
+        }
+        .strategy-icon {
+            width: 42px; height: 42px; border-radius: 10px; display: flex;
+            align-items: center; justify-content: center; font-size: 18px; font-weight: 800;
+        }
+        .strategy-card.s-ndx .strategy-icon { background: rgba(77,159,255,0.12); color: #4D9FFF; }
+        .strategy-card.s-green .strategy-icon { background: rgba(0,255,136,0.12); color: var(--accent-green); }
+        .strategy-card.s-purple .strategy-icon { background: rgba(184,41,221,0.12); color: var(--accent-purple); }
+        .strategy-card.s-pink .strategy-icon { background: rgba(255,46,151,0.12); color: var(--accent-pink); }
+        .strategy-card.s-gold .strategy-icon { background: rgba(255,215,0,0.12); color: #FFD700; }
+        .strategy-name { font-size: 18px; font-weight: 700; }
+        .strategy-def { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
+        .strategy-params { list-style: none; }
+        .strategy-params li {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+        }
+        .strategy-params li:last-child { border-bottom: none; }
+        .strategy-params .param-label { color: var(--text-muted); }
+        .strategy-params .param-value { font-weight: 600; color: var(--text); }
+        .strategy-params .param-value.green { color: var(--accent-green); }
+        .strategy-params .param-value.pink { color: var(--accent-pink); }
+        .strategy-params .param-value.ndx { color: #4D9FFF; }
+        .strategy-note {
+            margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border);
+            font-size: 12px; color: var(--text-muted); line-height: 1.6;
+        }
+
+        /* STRATEGY SUMMARY TABLE */
+        .strategy-summary-table {
+            max-width: 1000px; margin: 48px auto 0; border-radius: 12px;
+            overflow: hidden; background: var(--bg-card); border: 1px solid var(--border);
+        }
+        .strategy-summary-table .data-table th {
+            padding: 14px 16px; font-size: 11px; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-muted);
+        }
+        .strategy-summary-table .data-table td { padding: 14px 16px; }
+
+        /* MOMENTUM STRUCTURE */
+        .momentum-wrapper { max-width: 800px; margin: 0 auto 40px; }
+        .momentum-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .momentum-card {
+            padding: 28px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+        }
+        .momentum-title { font-size: 15px; font-weight: 700; margin-bottom: 20px; }
+        .momentum-bar { margin-bottom: 12px; }
+        .momentum-bar-label {
+            display: flex; justify-content: space-between; font-size: 13px;
+            color: var(--text-muted); margin-bottom: 6px;
+        }
+        .momentum-bar-track { height: 28px; background: rgba(255,255,255,0.04); border-radius: 6px; overflow: hidden; }
+        .momentum-bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 10px; font-size: 12px; font-weight: 700; }
+        .momentum-bar-fill.up { background: linear-gradient(90deg, rgba(0,255,136,0.3), var(--accent-green)); }
+        .momentum-bar-fill.down { background: linear-gradient(90deg, rgba(255,46,151,0.3), var(--accent-pink)); }
+        .momentum-ratio {
+            text-align: center; margin-top: 16px; padding: 14px;
+            background: rgba(77,159,255,0.06); border-radius: 8px;
+            font-size: 16px; font-weight: 700;
+        }
+
+        /* VOL CHART */
+        .vol-chart-wrapper { max-width: 800px; margin: 0 auto 40px; }
+        .vol-chart-card {
+            padding: 32px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+        }
+        .vol-bars { display: flex; gap: 12px; height: 120px; align-items: flex-end; margin: 20px 0; }
+        .vol-bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .vol-bar {
+            width: 100%; border-radius: 4px 4px 0 0; min-height: 4px;
+            transition: all 0.3s ease;
+        }
+        .vol-bar-label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .vol-bar-value { font-size: 12px; font-weight: 700; }
+
+        /* RISK SECTION */
+        .risk-grid { max-width: 1000px; margin: 0 auto; }
+        .risk-card {
+            padding: 28px; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; margin-bottom: 20px;
+        }
+        .risk-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--accent-pink); }
+        .risk-list { list-style: none; }
+        .risk-list li {
+            padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+            color: var(--text-muted); line-height: 1.6; display: flex; gap: 10px;
+        }
+        .risk-list li:last-child { border-bottom: none; }
+        .risk-list li::before {
+            content: '!'; display: inline-block; width: 20px; height: 20px;
+            background: rgba(255,46,151,0.15); color: var(--accent-pink);
+            border-radius: 50%; text-align: center; line-height: 20px;
+            font-size: 11px; font-weight: 800; flex-shrink: 0;
+        }
+        .risk-list li strong { color: var(--text); }
+
+        /* TIPS LIST */
+        .tips-list { list-style: none; }
+        .tips-list li {
+            padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+            color: var(--text-muted); line-height: 1.7;
+        }
+        .tips-list li:last-child { border-bottom: none; }
+        .tips-list li strong { color: var(--accent-green); }
+
+        /* DISCLAIMER */
+        .disclaimer {
+            max-width: 800px; margin: 60px auto 0; padding: 24px; text-align: center;
+            background: rgba(255,255,255,0.02); border-radius: 12px;
+            font-size: 13px; color: var(--text-muted); line-height: 1.7;
+        }
+
+        /* BACK LINK */
+        .back-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 13px; color: var(--text-muted); text-decoration: none;
+            margin-bottom: 20px; transition: color 0.3s;
+        }
+        .back-link:hover { color: #4D9FFF; }
+
+        /* SECTION NAV */
+        .section-nav {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 10px 16px;
+            background: rgba(5, 5, 7, 0.7);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .section-nav a {
+            padding: 6px 12px; background: transparent; border: 1px solid transparent;
+            border-radius: 6px; font-size: 12px; color: var(--text-muted);
+            text-decoration: none; transition: all 0.3s; white-space: nowrap;
+        }
+        .section-nav a:hover { border-color: rgba(77,159,255,0.3); color: #4D9FFF; }
+
+        /* SUB HEADER */
+        .sub-header {
+            text-align: center; font-size: 16px; font-weight: 600; margin-bottom: 24px;
+            color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        /* DUAL TABLES */
+        .dual-tables {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+            max-width: 1000px; margin: 0 auto 40px;
+        }
+
+        /* QUOTE BOX */
+        .quote-box-section {
+            max-width: 800px; margin: 32px auto; padding: 28px;
+            background: linear-gradient(135deg, rgba(255,46,151,0.06), rgba(77,159,255,0.04));
+            border: 1px solid rgba(255,46,151,0.15); border-radius: 12px; text-align: center;
+        }
+        .quote-box-section p { font-size: 16px; font-weight: 600; line-height: 1.7; color: var(--text-muted); }
+        .quote-box-section strong { color: var(--text); }
+
+        /* PERSONALITY CARD */
+        .personality-card {
+            max-width: 700px; margin: 0 auto; padding: 32px;
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+            font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; line-height: 2;
+            color: var(--text-muted);
+        }
+        .personality-card .pk { color: #4D9FFF; }
+        .personality-card .pv { color: var(--accent-green); }
+        .personality-card .pd { color: var(--accent-pink); }
+        .personality-card .pp { color: var(--accent-purple); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .data-meta-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid-3 { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: 1fr; }
+            .momentum-row { grid-template-columns: 1fr; }
+            .strategy-grid { grid-template-columns: 1fr; }
+            .discoveries-grid { grid-template-columns: 1fr; }
+            .seasonal-grid { grid-template-columns: 1fr 1fr; }
+            .dual-tables { grid-template-columns: 1fr; }
+            .content-section { padding: 48px 20px; }
+            .data-hero { padding: 80px 20px 60px; }
+            .section-nav { flex-wrap: wrap; justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero -->
+    <section class="data-hero">
+        <div class="data-hero-inner">
+            <div class="data-title-main">NDX</div>
+            <p class="data-title-sub">纳斯达克100 1985-2026 历史数据深度分析<br>40年 &middot; 10,200个交易日 &middot; 系统性挖掘结构性规律与可交易信号</p>
+            <div class="data-meta-grid">
+                <div class="data-meta-item">
+                    <div class="data-meta-label">交易日</div>
+                    <div class="data-meta-value ndx">10,200</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">年化收益</div>
+                    <div class="data-meta-value success">14.15%</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">总涨幅</div>
+                    <div class="data-meta-value success">21,116%</div>
+                </div>
+                <div class="data-meta-item">
+                    <div class="data-meta-label">可执行策略</div>
+                    <div class="data-meta-value purple">5 个</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Nav -->
+    <div class="section-nav">
+        <a href="#summary">核心摘要</a>
+        <a href="#structure">长期结构</a>
+        <a href="#seasonal">季节性</a>
+        <a href="#waves">波段特征</a>
+        <a href="#behavior">行为模式</a>
+        <a href="#volatility">波动率</a>
+        <a href="#insights">关键洞察</a>
+        <a href="#strategies">交易策略</a>
+        <a href="#risks">风险局限</a>
+    </div>
+
+    <!-- ============ 摘要 ============ -->
+    <section id="summary" class="summary-section">
+        <div class="content-section-header">
+            <div class="content-section-title">
+                <span class="section-num">EXECUTIVE SUMMARY</span>
+                核心结论
+            </div>
+            <p class="content-section-desc">NDX 的"性格"可以总结为以下 6 个结构性特征</p>
+        </div>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-num">FEATURE 01</div>
+                <div class="summary-title">不对称的涨跌结构</div>
+                <div class="summary-text">
+                    上涨波段平均涨幅是下跌的 <strong>1.76 倍</strong>（10%阈值），上涨持续时间是下跌的 <strong>4.9 倍</strong>。不是赢率高，而是赢的时候赢得多、赢得久。
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-num">FEATURE 02</div>
+                <div class="summary-title">暴跌是机会，暴涨是陷阱</div>
+                <div class="summary-text">
+                    单日跌幅 &gt;4% 后20日平均 <strong>+1.05%</strong>；单日涨幅 &gt;5% 后5日平均 <strong>-1.38%</strong>。NDX 的均值回归在极端波动时最显著。
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-num">FEATURE 03</div>
+                <div class="summary-title">趋势衰竭是铁律</div>
+                <div class="summary-text">
+                    <strong>95%</strong> 的上涨波段呈衰竭结构（前半段快、后半段慢）。否定了"趋势加速追涨"的直觉——追涨加速段是危险的。
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-num">FEATURE 04</div>
+                <div class="summary-title">连跌是恐慌信号</div>
+                <div class="summary-text">
+                    连跌 &ge;5 天后次日平均跌 <strong>0.42%</strong>，胜率仅 <strong>38.5%</strong>。市场恐慌不会在第5天自动结束——"抄底"连跌是最危险的策略之一。
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-num">FEATURE 05</div>
+                <div class="summary-title">Q4 和 1 月是最佳窗口</div>
+                <div class="summary-text">
+                    Q4 日均 <strong>+0.095%</strong>（最强季度）；1 月 <strong>71%</strong> 年份上涨。9 月是唯一日均负收益月份。季初效应显著：前5天日均 <strong>+0.118%</strong>。
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-num">FEATURE 06</div>
+                <div class="summary-title">波动率收缩 = 机会</div>
+                <div class="summary-text">
+                    VCP 模式（波动率连续3期收缩）后20日平均 <strong>+3.99%</strong>，胜率 <strong>80.1%</strong>。这是 NDX 最可靠的可执行信号之一。
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-oneshot">
+            <p>NDX 是一个<strong>长牛、慢涨急跌、暴跌后反弹概率高、趋势呈衰竭结构</strong>的品种。<br><strong>保护下跌 &gt; 抓住上涨</strong> &mdash; 一次 -10% 跌幅需要 +11% 恢复，而 NDX 平均每88天涨19.5%</p>
+        </div>
+    </section>
+
+    <!-- ============ 一、长期结构 ============ -->
+    <section id="structure" class="content-section">
+        <div class="content-section-header">
+            <div class="content-section-title">
+                <span class="section-num">01 / LONG-TERM STRUCTURE</span>
+                长期结构分析
+            </div>
+            <p class="content-section-desc">40年数据揭示 NDX 的牛熊周期与核心驱动</p>
+        </div>
+
+        <!-- Basic stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-label">总涨幅</div>
+                <div class="stat-card-value success">21,116%</div>
+                <div class="stat-card-sub">1985.10 → 2026.03</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">年化收益 (CAGR)</div>
+                <div class="stat-card-value success">14.15%</div>
+                <div class="stat-card-sub">夏普比率 0.55</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">年化波动率</div>
+                <div class="stat-card-value danger">25.88%</div>
+                <div class="stat-card-sub">日均标准差 1.63%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">历史最大回撤</div>
+                <div class="stat-card-value danger">-82.9%</div>
+                <div class="stat-card-sub">2000-03 ~ 2015-11</div>
+            </div>
+        </div>
+
+        <div class="stats-grid-3">
+            <div class="stat-card">
+                <div class="stat-card-label">正收益天数占比</div>
+                <div class="stat-card-value ndx">54.9%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">最大单日涨幅</div>
+                <div class="stat-card-value success">+18.77%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">最大单日跌幅</div>
+                <div class="stat-card-value danger">-15.08%</div>
+            </div>
+        </div>
+
+        <!-- Decade comparison -->
+        <h3 class="sub-header">十年维度对比</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>年代</th><th>累计涨幅</th><th>年化波动率</th><th>最大回撤</th><th>上涨天数</th><th>特征</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1980s</td><td class="bull">+99.6%</td><td>20.9%</td><td class="bear">-39.9%</td><td>56.3%</td><td>起步期，1987闪崩</td></tr>
+                    <tr class="safe-row"><td>1990s</td><td class="bull">+1,528%</td><td>24.0%</td><td class="bear">-32.9%</td><td>55.2%</td><td>互联网泡沫，超级牛市</td></tr>
+                    <tr class="danger-row"><td>2000s</td><td class="bear">-50.9%</td><td>35.4%</td><td class="bear">-82.9%</td><td>52.6%</td><td>泡沫破裂 + 金融危机</td></tr>
+                    <tr class="safe-row"><td>2010s</td><td class="bull">+362.9%</td><td>17.3%</td><td class="bear">-63.3%</td><td>55.4%</td><td>低波慢牛</td></tr>
+                    <tr class="safe-row"><td>2020s*</td><td class="bull">+168.2%</td><td>25.4%</td><td class="bear">-35.6%</td><td>56.1%</td><td>COVID暴跌后V型恢复</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Bull/Bear cycles -->
+        <h3 class="sub-header">牛熊周期 (20%涨跌幅阈值)</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>周期</th><th>时间</th><th>持续天数</th><th>涨跌幅</th><th>换算</th></tr>
+                </thead>
+                <tbody>
+                    <tr class="safe-row"><td>牛市1</td><td>1985-10 ~ 1987-10</td><td>734</td><td class="bull">+90.7%</td><td>2.0年</td></tr>
+                    <tr class="danger-row"><td>熊市1 (黑色星期一)</td><td>1987-10</td><td>21</td><td class="bear">-39.9%</td><td>3周</td></tr>
+                    <tr class="safe-row"><td>牛市2</td><td>1987-10 ~ 1990-07</td><td>994</td><td class="bull">+91.7%</td><td>2.7年</td></tr>
+                    <tr class="danger-row"><td>熊市2</td><td>1990-07 ~ 1990-10</td><td>87</td><td class="bear">-32.9%</td><td>0.2年</td></tr>
+                    <tr class="safe-row"><td>超级牛市</td><td>1990-10 ~ 2000-03</td><td>2,839</td><td class="bull">+787.4%</td><td>7.8年</td></tr>
+                    <tr class="danger-row"><td>互联网崩盘</td><td>2000-03 ~ 2002-10</td><td>~930</td><td class="bear">-82.9%</td><td>2.5年</td></tr>
+                    <tr class="safe-row"><td>恢复牛市</td><td>2002-10 ~ 2007-10</td><td>1,850</td><td class="bull">+178.3%</td><td>5.1年</td></tr>
+                    <tr class="danger-row"><td>金融危机</td><td>2007-10 ~ 2008-11</td><td>~390</td><td class="bear">-49.6%</td><td>1.1年</td></tr>
+                    <tr class="safe-row"><td>最长牛市</td><td>2008-11 ~ 2018-08</td><td>3,569</td><td class="bull">+639.0%</td><td>9.8年</td></tr>
+                    <tr class="danger-row"><td>COVID崩盘</td><td>2020-02 ~ 2020-03</td><td>30</td><td class="bear">-28.0%</td><td>1.5月</td></tr>
+                    <tr class="safe-row"><td>后COVID牛市</td><td>2020-03 ~ 2021-11</td><td>609</td><td class="bull">+137.0%</td><td>1.7年</td></tr>
+                    <tr class="danger-row"><td>2022熊市</td><td>2021-11 ~ 2022-12</td><td>~340</td><td class="bear">-35.6%</td><td>0.9年</td></tr>
+                    <tr class="safe-row"><td>AI牛市</td><td>2022-12 ~ 2025-02</td><td>784</td><td class="bull">+107.6%</td><td>2.1年</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="finding-box">
+            <div class="finding-box-title">结构性规律</div>
+            <p>
+                <strong>NDX 牛市平均持续 1,000+ 天（约4年），熊市平均 150 天（约7个月）。</strong><br>
+                熊市时间仅为牛市的 1/7。自1987年以来，没有一次熊市在一年内结束并创出新高。<br>
+                年内平均最大回撤 <strong>-20.1%</strong>——这意味着平均每年你都要承受 20% 的浮亏。
+            </p>
+        </div>
+
+        <!-- H1 vs H2 -->
+        <h3 class="sub-header">上半年 vs 下半年 (40年)</h3>
+        <div class="finding-box">
+            <div class="finding-box-title">惯性效应</div>
+            <p>
+                <strong>上半年涨幅 &gt;15% 时</strong> → 下半年平均 <strong class="green">+12.8%</strong>，上涨概率 81%（16年样本）<br>
+                <strong>上半年跌幅 &gt;5% 时</strong> → 下半年平均 <strong class="green">+2.8%</strong>，上涨概率 56%（9年样本）<br>
+                40年中上半年和下半年各胜 20 次，完全平衡。但强势年惯性显著。
+            </p>
+        </div>
+
+        <!-- Drawdown recovery -->
+        <h3 class="sub-header">回撤恢复时间</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>回撤深度</th><th>次数</th><th>平均恢复天数</th><th>换算</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>&ge;10%</td><td>32</td><td>166天</td><td>0.7年</td></tr>
+                    <tr><td>&ge;15%</td><td>15</td><td>321天</td><td>1.3年</td></tr>
+                    <tr><td>&ge;20%</td><td>8</td><td>528天</td><td>2.1年</td></tr>
+                    <tr class="danger-row"><td>&ge;30%</td><td>4</td><td>1,004天</td><td>4.0年</td></tr>
+                    <tr class="danger-row"><td>&ge;40%</td><td>1</td><td>3,292天</td><td>13.1年</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TOP10 drawdowns -->
+        <h3 class="sub-header">历史最大回撤 TOP 5</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>排名</th><th>起始</th><th>恢复</th><th>深度</th><th>持续天数</th></tr>
+                </thead>
+                <tbody>
+                    <tr class="danger-row"><td>1</td><td>2000-03</td><td>2015-11</td><td class="bear">-82.9%</td><td>3,926天 (15.6年)</td></tr>
+                    <tr class="danger-row"><td>2</td><td>1987-10</td><td>1989-05</td><td class="bear">-39.9%</td><td>416天 (1.7年)</td></tr>
+                    <tr class="danger-row"><td>3</td><td>2021-11</td><td>2023-12</td><td class="bear">-35.6%</td><td>520天 (2.1年)</td></tr>
+                    <tr><td>4</td><td>1990-07</td><td>1991-02</td><td class="bear">-32.9%</td><td>143天 (0.6年)</td></tr>
+                    <tr><td>5</td><td>2020-02</td><td>2020-06</td><td class="bear">-28.0%</td><td>75天 (0.3年)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ============ 二、季节性 ============ -->
+    <section id="seasonal" class="content-section">
+        <div class="content-section-header">
+            <div class="content-section-title">
+                <span class="section-num">02 / SEASONALITY</span>
+                季节性规律
+            </div>
+            <p class="content-section-desc">月度/季度/日历效应的系统性统计</p>
+        </div>
+
+        <!-- Monthly cards -->
+        <h3 class="sub-header">月度收益率统计</h3>
+        <div class="seasonal-grid">
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Jan</span>
+                    <span class="seasonal-badge pos">BEST</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value trend-up">+0.124%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">29/41</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value trend-up">+2.5%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value trend-up">71%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Feb</span>
+                    <span class="seasonal-badge neu">中性</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value">+0.023%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">20/41</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value">+0.5%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value">49%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Mar</span>
+                    <span class="seasonal-badge neu">中性</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value">+0.045%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">27/41</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value">+0.8%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value">66%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Apr</span>
+                    <span class="seasonal-badge neu">中性</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value">+0.080%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">24/40</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value">+1.5%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value">60%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">May</span>
+                    <span class="seasonal-badge pos">偏多</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value trend-up">+0.107%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">27/40</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value trend-up">+2.2%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value trend-up">68%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Jun</span>
+                    <span class="seasonal-badge neu">中性</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value">+0.039%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">21/40</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value">+0.8%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value">52%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Jul</span>
+                    <span class="seasonal-badge pos">偏多</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value trend-up">+0.084%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">27/40</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value trend-up">+1.7%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value trend-up">68%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Aug</span>
+                    <span class="seasonal-badge neu">中性</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value">+0.026%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">24/40</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value">+0.5%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value">60%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Sep</span>
+                    <span class="seasonal-badge neg">最差</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value trend-down">-0.028%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">22/40</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value trend-down">-0.5%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value">55%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Oct</span>
+                    <span class="seasonal-badge neu">中性</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value">+0.083%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">25/40</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value">+1.7%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value">62%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Nov</span>
+                    <span class="seasonal-badge pos">偏多</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value trend-up">+0.123%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">27/40</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value trend-up">+2.4%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value trend-up">68%</div></div>
+                </div>
+            </div>
+            <div class="seasonal-card">
+                <div class="seasonal-card-header">
+                    <span class="seasonal-month">Dec</span>
+                    <span class="seasonal-badge neu">中性</span>
+                </div>
+                <div class="seasonal-stats">
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">日均</div><div class="seasonal-stat-value">+0.081%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">上涨年</div><div class="seasonal-stat-value">21/40</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">月均</div><div class="seasonal-stat-value">+1.6%</div></div>
+                    <div class="seasonal-stat"><div class="seasonal-stat-label">胜率</div><div class="seasonal-stat-value">52%</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quarterly -->
+        <h3 class="sub-header">季度效应</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>季度</th><th>日均收益</th><th>标准差</th><th>胜率</th><th>评价</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Q1</td><td class="bull">+0.065%</td><td>1.678%</td><td>54.6%</td><td>1月带动</td></tr>
+                    <tr><td>Q2</td><td class="bull">+0.075%</td><td>1.600%</td><td>54.5%</td><td>稳健</td></tr>
+                    <tr><td>Q3</td><td>+0.028%</td><td>1.496%</td><td>54.8%</td><td>最弱，9月拖累</td></tr>
+                    <tr class="safe-row"><td><strong>Q4</strong></td><td class="bull"><strong>+0.095%</strong></td><td>1.735%</td><td>55.5%</td><td><strong>最强季度</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Calendar effects -->
+        <h3 class="sub-header">日历效应</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>时段</th><th>日均收益</th><th>上涨概率</th><th>样本</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>月末月初 (&plusmn;3天)</td><td class="bull">+0.048%</td><td>55.0%</td><td>大样本</td></tr>
+                    <tr><td>月中其余时间</td><td>+0.025%</td><td>54.6%</td><td>大样本</td></tr>
+                    <tr class="safe-row"><td><strong>季初5天</strong></td><td class="bull"><strong>+0.118%</strong></td><td><strong>57.5%</strong></td><td>大样本</td></tr>
+                    <tr><td>季末5天</td><td>+0.024%</td><td>51.9%</td><td>大样本</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="finding-box">
+            <div class="finding-box-title">5月"卖出并离开"不适用于 NDX</div>
+            <p>5月上涨概率 <strong>68%</strong>，月均收益 <strong>+2.2%</strong>，中位收益 <strong>+3.5%</strong>。在 NDX 上，这个传统智慧是错的。</p>
+        </div>
+
+        <!-- Heatmap -->
+        <h3 class="sub-header">各年各月收益率热力图 (1986-2025)</h3>
+        <div class="heatmap-wrapper">
+            <table class="heatmap-table">
+                <thead>
+                    <tr><th class="year-th">年份</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="year">1986</td><td class="h-green">+0.5</td><td class="h-green">+5.6</td><td class="h-green">+6.0</td><td class="h-green">+4.1</td><td class="h-green">+5.3</td><td class="h-red">-0.3</td><td class="h-red">-11.0</td><td class="h-green">+4.8</td><td class="h-red">-9.4</td><td class="h-green">+5.1</td><td class="h-green">+2.4</td><td class="h-red">-4.4</td></tr>
+                    <tr><td class="year">1987</td><td class="h-green">+17.9</td><td class="h-green">+9.6</td><td class="h-green">+1.8</td><td class="h-red">-0.7</td><td class="h-green">+2.1</td><td class="h-green">+0.2</td><td class="h-green">+3.8</td><td class="h-green">+6.7</td><td class="h-red">-1.9</td><td class="h-red">-27.0</td><td class="h-red">-8.6</td><td class="h-green">+13.9</td></tr>
+                    <tr><td class="year">1988</td><td class="h-green">+1.8</td><td class="h-green">+8.5</td><td class="h-green">+0.4</td><td class="h-green">+1.5</td><td class="h-red">-1.5</td><td class="h-green">+9.0</td><td class="h-red">-4.2</td><td class="h-red">-5.6</td><td class="h-green">+4.9</td><td class="h-red">-2.6</td><td class="h-red">-3.2</td><td class="h-green">+4.9</td></tr>
+                    <tr><td class="year">1989</td><td class="h-green">+5.1</td><td class="h-red">-1.4</td><td class="h-green">+1.1</td><td class="h-green">+7.9</td><td class="h-green">+7.0</td><td class="h-red">-4.6</td><td class="h-green">+4.7</td><td class="h-green">+3.6</td><td class="h-green">+2.0</td><td class="h-red">-1.7</td><td class="h-green">+0.8</td><td class="h-red">-0.3</td></tr>
+                    <tr><td class="year">1990</td><td class="h-red">-9.8</td><td class="h-green">+3.0</td><td class="h-green">+2.5</td><td class="h-red">-3.4</td><td class="h-green">+14.7</td><td class="h-green">+1.0</td><td class="h-red">-6.3</td><td class="h-red">-13.3</td><td class="h-red">-8.6</td><td class="h-red">-2.5</td><td class="h-green">+11.6</td><td class="h-green">+4.1</td></tr>
+                    <tr><td class="year">1991</td><td class="h-green">+15.9</td><td class="h-green">+7.6</td><td class="h-green">+5.9</td><td class="h-red">-0.5</td><td class="h-green">+5.8</td><td class="h-red">-8.9</td><td class="h-green">+7.1</td><td class="h-green">+5.6</td><td class="h-green">+0.0</td><td class="h-green">+1.7</td><td class="h-red">-2.6</td><td class="h-green">+16.2</td></tr>
+                    <tr><td class="year">1995</td><td class="h-green">+0.3</td><td class="h-green">+6.7</td><td class="h-green">+3.4</td><td class="h-green">+5.0</td><td class="h-green">+3.9</td><td class="h-green">+10.2</td><td class="h-green">+5.7</td><td class="h-green">+1.4</td><td class="h-green">+1.4</td><td class="h-green">+2.3</td><td class="h-red">-0.8</td><td class="h-red">-2.9</td></tr>
+                    <tr><td class="year">1998</td><td class="h-green">+8.1</td><td class="h-green">+11.5</td><td class="h-green">+2.2</td><td class="h-green">+2.2</td><td class="h-red">-4.5</td><td class="h-green">+12.2</td><td class="h-green">+3.0</td><td class="h-red">-17.2</td><td class="h-green">+18.0</td><td class="h-green">+4.1</td><td class="h-green">+11.2</td><td class="h-green">+17.8</td></tr>
+                    <tr><td class="year">1999</td><td class="h-green">+15.9</td><td class="h-red">-9.5</td><td class="h-green">+9.4</td><td class="h-green">+1.4</td><td class="h-red">-2.2</td><td class="h-green">+9.9</td><td class="h-red">-1.1</td><td class="h-green">+5.5</td><td class="h-green">+0.5</td><td class="h-green">+9.5</td><td class="h-green">+12.5</td><td class="h-green">+25.0</td></tr>
+                    <tr class="danger-row"><td class="year">2000</td><td class="h-red">-3.7</td><td class="h-green">+19.5</td><td class="h-green">+3.1</td><td class="h-red">-14.2</td><td class="h-red">-11.9</td><td class="h-green">+13.2</td><td class="h-red">-4.1</td><td class="h-green">+13.0</td><td class="h-red">-12.4</td><td class="h-red">-8.1</td><td class="h-red">-23.6</td><td class="h-red">-6.6</td></tr>
+                    <tr class="danger-row"><td class="year">2001</td><td class="h-green">+10.7</td><td class="h-red">-26.4</td><td class="h-red">-17.6</td><td class="h-green">+17.9</td><td class="h-red">-3.0</td><td class="h-green">+1.7</td><td class="h-red">-8.0</td><td class="h-red">-12.7</td><td class="h-red">-20.5</td><td class="h-green">+16.8</td><td class="h-green">+16.9</td><td class="h-red">-1.2</td></tr>
+                    <tr class="danger-row"><td class="year">2002</td><td class="h-red">-1.7</td><td class="h-red">-12.3</td><td class="h-green">+6.9</td><td class="h-red">-12.1</td><td class="h-red">-5.4</td><td class="h-red">-13.0</td><td class="h-red">-8.5</td><td class="h-red">-2.0</td><td class="h-red">-11.7</td><td class="h-green">+18.9</td><td class="h-green">+12.8</td><td class="h-red">-11.8</td></tr>
+                    <tr class="danger-row"><td class="year">2008</td><td class="h-red">-11.7</td><td class="h-red">-5.2</td><td class="h-green">+2.1</td><td class="h-green">+7.6</td><td class="h-green">+6.0</td><td class="h-red">-9.6</td><td class="h-green">+0.7</td><td class="h-green">+1.3</td><td class="h-red">-14.8</td><td class="h-red">-16.3</td><td class="h-red">-11.2</td><td class="h-green">+2.2</td></tr>
+                    <tr class="safe-row"><td class="year">2013</td><td class="h-green">+2.7</td><td class="h-green">+0.3</td><td class="h-green">+2.9</td><td class="h-green">+2.4</td><td class="h-green">+3.3</td><td class="h-red">-2.4</td><td class="h-green">+6.2</td><td class="h-red">-0.5</td><td class="h-green">+4.7</td><td class="h-green">+5.0</td><td class="h-green">+3.3</td><td class="h-green">+3.0</td></tr>
+                    <tr class="safe-row"><td class="year">2017</td><td class="h-green">+5.2</td><td class="h-green">+4.2</td><td class="h-green">+2.0</td><td class="h-green">+2.7</td><td class="h-green">+3.7</td><td class="h-red">-2.5</td><td class="h-green">+4.1</td><td class="h-green">+1.8</td><td class="h-red">-0.2</td><td class="h-green">+4.5</td><td class="h-green">+1.9</td><td class="h-green">+0.5</td></tr>
+                    <tr class="danger-row"><td class="year">2020</td><td class="h-green">+3.0</td><td class="h-red">-5.9</td><td class="h-red">-7.7</td><td class="h-green">+15.2</td><td class="h-green">+6.2</td><td class="h-green">+6.3</td><td class="h-green">+7.4</td><td class="h-green">+11.0</td><td class="h-red">-5.7</td><td class="h-red">-3.2</td><td class="h-green">+11.0</td><td class="h-green">+5.1</td></tr>
+                    <tr class="danger-row"><td class="year">2022</td><td class="h-red">-8.5</td><td class="h-red">-4.6</td><td class="h-green">+4.2</td><td class="h-red">-13.4</td><td class="h-red">-1.7</td><td class="h-red">-9.0</td><td class="h-green">+12.6</td><td class="h-red">-5.2</td><td class="h-red">-10.6</td><td class="h-green">+4.0</td><td class="h-green">+5.5</td><td class="h-red">-9.1</td></tr>
+                    <tr class="safe-row"><td class="year">2023</td><td class="h-green">+10.6</td><td class="h-red">-0.5</td><td class="h-green">+9.5</td><td class="h-green">+0.5</td><td class="h-green">+7.6</td><td class="h-green">+6.5</td><td class="h-green">+3.8</td><td class="h-red">-1.6</td><td class="h-red">-5.1</td><td class="h-red">-2.1</td><td class="h-green">+10.7</td><td class="h-green">+5.5</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ============ 三、波段特征 ============ -->
+    <section id="waves" class="content-section">
+        <div class="content-section-header">
+            <div class="content-section-title">
+                <span class="section-num">03 / WAVE CHARACTERISTICS</span>
+                价格波段特征
+            </div>
+            <p class="content-section-desc">上涨与下跌波段的幅度、持续时间和结构性差异</p>
+        </div>
+
+        <!-- 5% threshold -->
+        <h3 class="sub-header">5%阈值波段 (548个波段)</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>指标</th><th>上涨波段</th><th>下跌波段</th><th>比值 (涨/跌)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>数量</td><td>275</td><td>273</td><td>~1:1</td></tr>
+                    <tr class="safe-row"><td>平均幅度</td><td class="bull">+8.5%</td><td class="bear">-6.5%</td><td class="bull"><strong>1.31</strong></td></tr>
+                    <tr><td>中位数幅度</td><td class="bull">+5.6%</td><td class="bear">-5.3%</td><td>1.06</td></tr>
+                    <tr><td>最大幅度</td><td class="bull">+64.0%</td><td class="bear">-34.6%</td><td>1.85</td></tr>
+                    <tr class="safe-row"><td>平均持续天数</td><td><strong>28天</strong></td><td>9天</td><td class="bull"><strong>3.33</strong></td></tr>
+                    <tr><td>中位数持续天数</td><td>14天</td><td>5天</td><td>2.80</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 10% threshold -->
+        <h3 class="sub-header">10%阈值波段 (187个波段)</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>指标</th><th>上涨波段</th><th>下跌波段</th><th>比值 (涨/跌)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>数量</td><td>94</td><td>93</td><td>~1:1</td></tr>
+                    <tr class="safe-row"><td>平均幅度</td><td class="bull">+19.5%</td><td class="bear">-11.1%</td><td class="bull"><strong>1.76</strong></td></tr>
+                    <tr><td>中位数幅度</td><td class="bull">+12.9%</td><td class="bear">-7.9%</td><td>1.63</td></tr>
+                    <tr class="safe-row"><td>平均持续天数</td><td><strong>88天</strong></td><td>18天</td><td class="bull"><strong>4.89</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="finding-box">
+            <div class="finding-box-title">核心发现</div>
+            <p>
+                <strong>上涨和下跌波段数量接近，但上涨幅度更大、持续时间更长。</strong><br>
+                10%级别：平均赚19.5% vs 亏11.1%，盈亏比 <strong>1.76</strong>；持续时间比 <strong>4.89</strong>。<br>
+                这一不对称性随阈值增大而更显著，暗示 NDX 存在<strong>趋势持续性偏差</strong>。
+            </p>
+        </div>
+
+        <!-- Acceleration/Exhaustion -->
+        <h3 class="sub-header">趋势加速/衰竭结构</h3>
+        <div class="dual-tables">
+            <div class="momentum-card">
+                <div class="momentum-title trend-up">上涨波段 &gt;15% (n=43)</div>
+                <div class="momentum-bar">
+                    <div class="momentum-bar-label"><span>加速型 (后半段更快)</span><span>5%</span></div>
+                    <div class="momentum-bar-track"><div class="momentum-bar-fill down" style="width:5%;"></div></div>
+                </div>
+                <div class="momentum-bar">
+                    <div class="momentum-bar-label"><span>衰竭型 (前半段更快)</span><span>95%</span></div>
+                    <div class="momentum-bar-track"><div class="momentum-bar-fill up" style="width:95%;"></div></div>
+                </div>
+                <div class="momentum-ratio">
+                    95% 呈衰竭结构 &mdash; 趋势在减速中结束
+                </div>
+            </div>
+            <div class="momentum-card">
+                <div class="momentum-title trend-down">下跌波段 &gt;15% (n=32)</div>
+                <div class="momentum-bar">
+                    <div class="momentum-bar-label"><span>加速型 (后半段更猛)</span><span>28%</span></div>
+                    <div class="momentum-bar-track"><div class="momentum-bar-fill down" style="width:28%;"></div></div>
+                </div>
+                <div class="momentum-bar">
+                    <div class="momentum-bar-label"><span>衰竭型 (前半段更猛)</span><span>72%</span></div>
+                    <div class="momentum-bar-track"><div class="momentum-bar-fill up" style="width:72%;"></div></div>
+                </div>
+                <div class="momentum-ratio">
+                    72% 呈衰竭结构 &mdash; 下跌有时确实会加速
+                </div>
+            </div>
+        </div>
+
+        <div class="finding-box">
+            <div class="finding-box-title">交易含义</div>
+            <p>
+                <strong>趋势的"甜蜜区"在前40%的上涨。</strong>买入信号应放在趋势早期而非加速期。<br>
+                如果你在趋势加速时追入，你大概率买在了趋势的后半段。
+            </p>
+        </div>
+    </section>
+
+    <!-- ============ 四、行为模式 ============ -->
+    <section id="behavior" class="content-section">
+        <div class="content-section-header">
+            <div class="content-section-title">
+                <span class="section-num">04 / BEHAVIORAL PATTERNS</span>
+                行为模式
+            </div>
+            <p class="content-section-desc">连涨/连跌、大幅波动和突破后的可统计行为</p>
+        </div>
+
+        <!-- Consecutive days -->
+        <div class="dual-tables">
+            <div>
+                <h3 class="sub-header" style="color: var(--accent-green);">连涨后次日表现 (动量延续)</h3>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead><tr><th>连涨天数</th><th>样本</th><th>次日胜率</th><th>次日均值</th></tr></thead>
+                        <tbody>
+                            <tr><td>&ge;3天</td><td>757</td><td class="bull">61.0%</td><td class="bull">+0.21%</td></tr>
+                            <tr><td>&ge;4天</td><td>424</td><td class="bull">64.2%</td><td class="bull">+0.26%</td></tr>
+                            <tr><td>&ge;5天</td><td>227</td><td class="bull">63.4%</td><td class="bull">+0.30%</td></tr>
+                            <tr><td>&ge;6天</td><td>131</td><td class="bull">63.4%</td><td class="bull">+0.30%</td></tr>
+                            <tr class="safe-row"><td><strong>&ge;7天</strong></td><td><strong>71</strong></td><td class="bull"><strong>77.5%</strong></td><td class="bull"><strong>+0.63%</strong></td></tr>
+                            <tr class="safe-row"><td><strong>&ge;8天</strong></td><td><strong>39</strong></td><td class="bull"><strong>87.2%</strong></td><td class="bull"><strong>+0.96%</strong></td></tr>
+                            <tr><td>&ge;9天</td><td>22</td><td class="bull">86.4%</td><td class="bull">+0.76%</td></tr>
+                            <tr><td>&ge;10天</td><td>16</td><td class="bull">87.5%</td><td class="bull">+0.87%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div>
+                <h3 class="sub-header" style="color: var(--accent-pink);">连跌后次日表现 (恐慌惯性)</h3>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead><tr><th>连跌天数</th><th>样本</th><th>次日胜率</th><th>次日均值</th></tr></thead>
+                        <tbody>
+                            <tr><td>&ge;3天</td><td>542</td><td class="bear">45.4%</td><td class="bear">-0.09%</td></tr>
+                            <tr><td>&ge;4天</td><td>227</td><td class="bear">39.6%</td><td class="bear">-0.35%</td></tr>
+                            <tr><td>&ge;5天</td><td>96</td><td class="bear">38.5%</td><td class="bear">-0.42%</td></tr>
+                            <tr class="danger-row"><td><strong>&ge;6天</strong></td><td><strong>40</strong></td><td class="bear"><strong>30.0%</strong></td><td class="bear"><strong>-0.77%</strong></td></tr>
+                            <tr class="danger-row"><td><strong>&ge;7天</strong></td><td><strong>15</strong></td><td class="bear"><strong>20.0%</strong></td><td class="bear"><strong>-0.99%</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="finding-box">
+            <div class="finding-box-title">违反直觉的核心发现</div>
+            <p>
+                <strong>连涨具有持续性</strong>：连涨8天后次日胜率 87.2%——连续上涨不是卖出理由。<br>
+                <strong>连跌具有惯性</strong>：连跌7天后次日胜率仅 20%——"抄底"连跌是最危险的策略。<br>
+                <strong>两者都不立即反转。</strong> NDX 的短期趋势惯性极强。
+            </p>
+        </div>
+
+        <!-- Big move analysis -->
+        <h3 class="sub-header">大幅波动后的表现</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>前日波动</th><th>样本</th><th>次日胜率</th><th>次日均值</th><th>5日均值</th></tr>
+                </thead>
+                <tbody>
+                    <tr class="danger-row"><td>涨幅 &ge;3%</td><td>321</td><td>50.5%</td><td class="bear">-0.13%</td><td class="bear">-0.37%</td></tr>
+                    <tr class="danger-row"><td>涨幅 &ge;4%</td><td>145</td><td>49.0%</td><td class="bear">-0.24%</td><td class="bear">-0.58%</td></tr>
+                    <tr class="danger-row"><td>涨幅 <strong>&ge;5%</strong></td><td><strong>78</strong></td><td class="bear"><strong>41.0%</strong></td><td class="bear"><strong>-0.76%</strong></td><td class="bear"><strong>-1.38%</strong></td></tr>
+                    <tr class="danger-row"><td>涨幅 &ge;6%</td><td>49</td><td>40.8%</td><td class="bear">-1.02%</td><td class="bear">-1.75%</td></tr>
+                    <tr class="safe-row"><td>跌幅 &ge;3%</td><td>353</td><td class="bull">56.4%</td><td class="bull">+0.32%</td><td class="bull">+0.72%</td></tr>
+                    <tr class="safe-row"><td>跌幅 &ge;4%</td><td>159</td><td class="bull">57.9%</td><td class="bull">+0.51%</td><td class="bull">+1.22%</td></tr>
+                    <tr class="safe-row"><td>跌幅 <strong>&ge;5%</strong></td><td><strong>69</strong></td><td class="bull">52.2%</td><td class="bull">+0.53%</td><td class="bull">+1.32%</td></tr>
+                    <tr class="safe-row"><td>跌幅 &ge;6%</td><td>36</td><td class="bull">61.1%</td><td class="bull">+2.09%</td><td class="bull">+1.96%</td></tr>
+                    <tr class="safe-row"><td>跌幅 <strong>&ge;7%</strong></td><td><strong>22</strong></td><td class="bull"><strong>72.7%</strong></td><td class="bull"><strong>+3.79%</strong></td><td class="bull"><strong>+3.03%</strong></td></tr>
+                    <tr class="safe-row"><td>跌幅 &ge;8%</td><td>10</td><td class="bull"><strong>80.0%</strong></td><td class="bull"><strong>+5.54%</strong></td><td class="bull">+1.97%</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="finding-box">
+            <div class="finding-box-title">不对称的均值回归</div>
+            <p>
+                <strong>做多暴跌的期望值远高于做空暴涨。</strong><br>
+                跌幅 &gt;7% 后次日平均反弹 <strong>+3.79%</strong>（胜率 73%）；涨幅 &gt;5% 后次日仅回撤 -0.76%。<br>
+                NDX 的均值回归在暴跌时极为显著，但暴涨后的回调较温和。
+            </p>
+        </div>
+
+        <!-- Breakout analysis -->
+        <h3 class="sub-header">突破 20 日高低后表现</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>类型</th><th>样本</th><th>5日收益</th><th>10日收益</th><th>20日收益</th><th>5日胜率</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>突破20日高点</td><td>1,328</td><td class="bull">+0.22%</td><td class="bull">+0.56%</td><td class="bull">+1.19%</td><td>58.6%</td></tr>
+                    <tr class="safe-row"><td><strong>跌破20日低点</strong></td><td><strong>496</strong></td><td class="bull"><strong>+0.94%</strong></td><td class="bull"><strong>+1.36%</strong></td><td class="bull"><strong>+2.10%</strong></td><td class="bull"><strong>61.9%</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="finding-box">
+            <div class="finding-box-title">非直觉发现</div>
+            <p>
+                <strong>跌破20日低点后的20日收益（+2.10%）高于突破20日高点（+1.19%）。</strong><br>
+                NDX 的长期上升趋势使得"假跌破"比"假突破"更常见。<br>
+                跌破支撑往往是短期超卖，做空 NDX 支撑位是亏钱的策略。
+            </p>
+        </div>
+
+        <!-- Consecutive down months -->
+        <h3 class="sub-header">连续下跌月后表现</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead><tr><th>连跌月数</th><th>样本</th><th>下月平均</th><th>下月胜率</th></tr></thead>
+                <tbody>
+                    <tr class="safe-row"><td>2个月</td><td>48</td><td class="bull">+1.80%</td><td class="bull">66.7%</td></tr>
+                    <tr class="danger-row"><td>3个月</td><td>16</td><td class="bull">+0.54%</td><td class="bear">37.5%</td></tr>
+                    <tr class="safe-row"><td>4个月</td><td>10</td><td class="bull">+3.03%</td><td class="bull">70.0%</td></tr>
+                    <tr><td>5+个月</td><td>3</td><td class="bull">+9.12%</td><td class="bull">100%</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="finding-box">
+            <div class="finding-box-title">注意</div>
+            <p>
+                连跌3个月后胜率降至 37.5%，与熊市惯性一致。<strong>连跌2个月后是最安全的月度反转窗口（66.7%）。</strong><br>
+                但熊市中例外：2000-2002 期间，月跌 &gt;10% 后下月平均仍为 <strong class="pink">-1.95%</strong>。
+            </p>
+        </div>
+    </section>
+
+    <!-- ============ 五、波动率 ============ -->
+    <section id="volatility" class="content-section">
+        <div class="content-section-header">
+            <div class="content-section-title">
+                <span class="section-num">05 / VOLATILITY STRUCTURE</span>
+                波动率结构
+            </div>
+            <p class="content-section-desc">波动率聚集、均值回归与分位预测力</p>
+        </div>
+
+        <!-- Autocorrelation -->
+        <h3 class="sub-header">波动率聚集效应</h3>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-label">5日自相关</div>
+                <div class="stat-card-value danger">0.951</div>
+                <div class="stat-card-sub">极高聚集</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">20日自相关</div>
+                <div class="stat-card-value danger">0.709</div>
+                <div class="stat-card-sub">高聚集</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">60日自相关</div>
+                <div class="stat-card-value ndx">0.523</div>
+                <div class="stat-card-sub">中聚集</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">半衰期</div>
+                <div class="stat-card-value purple">67天</div>
+                <div class="stat-card-sub">~13周</div>
+            </div>
+        </div>
+        <div class="finding-box">
+            <div class="finding-box-title">含义</div>
+            <p>
+                今天的波动水平几乎等于昨天的。<strong>高/低波动状态平均持续约134天（6个月）后显著回归。</strong><br>
+                低波动环境（VIX &lt;15 对应 NDX 波 &lt;18%）至少维持2-3个月，是布局趋势策略的最佳窗口。
+            </p>
+        </div>
+
+        <!-- Vol quintiles -->
+        <h3 class="sub-header">波动率分位与未来收益</h3>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>波动区间</th><th>20日年化波%</th><th>5日后%</th><th>10日后%</th><th>20日后%</th><th>60日后%</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Q1 (最低)</td><td>10.6</td><td class="bull">+0.22</td><td class="bull">+0.45</td><td class="bull">+0.90</td><td class="bull">+2.56</td></tr>
+                    <tr><td>Q2</td><td>14.6</td><td class="bull">+0.31</td><td class="bull">+0.70</td><td class="bull">+1.19</td><td class="bull">+3.49</td></tr>
+                    <tr><td>Q3</td><td>18.3</td><td class="bull">+0.52</td><td class="bull">+0.80</td><td class="bull">+1.66</td><td class="bull">+4.83</td></tr>
+                    <tr class="safe-row"><td><strong>Q4 (次高)</strong></td><td><strong>24.2</strong></td><td class="bull"><strong>+0.43</strong></td><td class="bull"><strong>+0.91</strong></td><td class="bull"><strong>+1.87</strong></td><td class="bull"><strong>+5.34</strong></td></tr>
+                    <tr><td>Q5 (最高)</td><td>43.5</td><td class="bull">+0.16</td><td class="bull">+0.37</td><td class="bull">+0.83</td><td class="bull">+3.24</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="finding-box">
+            <div class="finding-box-title">非直觉发现</div>
+            <p>
+                <strong>Q4（次高波动）的未来收益最高</strong>（60日后+5.34%），而非最低波动。<br>
+                NDX 的最佳收益窗口不是"安静期"，而是<strong>波动开始升高但尚未达到极端的"温热期"（年化20-30%）</strong>。
+            </p>
+        </div>
+
+        <!-- VCP -->
+        <h3 class="sub-header">波动率收缩 (VCP) 信号</h3>
+        <div class="stats-grid-3">
+            <div class="stat-card">
+                <div class="stat-card-label">信号次数</div>
+                <div class="stat-card-value ndx">1,882</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">20日后平均收益</div>
+                <div class="stat-card-value success">+3.99%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">胜率</div>
+                <div class="stat-card-value success">80.1%</div>
+            </div>
+        </div>
+
+        <!-- Vol distribution -->
+        <h3 class="sub-header">波动率分布特征</h3>
+        <div class="vol-chart-wrapper">
+            <div class="vol-chart-card">
+                <div class="vol-bars">
+                    <div class="vol-bar-group">
+                        <div class="vol-bar-value">11.0%</div>
+                        <div class="vol-bar" style="height:10%;background:linear-gradient(to top,rgba(0,255,136,0.2),rgba(0,255,136,0.6));"></div>
+                        <div class="vol-bar-label">P10</div>
+                    </div>
+                    <div class="vol-bar-group">
+                        <div class="vol-bar-value">13.7%</div>
+                        <div class="vol-bar" style="height:15%;background:linear-gradient(to top,rgba(0,255,136,0.2),rgba(0,255,136,0.6));"></div>
+                        <div class="vol-bar-label">P25</div>
+                    </div>
+                    <div class="vol-bar-group">
+                        <div class="vol-bar-value" style="color:#4D9FFF;">18.2%</div>
+                        <div class="vol-bar" style="height:22%;background:linear-gradient(to top,rgba(77,159,255,0.2),rgba(77,159,255,0.6));"></div>
+                        <div class="vol-bar-label">中位数</div>
+                    </div>
+                    <div class="vol-bar-group">
+                        <div class="vol-bar-value">26.3%</div>
+                        <div class="vol-bar" style="height:35%;background:linear-gradient(to top,rgba(184,41,221,0.2),rgba(184,41,221,0.6));"></div>
+                        <div class="vol-bar-label">P75</div>
+                    </div>
+                    <div class="vol-bar-group">
+                        <div class="vol-bar-value">38.0%</div>
+                        <div class="vol-bar" style="height:55%;background:linear-gradient(to top,rgba(255,46,151,0.2),rgba(255,46,151,0.6));"></div>
+                        <div class="vol-bar-label">P90</div>
+                    </div>
+                    <div class="vol-bar-group">
+                        <div class="vol-bar-value trend-down">109.9%</div>
+                        <div class="vol-bar" style="height:100%;background:linear-gradient(to top,rgba(255,46,151,0.3),rgba(255,46,151,0.8));"></div>
+                        <div class="vol-bar-label">最大值</div>
+                    </div>
+                </div>
+                <div style="text-align:center;font-size:13px;color:var(--text-muted);">
+                    偏度 <strong style="color:var(--accent-pink);">2.31</strong>（正偏 = 更多极端高波动）&mdash; 低波动是"正常态"，高波动可能飙到远超预期的水平
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ 六、关键洞察 ============ -->
+    <section id="insights" class="content-section">
+        <div class="content-section-header">
+            <div class="content-section-title">
+                <span class="section-num">06 / KEY INSIGHTS</span>
+                关键洞察
+            </div>
+            <p class="content-section-desc">违反直觉但被数据验证的规律</p>
+        </div>
+
+        <div class="discoveries-grid">
+            <div class="discovery-card">
+                <div class="discovery-number">INSIGHT 01</div>
+                <div class="discovery-title">连涨不"到头"，连跌不"到底"</div>
+                <div class="discovery-content">
+                    <p>直觉认为"涨多了该跌"。数据否定这一点。</p>
+                    <p>连涨8天后次日胜率 <strong>87.2%</strong>——连续上涨不是卖出理由。</p>
+                    <p>连跌7天后次日胜率 <strong>20%</strong>——连续下跌不是买入理由。</p>
+                    <p>NDX 的短期趋势惯性极强。在市场连续朝一个方向运动时，<strong>押注反转是最危险的策略</strong>。</p>
+                </div>
+            </div>
+            <div class="discovery-card">
+                <div class="discovery-number">INSIGHT 02</div>
+                <div class="discovery-title">"抄底"需要等待恐慌极端化</div>
+                <div class="discovery-content">
+                    <p>普通抄底（连跌3-5天）效果很差。真正有效的信号：</p>
+                    <p><strong class="green">单日暴跌 &gt;6%</strong>：次日平均 +2.09%，胜率 61%</p>
+                    <p><strong class="green">单日暴跌 &gt;7%</strong>：次日平均 +3.79%，胜率 73%</p>
+                    <p><strong class="green">连跌月 &ge;2月</strong>：下月胜率 67%</p>
+                    <p>但<strong class="pink">熊市中这些信号会失效</strong>：2000-2002 期间恐慌后的"反弹"往往是下跌中继。</p>
+                </div>
+            </div>
+            <div class="discovery-card">
+                <div class="discovery-number">INSIGHT 03</div>
+                <div class="discovery-title">趋势在衰竭中结束，不在加速中</div>
+                <div class="discovery-content">
+                    <p><strong>95% 的上涨趋势呈前快后慢结构。</strong></p>
+                    <p>如果你在趋势加速期追入，你大概率买在了趋势的后半段。</p>
+                    <p>趋势的"甜蜜区"是前 40% 的上涨。</p>
+                </div>
+            </div>
+            <div class="discovery-card">
+                <div class="discovery-number">INSIGHT 04</div>
+                <div class="discovery-title">NDX 的"真面目"：慢涨急跌</div>
+                <div class="discovery-content">
+                    <p>上涨波段：平均持续 <strong>88天</strong>，日均 <strong>+0.22%</strong></p>
+                    <p>下跌波段：平均持续 <strong>18天</strong>，日均 <strong>-0.62%</strong></p>
+                    <p><strong class="pink">下跌速度是上涨的 2.8 倍</strong></p>
+                    <p>NDX 赚钱靠"慢涨积攒"——54.9%的上涨天数日积月累。亏钱则是"急跌蒸发"——少数暴跌日抹去数月涨幅。</p>
+                </div>
+            </div>
+            <div class="discovery-card">
+                <div class="discovery-number">INSIGHT 05</div>
+                <div class="discovery-title">跌破支撑比突破阻力更可靠</div>
+                <div class="discovery-content">
+                    <p>跌破20日低点后20日平均 <strong class="green">+2.10%</strong>（胜率 62%）</p>
+                    <p>突破20日高点后20日平均 <strong class="green">+1.19%</strong>（胜率 59%）</p>
+                    <p>NDX 的长期上升趋势使得"假跌破"远比"假突破"常见。<strong>做空 NDX 支撑位在统计上是亏钱的策略。</strong></p>
+                </div>
+            </div>
+            <div class="discovery-card">
+                <div class="discovery-number">INSIGHT 06</div>
+                <div class="discovery-title">回撤越深，恢复越慢</div>
+                <div class="discovery-content">
+                    <p>10-15%回撤：平均恢复 <strong>40天</strong>（正常噪音）</p>
+                    <p>15-20%回撤：平均恢复 <strong>321天</strong></p>
+                    <p>20-30%回撤：平均恢复 <strong>528天</strong></p>
+                    <p>30%以上：平均恢复 <strong>1,004天</strong>（约4年）</p>
+                    <p>最大回撤（82.9%）：恢复用了 <strong>15.6年</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ 七、策略 ============ -->
+    <section id="strategies" class="content-section">
+        <div class="content-section-header">
+            <div class="content-section-title">
+                <span class="section-num">07 / TRADING STRATEGIES</span>
+                可执行交易策略
+            </div>
+            <p class="content-section-desc">基于40年数据的5个量化交易规则</p>
+        </div>
+
+        <!-- Strategy 1: Panic Buy -->
+        <div class="strategy-grid">
+            <div class="strategy-card s-ndx">
+                <div class="strategy-head">
+                    <div class="strategy-icon">01</div>
+                    <div class="strategy-name">恐慌抄底</div>
+                </div>
+                <div class="strategy-def">前一日收盘跌幅 &gt;5%，次日开盘买入，持有20个交易日</div>
+                <ul class="strategy-params">
+                    <li><span class="param-label">样本量</span><span class="param-value">69次（40年）</span></li>
+                    <li><span class="param-label">胜率</span><span class="param-value green">52.2%</span></li>
+                    <li><span class="param-label">平均收益</span><span class="param-value green">+2.34%</span></li>
+                    <li><span class="param-label">中位数收益</span><span class="param-value green">+0.94%</span></li>
+                    <li><span class="param-label">盈亏比</span><span class="param-value ndx">1.46</span></li>
+                    <li><span class="param-label">最大单笔盈利</span><span class="param-value green">+37.0%</span></li>
+                    <li><span class="param-label">最大单笔亏损</span><span class="param-value pink">-22.9%</span></li>
+                </ul>
+                <div class="strategy-note">
+                    <strong>出场：</strong>持有20天无条件平仓，或触及-10%止损<br>
+                    <strong>风控：</strong>单笔仓位 &le;5%，避免在已确认的熊市周期中执行
+                </div>
+            </div>
+
+            <!-- Strategy 2: Down Month Bounce -->
+            <div class="strategy-card s-green">
+                <div class="strategy-head">
+                    <div class="strategy-icon">02</div>
+                    <div class="strategy-name">连跌月反弹</div>
+                </div>
+                <div class="strategy-def">NDX连续2个自然月下跌，第二个月末买入，持有一个月</div>
+                <ul class="strategy-params">
+                    <li><span class="param-label">样本量</span><span class="param-value">48次（40年）</span></li>
+                    <li><span class="param-label">胜率</span><span class="param-value green">66.7%</span></li>
+                    <li><span class="param-label">平均收益</span><span class="param-value green">+1.80%</span></li>
+                    <li><span class="param-label">中位数收益</span><span class="param-value green">+2.52%</span></li>
+                    <li><span class="param-label">最大盈利</span><span class="param-value green">+26.4%</span></li>
+                    <li><span class="param-label">最大亏损</span><span class="param-value pink">-19.3%</span></li>
+                </ul>
+                <div class="strategy-note">
+                    <strong>出场：</strong>月末无条件平仓<br>
+                    <strong>风控：</strong>如果 NDX 从高点回撤 &gt;25%（已确认熊市），减半仓位或不执行
+                </div>
+            </div>
+
+            <!-- Strategy 3: VCP Breakout -->
+            <div class="strategy-card s-purple">
+                <div class="strategy-head">
+                    <div class="strategy-icon">03</div>
+                    <div class="strategy-name">低波动突破 (VCP)</div>
+                </div>
+                <div class="strategy-def">20日振幅均值连续3期下降 + 价格高于20日均线，买入持有20日</div>
+                <ul class="strategy-params">
+                    <li><span class="param-label">样本量</span><span class="param-value ndx">~1,200次（40年）</span></li>
+                    <li><span class="param-label">胜率</span><span class="param-value green">80.1%</span></li>
+                    <li><span class="param-label">平均收益</span><span class="param-value green">+3.99%</span></li>
+                    <li><span class="param-label">&gt;5%上涨概率</span><span class="param-value green">36.9%</span></li>
+                </ul>
+                <div class="strategy-note">
+                    <strong>出场：</strong>持有20天，或20日内涨幅 &gt;10%提前获利了结<br>
+                    <strong>风控：</strong>止损设在入场价下方3%，仓位8-10%<br>
+                    <strong class="green">统计上最强的策略</strong>：高胜率+高收益+大样本量，适合作为核心策略
+                </div>
+            </div>
+
+            <!-- Strategy 4: Momentum Continuation -->
+            <div class="strategy-card s-gold">
+                <div class="strategy-head">
+                    <div class="strategy-icon">04</div>
+                    <div class="strategy-name">动量延续</div>
+                </div>
+                <div class="strategy-def">NDX连续上涨 &ge;7天，次日开盘买入，持有10个交易日</div>
+                <ul class="strategy-params">
+                    <li><span class="param-label">样本量</span><span class="param-value">71次（40年）</span></li>
+                    <li><span class="param-label">胜率</span><span class="param-value green">83.1%</span></li>
+                    <li><span class="param-label">平均收益</span><span class="param-value green">+3.36%</span></li>
+                    <li><span class="param-label">中位数收益</span><span class="param-value green">+3.59%</span></li>
+                </ul>
+                <div class="strategy-note">
+                    <strong>出场：</strong>持有10天，或首次出现下跌日平仓<br>
+                    <strong>频率：</strong>每年约1.8次，错过成本高。仓位5-8%<br>
+                    与直觉相反，本质上是"让利润奔跑"的量化版本
+                </div>
+            </div>
+
+            <!-- Strategy 5: January Effect -->
+            <div class="strategy-card s-pink">
+                <div class="strategy-head">
+                    <div class="strategy-icon">05</div>
+                    <div class="strategy-name">1月 / 季初效应</div>
+                </div>
+                <div class="strategy-def">每年1月买入持有整月；或每季度前5天额外加仓</div>
+                <ul class="strategy-params">
+                    <li><span class="param-label">1月样本</span><span class="param-value">40年</span></li>
+                    <li><span class="param-label">1月胜率</span><span class="param-value green">65.0%</span></li>
+                    <li><span class="param-label">1月平均收益</span><span class="param-value green">+2.21%</span></li>
+                    <li><span class="param-label">季初5天胜率</span><span class="param-value green">57.5%</span></li>
+                    <li><span class="param-label">季初5天日均</span><span class="param-value green">+0.118%</span></li>
+                </ul>
+                <div class="strategy-note">
+                    <strong>入场：</strong>每年12月最后一个交易日收盘买入<br>
+                    <strong>出场：</strong>1月底平仓<br>
+                    <strong>难度：</strong>最低（定投即可）
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategy summary -->
+        <h3 class="sub-header">策略汇总</h3>
+        <div class="strategy-summary-table">
+            <table class="data-table">
+                <thead>
+                    <tr><th>策略</th><th>胜率</th><th>平均收益</th><th>样本量</th><th>频率</th><th>难度</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>恐慌抄底</td><td>52.2%</td><td class="bull">+2.34%</td><td>69</td><td>~2次/年</td><td>中（需逆人性）</td></tr>
+                    <tr><td>连跌月反弹</td><td class="bull">66.7%</td><td class="bull">+1.80%</td><td>48</td><td>~1.2次/年</td><td>低</td></tr>
+                    <tr class="safe-row"><td><strong>VCP突破</strong></td><td class="bull"><strong>80.1%</strong></td><td class="bull"><strong>+3.99%</strong></td><td><strong>1,200</strong></td><td><strong>~30次/年</strong></td><td>中</td></tr>
+                    <tr class="safe-row"><td><strong>动量延续</strong></td><td class="bull"><strong>83.1%</strong></td><td class="bull"><strong>+3.36%</strong></td><td><strong>71</strong></td><td><strong>~1.8次/年</strong></td><td><strong>低</strong></td></tr>
+                    <tr><td>1月效应</td><td class="bull">65.0%</td><td class="bull">+2.21%</td><td>40</td><td>1次/年</td><td>最低</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ============ 八、风险 ============ -->
+    <section id="risks" class="content-section">
+        <div class="content-section-header">
+            <div class="content-section-title">
+                <span class="section-num">08 / RISKS &amp; LIMITATIONS</span>
+                风险与局限
+            </div>
+            <p class="content-section-desc">数据局限、策略风险与执行风险</p>
+        </div>
+
+        <div class="risk-grid">
+            <div class="risk-card">
+                <div class="risk-title">数据局限</div>
+                <ul class="risk-list">
+                    <li><strong>幸存者偏差</strong>：NDX 成分股定期调整，弱者被淘汰。当前 NDX 反映"适者生存"后的结果。</li>
+                    <li><strong>前视偏差</strong>：所有策略基于40年全样本回测，实际交易中统计优势可能减弱。</li>
+                    <li><strong>单一品种</strong>：NDX 的规律不一定适用于 SPX、DJIA 等其他指数。</li>
+                </ul>
+            </div>
+            <div class="risk-card">
+                <div class="risk-title">策略风险</div>
+                <ul class="risk-list">
+                    <li><strong>熊市中所有策略失效</strong>：2000-2002（-82.9%）和2008（-49.6%）中，均值回归信号反复亏损。</li>
+                    <li><strong>Regime Change</strong>：如果宏观环境发生结构性变化，历史规律可能不再有效。</li>
+                    <li><strong>过拟合风险</strong>：小样本策略（连跌5月后100%胜率仅3个样本）不应作为独立交易依据。</li>
+                </ul>
+            </div>
+            <div class="risk-card">
+                <div class="risk-title">执行风险</div>
+                <ul class="risk-list">
+                    <li><strong>滑点和成本</strong>：回测未考虑交易成本、滑点、资金占用。实际收益会低于回测。</li>
+                    <li><strong>心理执行</strong>："恐慌抄底"要求在恐慌时买入——多数人做不到。"动量延续"要求在连涨后继续追——同样违反人性。</li>
+                    <li><strong>流动性风险</strong>：极端行情下可能出现巨大滑点。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="quote-box-section">
+            <p>
+                <strong>NDX 的年化收益 14.15% 是以承受平均 -20.1% 的年内最大回撤为代价的。</strong><br>
+                历史上只有一次回撤超过50%就永远没有恢复（2000年高点），花了15.6年才解套。<br>
+                <strong>没有任何技术策略能替代"判断当前是否处于系统性熊市"这一宏观决策。</strong>
+            </p>
+        </div>
+
+        <!-- Personality -->
+        <h3 class="sub-header">NDX 性格画像</h3>
+        <div class="personality-card">
+            <span class="pk">日常状态</span>: <span class="pv">温和上涨</span> (54.9%的日子赚钱, 日均+0.066%)<br>
+            <span class="pk">波动常态</span>: <span class="pv">年化18%</span> (多数时间)<br>
+            <span class="pk">脾气发作</span>: <span class="pd">年均2-3次 &gt;4%暴跌</span>, 但暴跌后倾向于反弹<br>
+            <span class="pk">最长记忆</span>: <span class="pd">恐慌惯性约3-5天</span>, 趋势惯性约3个月<br>
+            <span class="pk">最大弱点</span>: <span class="pd">9月</span> (唯一负收益月份)<br>
+            <span class="pk">最强窗口</span>: <span class="pv">Q4 (+0.095%日均)</span>, <span class="pv">1月 (71%上涨概率)</span><br>
+            <span class="pk">致命伤</span>: <span class="pd">系统性熊市</span> (2000-2002, 2008) - 期间所有策略失效<br>
+            <span class="pk">核心优势</span>: <span class="pv">上涨波段是下跌的1.76倍大、4.9倍久</span>
+        </div>
+    </section>
+
+    <!-- Disclaimer -->
+    <div class="content-section" style="border-bottom:none;">
+        <div class="disclaimer">
+            <p>本报告基于 1985-2026 年 NDX 历史价格数据的统计分析，仅供学习研究。<br>
+            过去表现不代表未来收益。市场有风险，投资需谨慎。</p>
+            <p style="margin-top:12px;">报告生成日期: 2026-03-27 &middot; 数据来源: NDX_historical_prices.csv &middot; 分析工具: Python + Pandas + NumPy</p>
+        </div>
+    </div>
+
+    <!-- Back to home -->
+    <div style="text-align:center; padding:40px 20px 60px;">
+        <a href="../index.html#data" class="back-link" style="font-size:15px;">&larr; 返回交易大数据</a>
+    </div>
+
+    <!-- Scroll animations -->
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.summary-card, .strategy-card, .discovery-card, .seasonal-card, .stat-card, .momentum-card, .data-table, .finding-box, .personality-card, .quote-box-section').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for section nav
+        document.querySelectorAll('.section-nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navHeight = document.querySelector('.section-nav').offsetHeight;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 10;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
