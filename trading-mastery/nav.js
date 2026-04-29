@@ -39,12 +39,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 href = href.substring(3);
             }
 
-            // 匹配逻辑
-            if (currentPage === href) {
+            // 兼容 Cloudflare Pages Pretty URLs：去掉 .html 后缀
+            const hrefWithoutExt = href.endsWith('.html') ? href.slice(0, -5) : href;
+            const currentPageWithoutExt = currentPage.endsWith('.html') ? currentPage.slice(0, -5) : currentPage;
+
+            // 匹配逻辑：比较去掉 .html 后缀的文件名
+            if (currentPageWithoutExt === hrefWithoutExt || currentPage === href) {
                 link.classList.add('active');
             }
             // 处理首页（空文件名或 index.html）
-            else if ((!currentPage || currentPage === 'index.html' || currentPage === '') && href === 'index.html') {
+            else if ((!currentPage || currentPage === 'index' || currentPage === 'index.html' || currentPage === '') && href === 'index.html') {
                 link.classList.add('active');
             }
         });
