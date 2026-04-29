@@ -22,12 +22,29 @@ document.addEventListener('DOMContentLoaded', function() {
     if (navContainer) {
         navContainer.innerHTML = navHTML;
 
-        // 设置当前页面的 active 类
-        const currentPage = window.location.pathname.split('/').pop();
+        // 获取当前页面文件名
+        let currentPage = window.location.pathname.split('/').pop();
+
+        // 移除查询参数和哈希
+        if (currentPage) {
+            currentPage = currentPage.split(/[?#]/)[0];
+        }
+
         const links = document.querySelectorAll('.nav-menu a');
         links.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href === currentPage || (currentPage === '' && href === '../index.html')) {
+            let href = link.getAttribute('href');
+
+            // 统一处理：移除 ../ 前缀来比较文件名
+            if (href.startsWith('../')) {
+                href = href.substring(3);
+            }
+
+            // 匹配逻辑
+            if (currentPage === href) {
+                link.classList.add('active');
+            }
+            // 处理首页（空文件名或 index.html）
+            else if ((!currentPage || currentPage === 'index.html' || currentPage === '') && href === 'index.html') {
                 link.classList.add('active');
             }
         });
