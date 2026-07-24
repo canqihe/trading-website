@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Tony交易系统 — 法师 Tony 交易心法</title>
+  <meta name="description" content="把法师 Tony 的交易心法变成可问的交易教练。实时行情 × 红线纪律 × 滚仓策略，直接给结论。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0a0a0a;
+      --on-primary: #ffffff;
+      --primary-soft: #181e25;
+      --brand-coral: #ff5530;
+      --brand-magenta: #ea5ec1;
+      --brand-blue: #1456f0;
+      --brand-blue-mid: #3b82f6;
+      --brand-blue-deep: #1d4ed8;
+      --brand-cyan: #3daeff;
+      --brand-blue-200: #bfdbfe;
+      --brand-purple: #a855f7;
+      --canvas: #ffffff;
+      --surface: #f7f8fa;
+      --surface-soft: #f2f3f5;
+      --hairline: #e5e7eb;
+      --hairline-soft: #eaecf0;
+      --ink: #0a0a0a;
+      --ink-strong: #000000;
+      --charcoal: #222222;
+      --slate: #45515e;
+      --steel: #5f5f5f;
+      --stone: #8e8e93;
+      --muted: #a8aab2;
+      --success-bg: #e8ffea;
+      --success-text: #1ba673;
+      --danger: #d45656;
+      --on-dark: #ffffff;
+      --footer-bg: #0a0a0a;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-xxxl: 24px;
+      --radius-hero: 32px;
+      --radius-full: 9999px;
+      --max: 1280px;
+      --shadow-sm: 0 1px 2px rgba(16,24,40,0.05);
+      --shadow-md: 0 2px 4px rgba(16,24,40,0.04), 0 12px 28px -12px rgba(16,24,40,0.12);
+      --shadow-lg: 0 2px 6px rgba(16,24,40,0.05), 0 28px 56px -24px rgba(16,24,40,0.18);
+      --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+      --font: "DM Sans", Inter, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Noto Sans SC", sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--canvas);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    ::selection { background: rgba(255,85,48,0.22); }
+    :focus-visible { outline: 2px solid var(--brand-blue-mid); outline-offset: 2px; border-radius: 4px; }
+    .container { width: min(100% - 64px, var(--max)); margin-inline: auto; }
+    @media (max-width: 768px) {
+      .container { width: min(100% - 32px, var(--max)); }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s ease, transform 0.7s var(--ease-out);
+      transition-delay: var(--d, 0ms);
+      will-change: opacity, transform;
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .live-dot::after { animation: none !important; }
+    }
+
+    /* Nav */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(14px) saturate(1.4);
+      -webkit-backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+    .nav.scrolled {
+      background: rgba(255,255,255,0.92);
+      border-bottom-color: var(--hairline-soft);
+      box-shadow: 0 8px 24px -16px rgba(16,24,40,0.15);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 24px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .logo-mark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--charcoal);
+    }
+    .nav-links a {
+      position: relative;
+      padding: 4px 0;
+      transition: color 0.18s ease;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: 0;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--ink);
+      transition: right 0.22s var(--ease-out);
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { right: 0; }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .nav-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--hairline);
+      align-items: center;
+      justify-content: center;
+    }
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: inline-flex; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: var(--canvas);
+        border-bottom: 1px solid var(--hairline);
+        padding: 16px 24px 24px;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .nav-links a::after { display: none; }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      padding: 11px 24px;
+      border-radius: var(--radius-full);
+      transition: transform 0.18s var(--ease-out), box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+      white-space: nowrap;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); transition-duration: 0.05s; }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    .btn-primary:hover { background: #28282d; box-shadow: 0 8px 20px -8px rgba(10,10,10,0.45); }
+    .btn-primary:active { background: var(--charcoal); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--ink);
+    }
+    .btn-secondary:hover { background: var(--ink); color: var(--on-primary); }
+    .btn-tertiary {
+      background: var(--canvas);
+      color: var(--ink);
+      border: 1px solid var(--hairline);
+    }
+    .btn-tertiary:hover { border-color: #cfd4db; background: var(--surface); box-shadow: var(--shadow-sm); }
+    .btn-on-dark {
+      background: var(--canvas);
+      color: var(--ink);
+    }
+    .btn-on-dark:hover { box-shadow: 0 10px 24px -8px rgba(0,0,0,0.45); }
+    .btn-ghost-light {
+      background: transparent;
+      color: var(--on-dark);
+      border: 1px solid rgba(255,255,255,0.35);
+    }
+    .btn-ghost-light:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.6); }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 104px 0 88px;
+      text-align: center;
+      background:
+        radial-gradient(58% 46% at 88% -4%, rgba(61,174,255,0.10), transparent 62%),
+        radial-gradient(52% 42% at 6% 2%, rgba(255,85,48,0.09), transparent 62%),
+        var(--canvas);
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--hairline-soft) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hairline-soft) 1px, transparent 1px);
+      background-size: 56px 56px;
+      -webkit-mask-image: radial-gradient(72% 62% at 50% 0%, #000 0%, transparent 78%);
+      mask-image: radial-gradient(72% 62% at 50% 0%, #000 0%, transparent 78%);
+      opacity: 0.55;
+      pointer-events: none;
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.5;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+    }
+    .badge-new { background: var(--brand-coral); color: var(--on-dark); box-shadow: 0 4px 12px -4px rgba(255,85,48,0.5); }
+    .badge-beta { background: var(--brand-blue-200); color: var(--brand-blue-deep); }
+    .badge-success { background: var(--success-bg); color: var(--success-text); }
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 80px);
+      font-weight: 600;
+      line-height: 1.16;
+      letter-spacing: -0.01em;
+      max-width: 16ch;
+      margin: 0 auto 22px;
+      color: var(--ink-strong);
+    }
+    .hero h1 .hl {
+      font-style: normal;
+      background: linear-gradient(transparent 60%, rgba(255,85,48,0.30) 60%, rgba(255,85,48,0.30) 96%, transparent 96%);
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+    .hero .lead {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.6;
+      color: var(--steel);
+      max-width: 42ch;
+      margin: 0 auto 36px;
+    }
+    .hero-cta {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+    .hero-panel {
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--canvas);
+      outline: 1px solid var(--hairline);
+      border-radius: var(--radius-hero);
+      padding: 28px 32px;
+      text-align: left;
+      box-shadow: var(--shadow-lg);
+    }
+    .hero-panel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .hero-panel-top .dots {
+      display: flex;
+      gap: 6px;
+    }
+    .hero-panel-top .dots i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: block;
+    }
+    .hero-panel-top .dots i:nth-child(1) { background: #ff5f57; }
+    .hero-panel-top .dots i:nth-child(2) { background: #febc2e; }
+    .hero-panel-top .dots i:nth-child(3) { background: #28c840; }
+    .hero-panel-meta {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      color: var(--stone);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      display: inline-block;
+      margin-right: 8px;
+      position: relative;
+    }
+    .live-dot::after {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: rgba(34,197,94,0.35);
+      animation: pulse 1.8s ease-out infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.6); opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .chat-q {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--hairline-soft);
+      border-radius: 16px 16px 4px 16px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: var(--charcoal);
+      box-shadow: var(--shadow-sm);
+    }
+    .chat-a {
+      background: linear-gradient(165deg, #17171b 0%, #0a0a0a 60%);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: var(--on-dark);
+      border-radius: 16px 16px 16px 4px;
+      padding: 18px 20px;
+      font-size: 15px;
+      line-height: 1.55;
+      box-shadow: 0 16px 32px -16px rgba(10,10,10,0.4);
+    }
+    .chat-a strong { color: #ffb4a4; font-weight: 600; }
+    .chat-a .checks {
+      margin-top: 12px;
+      display: grid;
+      gap: 8px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.78);
+    }
+
+    /* Stats */
+    .stats {
+      border-top: 1px solid var(--hairline-soft);
+      border-bottom: 1px solid var(--hairline-soft);
+      padding: 44px 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-label {
+      font-size: 14px;
+      color: var(--steel);
+    }
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+    }
+
+    /* Section common */
+    section { padding: 96px 0; }
+    .section-head {
+      max-width: 640px;
+      margin-bottom: 52px;
+    }
+    .section-head.center {
+      text-align: center;
+      margin-inline: auto;
+    }
+    .eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-coral);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-head h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 600;
+      line-height: 1.24;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    .section-head p {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--steel);
+      line-height: 1.55;
+    }
+
+    /* Product matrix */
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .product-card {
+      border-radius: var(--radius-hero);
+      padding: 32px;
+      min-height: 320px;
+      color: var(--on-dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease;
+    }
+    .product-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -30% 20%;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.14);
+      filter: blur(4px);
+      pointer-events: none;
+      transition: transform 0.35s var(--ease-out), opacity 0.35s ease;
+    }
+    .product-card:hover { transform: translateY(-6px); }
+    .product-card:hover::after { transform: translateY(-8px) scale(1.06); }
+    .product-card.coral { background: radial-gradient(130% 130% at 12% 0%, #ff8a5c 0%, #ff5530 46%, #e83a15 100%); }
+    .product-card.magenta { background: radial-gradient(130% 130% at 12% 0%, #f388d4 0%, #ea5ec1 46%, #b93a93 100%); }
+    .product-card.blue { background: radial-gradient(130% 130% at 12% 0%, #4f83ff 0%, #1456f0 50%, #0d3aa8 100%); }
+    .product-card.purple { background: radial-gradient(130% 130% at 12% 0%, #c78bff 0%, #a855f7 46%, #6d28d9 100%); }
+    .product-card.coral:hover { box-shadow: 0 24px 44px -16px rgba(255,85,48,0.45); }
+    .product-card.magenta:hover { box-shadow: 0 24px 44px -16px rgba(234,94,193,0.45); }
+    .product-card.blue:hover { box-shadow: 0 24px 44px -16px rgba(20,86,240,0.45); }
+    .product-card.purple:hover { box-shadow: 0 24px 44px -16px rgba(168,85,247,0.45); }
+    .product-card .pc-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+    .product-card .pc-id {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+    .product-card h3 {
+      font-size: clamp(26px, 2.6vw, 34px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      margin: 24px 0 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .product-card p {
+      font-size: 14px;
+      line-height: 1.55;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+      max-width: 24ch;
+    }
+    .product-card .pc-cmd {
+      margin-top: 24px;
+      font-size: 13px;
+      font-weight: 500;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.22);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      display: inline-block;
+      position: relative;
+      z-index: 1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    @media (max-width: 1100px) {
+      .matrix { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .matrix {
+        grid-template-columns: none;
+        grid-auto-flow: column;
+        grid-auto-columns: min(86vw, 320px);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 12px;
+        scrollbar-width: none;
+      }
+      .matrix::-webkit-scrollbar { display: none; }
+      .product-card { scroll-snap-align: start; min-height: 280px; }
+      .product-card:hover { transform: none; }
+    }
+
+    /* Workflow */
+    .workflow {
+      background: var(--canvas);
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      counter-reset: step;
+    }
+    .step {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-xl);
+      padding: 28px 24px;
+      position: relative;
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .step:hover {
+      transform: translateY(-4px);
+      border-color: #dde1e7;
+      box-shadow: var(--shadow-md);
+    }
+    .step::before {
+      counter-increment: step;
+      content: counter(step, decimal-leading-zero);
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-coral);
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+      padding: 3px 10px;
+      background: #ffefe9;
+      border-radius: var(--radius-full);
+    }
+    .step h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .step p {
+      font-size: 14px;
+      color: var(--steel);
+      line-height: 1.55;
+    }
+    .step code {
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 12px;
+      background: var(--surface);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--brand-blue-deep);
+    }
+    @media (max-width: 900px) {
+      .steps { grid-template-columns: 1fr 1fr; }
+      .step::after { display: none; }
+    }
+    @media (max-width: 560px) {
+      .steps { grid-template-columns: 1fr; }
+    }
+
+    /* Framework triptych */
+    .framework-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .fw-card {
+      border-radius: var(--radius-xl);
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      position: relative;
+      overflow: hidden;
+      padding: 24px 24px 20px;
+      transition: border-color 0.2s ease;
+    }
+    .fw-card:hover {
+      border-color: #cfd4db;
+    }
+    .fw-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+    .fw-card.danger::before { background: var(--danger); }
+    .fw-card.ok::before { background: #1ba673; }
+    .fw-card.warn::before { background: #c2781a; }
+
+    .fw-card .fw-label {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--hairline-soft);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .fw-card .fw-label .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .fw-card.danger .fw-label { color: var(--danger); }
+    .fw-card.danger .fw-label .tag { background: #fde8e8; color: #b91c1c; }
+    .fw-card.ok .fw-label { color: #1ba673; }
+    .fw-card.ok .fw-label .tag { background: #e8ffea; color: #0d7a5a; }
+    .fw-card.warn .fw-label { color: #c2781a; }
+    .fw-card.warn .fw-label .tag { background: #fff4e8; color: #92400e; }
+
+    .fw-card ul {
+      list-style: none;
+      display: grid;
+      gap: 4px;
+    }
+    .fw-card li {
+      font-size: 14px;
+      color: var(--charcoal);
+      line-height: 1.5;
+      padding: 5px 0 5px 18px;
+      position: relative;
+    }
+    .fw-card li::before {
+      position: absolute;
+      left: 0;
+      top: 5px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    .fw-card.danger li::before { content: "×"; color: var(--danger); }
+    .fw-card.ok li::before { content: "✓"; color: #1ba673; }
+    .fw-card.warn li::before { content: "!"; color: #c2781a; }
+    @media (max-width: 900px) {
+      .framework-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Cases */
+    .cases-section { background: var(--canvas); }
+    .case-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .pill-tab {
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--steel);
+      border: 1px solid var(--hairline);
+      background: var(--canvas);
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s var(--ease-out);
+    }
+    .pill-tab:hover { border-color: #cfd4db; color: var(--ink); }
+    .pill-tab.active {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+      box-shadow: 0 6px 14px -6px rgba(10,10,10,0.4);
+    }
+    .case-panel { display: none; }
+    .case-panel.active { display: block; animation: caseIn 0.45s var(--ease-out); }
+    @keyframes caseIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .case-panel.active { animation: none; }
+    }
+
+    .case-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .case-layout { grid-template-columns: 1fr; }
+    }
+
+    .case-main {
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-hero);
+      padding: 32px;
+      background: var(--canvas);
+      box-shadow: var(--shadow-md);
+    }
+    .case-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .case-header h3 {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+    .case-header .sub {
+      font-size: 14px;
+      color: var(--steel);
+      margin-top: 4px;
+    }
+    .verdict {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .verdict.wait {
+      background: #fff4e8;
+      color: #b45309;
+      border: 1px solid #f5d9ae;
+      box-shadow: 0 4px 10px -4px rgba(194,120,26,0.3);
+    }
+    .case-lead {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--charcoal);
+      line-height: 1.55;
+      margin-bottom: 24px;
+      max-width: 48ch;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 700px) {
+      .metrics { grid-template-columns: 1fr 1fr; }
+    }
+    .metric {
+      background: var(--surface);
+      border: 1px solid var(--hairline-soft);
+      border-radius: var(--radius-lg);
+      padding: 14px 12px;
+      transition: border-color 0.18s ease;
+    }
+    .metric:hover { border-color: #dde1e7; }
+    .metric .k {
+      font-size: 12px;
+      color: var(--steel);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .metric .v {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+    .metric .v.down { color: var(--danger); }
+    .metric .v.up { color: var(--success-text); }
+    .metric .v.amber { color: #c2781a; }
+
+    .check-list {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .check-item {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+      font-size: 14px;
+      color: var(--charcoal);
+      line-height: 1.5;
+    }
+    .check-item .mark {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .mark.yes {
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+    .mark.yes svg { display: block; }
+    .mark.no {
+      background: #fde8e8;
+      color: var(--danger);
+      font-family: inherit;
+    }
+    .mark.maybe {
+      background: #fff4e8;
+      color: #b45309;
+      font-family: inherit;
+    }
+    .checks .mark-x,
+    .checks .mark-warn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 4px;
+    }
+    .checks .mark-x {
+      background: rgba(255,180,164,0.18);
+      color: #ffb4a4;
+    }
+    .checks .mark-warn {
+      background: rgba(254,188,46,0.22);
+      color: #febc2e;
+    }
+
+    .quote-box {
+      background: var(--surface);
+      border: 1px solid var(--hairline-soft);
+      border-left: 3px solid var(--brand-coral);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      font-size: 15px;
+      color: var(--charcoal);
+      line-height: 1.6;
+      font-weight: 500;
+      position: relative;
+    }
+    .quote-box cite {
+      display: block;
+      margin-top: 10px;
+      font-style: normal;
+      font-size: 13px;
+      color: var(--steel);
+      font-weight: 400;
+    }
+
+    .case-side {
+      display: grid;
+      gap: 16px;
+    }
+    .side-card {
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      background: var(--canvas);
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .side-card:hover { border-color: #dde1e7; box-shadow: var(--shadow-md); }
+    .side-card h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .signal {
+      padding: 14px;
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      border: 1px solid var(--hairline-soft);
+      margin-bottom: 10px;
+    }
+    .signal:last-child { margin-bottom: 0; }
+    .signal .t {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--success-text);
+      margin-bottom: 4px;
+    }
+    .signal p {
+      font-size: 13px;
+      color: var(--steel);
+      line-height: 1.55;
+    }
+    .side-card.alert {
+      background: linear-gradient(160deg, #1a1a1f 0%, #0a0a0a 70%);
+      border-color: rgba(255,255,255,0.08);
+      color: var(--on-dark);
+      box-shadow: 0 20px 40px -20px rgba(10,10,10,0.5);
+    }
+    .side-card.alert:hover { border-color: rgba(255,255,255,0.14); }
+    .side-card.alert h4 { color: var(--on-dark); }
+    .side-card.alert p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.55;
+    }
+    .side-card.alert .big {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: 8px 0 12px;
+      line-height: 1.3;
+      color: #ffb4a4;
+    }
+
+    /* Quote band */
+    .quote-band {
+      background:
+        radial-gradient(50% 60% at 80% 110%, rgba(255,85,48,0.16), transparent 60%),
+        var(--primary);
+      color: var(--on-dark);
+      padding: 104px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-band::before {
+      content: "“";
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 220px;
+      line-height: 1;
+      color: rgba(255,255,255,0.06);
+      pointer-events: none;
+    }
+    .quote-band blockquote {
+      font-size: clamp(24px, 3.5vw, 40px);
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      max-width: 18em;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+    .quote-band blockquote .accent { color: #ff8a70; }
+    .quote-band p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Use */
+    .use-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 800px) {
+      .use-grid { grid-template-columns: 1fr; }
+    }
+    .use-card {
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      background: var(--surface);
+      transition: box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .use-card:hover { border-color: #dde1e7; box-shadow: var(--shadow-md); }
+    .use-card h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .use-card p {
+      font-size: 14px;
+      color: var(--steel);
+      margin-bottom: 20px;
+    }
+    .qr-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .qr-item {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-lg);
+      padding: 16px 14px 14px;
+      text-align: center;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .qr-item:hover {
+      border-color: #cfd4db;
+      box-shadow: var(--shadow-sm);
+    }
+    .qr-item img {
+      width: 100%;
+      max-width: 160px;
+      aspect-ratio: 1;
+      object-fit: contain;
+      margin: 0 auto 12px;
+      border-radius: 8px;
+    }
+    .qr-item .qr-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 4px;
+    }
+    .qr-item .qr-hint {
+      font-size: 12px;
+      color: var(--stone);
+      line-height: 1.4;
+    }
+    .use-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .use-card-head .copy {
+      min-width: 0;
+    }
+    .use-card-head h3 {
+      margin-bottom: 8px;
+    }
+    .use-card-head p {
+      margin-bottom: 0;
+    }
+    .price-corner {
+      flex-shrink: 0;
+      text-align: right;
+      line-height: 1;
+    }
+    .price-corner .amount {
+      display: block;
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--brand-coral);
+      font-variant-numeric: tabular-nums;
+    }
+    .price-corner .amount em {
+      font-style: normal;
+      font-size: 18px;
+      font-weight: 600;
+      margin-right: 1px;
+    }
+    .price-corner .once {
+      display: block;
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--stone);
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 480px) {
+      .qr-grid { grid-template-columns: 1fr; }
+      .qr-item img { max-width: 200px; }
+      .price-corner .amount { font-size: 30px; }
+      .price-corner .amount em { font-size: 16px; }
+    }
+    .prompt-list {
+      display: grid;
+      gap: 10px;
+    }
+    .prompt-chip {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-full);
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--charcoal);
+      font-family: ui-monospace, Menlo, monospace;
+      transition: transform 0.18s var(--ease-out), border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .prompt-chip:hover {
+      transform: translateX(4px);
+      border-color: #cfd4db;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* CTA strip */
+    .cta-strip {
+      padding: 0 0 96px;
+    }
+    .cta-card {
+      background:
+        radial-gradient(80% 120% at 85% 0%, rgba(255,255,255,0.22), transparent 55%),
+        linear-gradient(135deg, #ff5530 0%, #ff6b3d 40%, #f0340f 100%);
+      border-radius: var(--radius-hero);
+      padding: 64px 48px;
+      color: var(--on-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+      box-shadow: 0 28px 56px -20px rgba(255,85,48,0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -40% 40%;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.10);
+      filter: blur(6px);
+      pointer-events: none;
+    }
+    .cta-card h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.24;
+      max-width: 14ch;
+      margin-bottom: 10px;
+    }
+    .cta-card p {
+      font-size: 16px;
+      opacity: 0.92;
+      max-width: 36ch;
+      line-height: 1.55;
+    }
+    .cta-actions { display: flex; gap: 12px; flex-wrap: wrap; position: relative; z-index: 1; }
+
+    /* Footer */
+    footer {
+      background: var(--footer-bg);
+      color: var(--on-dark);
+      padding: 64px 0 40px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 900px) {
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 520px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
+    .footer-brand .logo { color: #fff; margin-bottom: 12px; }
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 28ch;
+      line-height: 1.55;
+    }
+    .footer-col h5 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+    .footer-col a {
+      display: block;
+      font-size: 14px;
+      color: var(--muted);
+      padding: 4px 0;
+      transition: color 0.18s ease, transform 0.18s var(--ease-out);
+    }
+    .footer-col a:hover { color: #fff; transform: translateX(2px); }
+    .footer-bottom {
+      border-top: 1px solid #222;
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .footer-bottom strong { color: #ccc; font-weight: 500; }
+
+    /* X button */
+    .footer-x {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid #262626;
+      color: #e8e8ea;
+      background: transparent;
+      flex-shrink: 0;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .footer-x:hover {
+      background: #fff;
+      color: #0a0a0a;
+      border-color: #fff;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      margin-bottom: 48px;
+    }
+    .footer-col {
+      justify-self: end;
+      margin-right: 50px;
+    }
+    @media (max-width: 520px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-col { grid-column: auto; }
+    }
+    .footer-col h5 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+    .footer-col a {
+      display: block;
+      font-size: 14px;
+      color: var(--muted);
+      padding: 4px 0;
+      transition: color 0.18s ease, transform 0.18s var(--ease-out);
+    }
+    .footer-col a:hover { color: #fff; transform: translateX(2px); }
+
+    .footer-bottom {
+      border-top: 1px solid #222;
+      padding-top: 24px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .footer-bottom strong { color: #ccc; font-weight: 500; }
+    .footer-bottom .footer-x {
+      justify-self: end;
+      margin-right: 50px; /* 与上方 Skill 列右对齐 */
+    }
+    @media (max-width: 520px) {
+      .footer-bottom {
+        grid-template-columns: 1fr;
+      }
+      .footer-bottom .footer-x {
+        justify-self: start;
+        margin-right: 0;
+      }
+    }
+
+    /* Disclaimer note */
+    .disclaimer {
+      font-size: 13px;
+      color: var(--stone);
+      line-height: 1.7;
+      max-width: 72ch;
+      margin-top: 12px;
+    }
+    .disclaimer code {
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 12px;
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    /* Weakness guard section */
+    .weakness-section { background: var(--surface); }
+    .weakness-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--hairline);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .weak-tile {
+      background: var(--canvas);
+      padding: 24px 20px;
+      transition: background 0.2s ease;
+    }
+    .weak-tile:hover { background: var(--surface); }
+    .weak-tag {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--stone);
+      margin-bottom: 10px;
+    }
+    .weak-tile h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+    .weak-tile p {
+      font-size: 13px;
+      color: var(--steel);
+      line-height: 1.5;
+    }
+    @media (max-width: 1100px) {
+      .weakness-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .weakness-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .weakness-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="#top">
+        <span class="logo-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 397" role="img" aria-label="Logo"><rect width="397" height="397" rx="48" ry="48" fill="#000"/><polygon points="197,79 309,183 85,183" fill="#fff"/><polygon points="85,212 309,212 197,316" fill="#fff"/></svg></span>
+         法师交易系统
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#capabilities">能力</a>
+        <a href="#workflow">工作流</a>
+        <a href="#framework">体系</a>
+        <a href="#cases">案例</a>
+        <a href="#use">使用</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-tertiary" href="#cases">看案例</a>
+        <a class="btn btn-primary" href="#use">立即使用</a>
+        <button class="nav-toggle" id="navToggle" aria-label="菜单">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><line x1="2" y1="4" x2="16" y2="4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="2" y1="9" x2="16" y2="9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="2" y1="14" x2="16" y2="14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <div class="badge-row">
+          <span class="badge badge-new">AI智能体</span>
+          <span class="badge badge-beta">实时市场数据</span>
+          <span class="badge badge-success">Tony 框架</span>
+        </div>
+        <h1>不问感觉，只问<em class="hl">规则</em></h1>
+        <p class="lead">
+            把法师 Tony 的交易体系装进你的 AI 助手。覆盖 港美股、A 股、加密货币，先拉行情与均线再过红线与条件，直接给结论。
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#cases">查看真实案例</a>
+          <a class="btn btn-secondary" href="#workflow">看它怎么工作</a>
+        </div>
+
+        <div class="hero-panel">
+          <div class="hero-panel-top">
+            <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="hero-panel-meta"><span class="live-dot"></span>decision · 港美股 / A 股 / 加密货币</div>
+          </div>
+          <div class="chat-q">MU 能不能买？我想开仓了</div>
+          <div class="chat-a">
+            <strong>不建议现在开多。</strong> 不是 MU 不好，是时机不对。
+            <div class="checks">
+              <div><span class="mark-x">X</span> 右侧？— 价格在日线 MA20 下方 3.4%</div>
+              <div><span class="mark-x">X</span> 追价？— 从 $804 反弹 19%，已算追反弹</div>
+              <div><span class="mark-warn">!</span> 滚仓？— 半个条件，缺横盘与突破确认</div>
+              <div>→ 等站稳 MA20（$993）再谈进场</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="container stats-grid">
+        <div>
+          <div class="stat-num">2–3x</div>
+          <div class="stat-label">目标杠杆区间</div>
+        </div>
+        <div>
+          <div class="stat-num">MA20</div>
+          <div class="stat-label">日线过滤核心</div>
+        </div>
+        <div>
+          <div class="stat-num">~10</div>
+          <div class="stat-label">一年操作上限约次</div>
+        </div>
+        <div>
+          <div class="stat-num">15%</div>
+          <div class="stat-label">最大回撤红线</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capabilities product matrix -->
+    <section id="capabilities">
+      <div class="container">
+        <div class="section-head center">
+          <div class="eyebrow">Capabilities</div>
+          <h2>你说一句话，它过一遍 Tony 过滤器</h2>
+          <p>开单、滚仓、止损、复盘——港美股、A 股、加密货币，每一种场景都落到具体红线与策略上。</p>
+        </div>
+        <div class="matrix">
+          <article class="product-card coral">
+            <div class="pc-top">
+              <span class="pc-id">Entry</span>
+              <span class="badge badge-new" style="background:rgba(0,0,0,.2)">开单</span>
+            </div>
+            <div>
+              <h3>能不能开多</h3>
+              <p>右侧？MA20？追价？止损放哪？盈亏比划算吗？</p>
+              <span class="pc-cmd">SK海力士 能不能做多</span>
+            </div>
+          </article>
+          <article class="product-card magenta">
+            <div class="pc-top">
+              <span class="pc-id">Pyramid</span>
+            </div>
+            <div>
+              <h3>要不要滚仓</h3>
+              <p>只认三种高胜算：波动率新低、牛市大跌抄底、周线突破。</p>
+              <span class="pc-cmd">现在要不要加仓</span>
+            </div>
+          </article>
+          <article class="product-card blue">
+            <div class="pc-top">
+              <span class="pc-id">Risk</span>
+            </div>
+            <div>
+              <h3>浮亏怎么办</h3>
+              <p>止损设了没？趋势破了没？回撤超 15% 没？直接给动作。</p>
+              <span class="pc-cmd">我浮亏了要止损吗</span>
+            </div>
+          </article>
+          <article class="product-card purple">
+            <div class="pc-top">
+              <span class="pc-id">Review</span>
+            </div>
+            <div>
+              <h3>复盘与记录</h3>
+              <p>挑刺违反原则的操作，或把心得追加进交易圣经。</p>
+              <span class="pc-cmd">帮我复盘 / 记一笔</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Weakness guard detail -->
+    <section id="weakness" class="weakness-section">
+      <div class="container">
+        <div class="section-head center">
+          <div class="eyebrow">Weakness Guard</div>
+          <h2>它会叮嘱你的五个常见弱点</h2>
+          <p>不是劝你别犯，是在你想犯的那一刻拦住你。</p>
+        </div>
+        <div class="weakness-grid">
+          <article class="weak-tile">
+            <div class="weak-tag">01</div>
+            <h3>怕踏空</h3>
+            <p>追高被套，最常见亏损来源。</p>
+          </article>
+          <article class="weak-tile">
+            <div class="weak-tag">02</div>
+            <h3>震荡手痒</h3>
+            <p>撸短习惯了，就赚不了大钱。</p>
+          </article>
+          <article class="weak-tile">
+            <div class="weak-tag">03</div>
+            <h3>亏了想回本</h3>
+            <p>心态一乱，陷入恶性循环。</p>
+          </article>
+          <article class="weak-tile">
+            <div class="weak-tag">04</div>
+            <h3>看短期线</h3>
+            <p>盯着分钟线，是新手特征。</p>
+          </article>
+          <article class="weak-tile">
+            <div class="weak-tag">05</div>
+            <h3>不敢持仓</h3>
+            <p>看对了，也不敢拿住。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow -->
+    <section class="workflow" id="workflow">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">How it works</div>
+          <h2>先数据，后体系，再结论</h2>
+          <p>不预测涨跌，只评估概率和盈亏比——评估必须建立在真实数据上。</p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <h3>拉实时数据</h3>
+            <p>现价、涨跌幅、52 周高低；历史 K 线与 <code>MA20/60/120/200</code>。</p>
+          </article>
+          <article class="step">
+            <h3>内化 Tony 体系</h3>
+            <p>读取Tony的交易圣经与经典语录，装上红线、滚仓、弱点盯防。不念金句，把规则变成判断背景。</p>
+          </article>
+          <article class="step">
+            <h3>过 Tony 过滤器</h3>
+            <p>大周期方向 · 日线 MA20 · 是否追价 · 止损与盈亏比 · 回撤 15%。</p>
+          </article>
+          <article class="step">
+            <h3>直接给结论</h3>
+            <p>倾向性判断 + 可执行条件，不和稀泥：「错得起就干，止损放哪想好了没？」最终决策永远在你手里。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Framework -->
+    <section id="framework" style="background: var(--surface);">
+      <div class="container">
+        <div class="section-head center">
+          <div class="eyebrow">Tony Framework</div>
+          <h2>判断时默认过这三层</h2>
+          <p>红线绝对不碰，策略只做高胜算，弱点主动提醒。</p>
+        </div>
+        <div class="framework-grid">
+          <article class="fw-card danger">
+            <div class="fw-label"><span class="tag">红线</span>绝对不碰</div>
+            <ul>
+              <li>开单必带止损</li>
+              <li>不追高 · 不追空</li>
+              <li>逆势不做</li>
+              <li>回撤不超过 15%</li>
+              <li>震荡期不频繁交易</li>
+            </ul>
+          </article>
+          <article class="fw-card ok">
+            <div class="fw-label"><span class="tag">有效策略</span>只做高胜算</div>
+            <ul>
+              <li>滚仓 · 低杠杆 2–3x</li>
+              <li>做日线 MA20</li>
+              <li>宽止损 5%+</li>
+              <li>低频 · 一年约 10 次</li>
+              <li>现货 1/10 玩合约</li>
+            </ul>
+          </article>
+          <article class="fw-card warn">
+            <div class="fw-label"><span class="tag">弱点盯防</span>主动提醒</div>
+            <ul>
+              <li>怕踏空 · 追高被套</li>
+              <li>震荡手痒 · 撸短成瘾</li>
+              <li>亏损急于回本</li>
+              <li>盯短周期决策</li>
+              <li>看对了不敢拿住</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cases -->
+    <section class="cases-section" id="cases">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Live Cases · 2026-07-24</div>
+          <h2>真实问答：港美股 / 韩股实战</h2>
+          <p>三段完整分析均来自法师交易系统实战输出，结论都是「时机未到」——这恰恰是体系在工作。</p>
+        </div>
+
+        <div class="case-tabs" role="tablist">
+          <button class="pill-tab active" data-case="mu" role="tab" aria-selected="true">MU · 美光科技</button>
+          <button class="pill-tab" data-case="mrvl" role="tab" aria-selected="false">MRVL · 迈威尔科技</button>
+          <button class="pill-tab" data-case="hynix" role="tab" aria-selected="false">000660 · SK 海力士</button>
+        </div>
+
+        <!-- MU -->
+        <div class="case-panel active" id="case-mu">
+          <div class="case-layout">
+            <div class="case-main">
+              <div class="case-header">
+                <div>
+                  <h3>MU 能不能买？</h3>
+                  <div class="sub">Micron Technology · 分析时间 2026-07-22</div>
+                </div>
+                <span class="verdict wait">暂时不建议开多</span>
+              </div>
+              <p class="case-lead">现价 <strong>$959</strong>。跟你说实话——不是不能买，而是<strong>时机还没到</strong>。</p>
+
+              <div class="metrics">
+                <div class="metric">
+                  <div class="k">现价</div>
+                  <div class="v">$959</div>
+                </div>
+                <div class="metric">
+                  <div class="k">日线 MA20</div>
+                  <div class="v amber">$993</div>
+                </div>
+                <div class="metric">
+                  <div class="k">相对 MA20</div>
+                  <div class="v down">−3.4%</div>
+                </div>
+                <div class="metric">
+                  <div class="k">自 $804 反弹</div>
+                  <div class="v up">+19%</div>
+                </div>
+              </div>
+
+              <div class="check-list">
+                <div class="check-item">
+                  <span class="mark no">X</span>
+                  <div><strong>右侧吗？</strong> 价格在 MA20 下方，短期趋势仍偏下。</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark maybe">?</span>
+                  <div><strong>滚仓三条件？</strong> 半个。大跌抄底场景沾边，但缺横盘、多次探底与向上突破确认。</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark no">X</span>
+                  <div><strong>追价了吗？</strong> 从 $804 弹 19% 到 $959，已是追反弹，不是回调入场。</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark maybe">?</span>
+                  <div><strong>盈亏比？</strong> 表面 1:6 很香，但概率若远低于盈亏比，就是假的好数字。</div>
+                </div>
+              </div>
+
+              <div class="quote-box">
+                高概率，大赌注。关键不是下重注，是按兵不动。你怕踏空？怕踏空去追是亏损的头号来源。
+                <cite>— Tony 体系回应 · MU 案例</cite>
+              </div>
+            </div>
+
+            <div class="case-side">
+              <div class="side-card alert">
+                <h4>结论</h4>
+                <div class="big">不建议现在开多</div>
+                <p>MU 这轮从底部翻了十多倍，调整一两个月太正常。耐心点，钱不是每天都要赚的。</p>
+              </div>
+              <div class="side-card">
+                <h4>若真想买，等什么</h4>
+                <div class="signal">
+                  <div class="t">信号</div>
+                  <p>在 $900–$950 区域横盘确认支撑，再放量突破 MA20（$993）入场。</p>
+                </div>
+                <div class="signal">
+                  <div class="t">止损思路</div>
+                  <p>宽止损 5% 约 $911；但在没有确认底之前，破 $804 空间难估——这是现在不宜进的原因之一。</p>
+                </div>
+              </div>
+              <div class="side-card">
+                <h4>背景一览</h4>
+                <div class="metrics" style="grid-template-columns:1fr 1fr; margin:0;">
+                  <div class="metric">
+                    <div class="k">52W 低</div>
+                    <div class="v" style="font-size:15px;">$103</div>
+                  </div>
+                  <div class="metric">
+                    <div class="k">52W 高</div>
+                    <div class="v" style="font-size:15px;">$1255</div>
+                  </div>
+                  <div class="metric">
+                    <div class="k">本轮高点回撤</div>
+                    <div class="v down" style="font-size:15px;">−36%</div>
+                  </div>
+                  <div class="metric">
+                    <div class="k">牛市幅度</div>
+                    <div class="v up" style="font-size:15px;">~12×</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MRVL -->
+        <div class="case-panel" id="case-mrvl">
+          <div class="case-layout">
+            <div class="case-main">
+              <div class="case-header">
+                <div>
+                  <h3>MRVL 能不能做多？</h3>
+                  <div class="sub">Marvell Technology · 分析时间 2026-07-22</div>
+                </div>
+                <span class="verdict wait">暂时不建议做多</span>
+              </div>
+              <p class="case-lead">现价 <strong>$210.99</strong>（+1.46%）。大周期仍是多，但<strong>日线 MA20 还没站上</strong>——严格来说不在入场窗口。</p>
+
+              <div class="metrics">
+                <div class="metric">
+                  <div class="k">现价</div>
+                  <div class="v">$210.99</div>
+                </div>
+                <div class="metric">
+                  <div class="k">日线 MA20</div>
+                  <div class="v amber">$237.28</div>
+                </div>
+                <div class="metric">
+                  <div class="k">相对 MA20</div>
+                  <div class="v down">−11.1%</div>
+                </div>
+                <div class="metric">
+                  <div class="k">近月最大回撤</div>
+                  <div class="v down">−40%</div>
+                </div>
+              </div>
+
+              <div class="check-list">
+                <div class="check-item">
+                  <span class="mark yes">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6.5 4.5,9 10,3"/></svg>
+            </span>
+                  <div><strong>大周期方向：多。</strong> MA120/200 在下方，长牛未破，只做多不做空。</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark no">X</span>
+                  <div><strong>日线 MA20？</strong> 现价低于 MA20 约 11%，还在均线下方。</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark yes">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6.5 4.5,9 10,3"/></svg>
+            </span>
+                  <div><strong>是追价吗？</strong> 不算。从 $178 反弹到 $211，更像回调后的反弹段。</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark no">X</span>
+                  <div><strong>右侧确认？</strong> 反弹仅 4 天，量能回落，未构成右侧信号。</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark no">X</span>
+                  <div><strong>滚仓？</strong> 不符合三条件，只是超跌反弹。</div>
+                </div>
+              </div>
+
+              <div class="quote-box">
+                高手练的是不做的能力。看不懂不做，看得懂的，也有不适合做的。止损空间太大、利润空间太小——掐头去尾，真正可以做的就很少。
+                <cite>— Tony 语录 · 用于 MRVL 结论</cite>
+              </div>
+            </div>
+
+            <div class="case-side">
+              <div class="side-card alert">
+                <h4>结论</h4>
+                <div class="big">暂时不建议做多</div>
+                <p>基本面没问题，大跌后迟早修复，但时机比价格重要。现在进去，早了。</p>
+              </div>
+              <div class="side-card">
+                <h4>等两个信号之一</h4>
+                <div class="signal">
+                  <div class="t">信号一 · 站稳 MA20</div>
+                  <p>日线收在 $237 上方，回踩不破再进。止损放 MA20 下约 5%，目标 $280–300。</p>
+                </div>
+                <div class="signal">
+                  <div class="t">信号二 · Higher low</div>
+                  <p>回踩 $190–200 不破形成更高低点，止损 $178 下，目标 $280+。</p>
+                </div>
+              </div>
+              <div class="side-card">
+                <h4>均线位置</h4>
+                <div class="metrics" style="grid-template-columns:1fr 1fr; margin:0;">
+                  <div class="metric">
+                    <div class="k">MA60</div>
+                    <div class="v" style="font-size:15px;">$225 · −6%</div>
+                  </div>
+                  <div class="metric">
+                    <div class="k">MA120</div>
+                    <div class="v up" style="font-size:15px;">$162 · +31%</div>
+                  </div>
+                  <div class="metric">
+                    <div class="k">MA200</div>
+                    <div class="v up" style="font-size:15px;">$132 · +60%</div>
+                  </div>
+                  <div class="metric">
+                    <div class="k">近期低点</div>
+                    <div class="v" style="font-size:15px;">$177.95</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SK Hynix -->
+        <div class="case-panel" id="case-hynix">
+          <div class="case-layout">
+            <div class="case-main">
+              <div class="case-header">
+                <div>
+                  <h3>000660 能不能抄底？</h3>
+                  <div class="sub">SK Hynix · 分析时间 2026-07-24</div>
+                </div>
+                <span class="verdict wait">现在不是标准入场点</span>
+              </div>
+              <p class="case-lead">现价 <strong>178.8万₩</strong>（今日 −6.83%）。数据摆出来一看就明白——<strong>不是标准入场点</strong>。</p>
+
+              <div class="metrics">
+                <div class="metric">
+                  <div class="k">现价</div>
+                  <div class="v">178.8万</div>
+                </div>
+                <div class="metric">
+                  <div class="k">日线 MA20</div>
+                  <div class="v amber">214.6万</div>
+                </div>
+                <div class="metric">
+                  <div class="k">相对 MA20</div>
+                  <div class="v down">−16.8%</div>
+                </div>
+                <div class="metric">
+                  <div class="k">52W 高回撤</div>
+                  <div class="v down">−40%</div>
+                </div>
+              </div>
+
+              <div class="check-list">
+                <div class="check-item">
+                  <span class="mark yes">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6.5 4.5,9 10,3"/></svg>
+            </span>
+                  <div><strong>大周期方向：多。</strong> MA120/MA200 在下方（+17% / +56%），长期牛市未破。</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark no">X</span>
+                  <div><strong>短期趋势？</strong> MA20/MA60 都在上方压着（−16.8% / −14.5%），价格处于快速下跌通道。</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark no">X</span>
+                  <div><strong>滚仓三条件？</strong> ① 横盘波动率新低突破 ❌ ② 牛市大涨后大跌抄底 ⚠️ 沾边但未跌透 ③ 周线重大支撑企稳 ❌</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark no">X</span>
+                  <div><strong>右侧确认？</strong> 连像样反弹都还没出现；7/14 反弹一天就被砸回，空头仍强。</div>
+                </div>
+                <div class="check-item">
+                  <span class="mark maybe">?</span>
+                  <div><strong>盈亏比？</strong> 止损 150 万≈亏 16%，目标 MA20 214 万≈赚 20%，约 1.25:1——勉强及格，确定性不够。</div>
+                </div>
+              </div>
+
+              <div class="quote-box">
+                等它跌完再进场，比猜底进场靠谱得多。没仓位时焦虑追进去就被套，这是最常见的亏损来源。
+                <cite>— Tony 体系回应 · 000660 案例</cite>
+              </div>
+            </div>
+
+            <div class="case-side">
+              <div class="side-card alert">
+                <h4>结论</h4>
+                <div class="big">等，不急</div>
+                <p>现在还处于暴跌阶段，连横盘都还没开始。不要试图抄个世纪大底——找准趋势逆转的点。</p>
+              </div>
+              <div class="side-card">
+                <h4>具体怎么等</h4>
+                <div class="signal">
+                  <div class="t">等 MA120 企稳</div>
+                  <p>在 152 万附近或更低位置出现连续几天不再创新低、成交量萎缩。</p>
+                </div>
+                <div class="signal">
+                  <div class="t">等反弹确认底部</div>
+                  <p>从低点反弹 10% 以上，再回踩不破前低；或等 MA20 走平拐头。</p>
+                </div>
+              </div>
+              <div class="side-card">
+                <h4>均线位置</h4>
+                <div class="metrics" style="grid-template-columns:1fr 1fr; margin:0;">
+                  <div class="metric">
+                    <div class="k">MA60</div>
+                    <div class="v down" style="font-size:15px;">208.8万 · −14.5%</div>
+                  </div>
+                  <div class="metric">
+                    <div class="k">MA120</div>
+                    <div class="v up" style="font-size:15px;">152.6万 · +17%</div>
+                  </div>
+                  <div class="metric">
+                    <div class="k">MA200</div>
+                    <div class="v up" style="font-size:15px;">114.5万 · +56%</div>
+                  </div>
+                  <div class="metric">
+                    <div class="k">52W 高</div>
+                    <div class="v" style="font-size:15px;">298.7万</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="disclaimer" style="margin-top: 28px;">
+          以上案例来自桌面作者亲测实战输出（MU / MRVL / 000660），仅展示  法师交易系统 的分析结构与风格。同样的框架适用于 港美股、A 股、韩股、加密货币，不构成任何投资建议。
+        </p>
+      </div>
+    </section>
+
+    <!-- Quote band -->
+    <section class="quote-band">
+      <div class="container">
+        <blockquote>做大概率对的、盈亏比高的事。其余时间，<span class="accent">按兵不动</span>。</blockquote>
+        <p>趋势是暴富的唯一路径 · 不赚小钱也不亏大钱</p>
+      </div>
+    </section>
+
+    <!-- Use -->
+    <section id="use">
+      <div class="container">
+        <div class="section-head center">
+          <div class="eyebrow">Get started</div>
+          <h2>在智能体工具里直接开聊</h2>
+          <p>支持 OpenClaw、WorkBuddy、Claude、Codex等智能体工具。</p>
+        </div>
+        <div class="use-grid">
+          <div class="use-card">
+            <h3>这样问</h3>
+            <p>口语即可，不必背指令格式。</p>
+            <div class="prompt-list">
+              <div class="prompt-chip">NVDA 现在能不能做多?</div>
+              <div class="prompt-chip">我现在持有TSLA，帮我看看</div>
+              <div class="prompt-chip">我浮亏了怎么办？</div>
+              <div class="prompt-chip">我已经做空AMD，你觉得怎么样。</div>
+              <div class="prompt-chip">记一笔今天的交易心得</div>
+            </div>
+          </div>
+          <div class="use-card">
+            <div class="use-card-head">
+              <div class="copy">
+                <h3>下载 Skill 安装包</h3>
+                <p>扫码添加微信咨询，或扫描闲鱼直接下单。</p>
+              </div>
+              <div class="price-corner">
+                <span class="amount"><em>¥</em>39</span>
+                <span class="once">永久有效</span>
+              </div>
+            </div>
+            <div class="qr-grid">
+              <div class="qr-item">
+                <img src="qr-wechat.jpg" alt="微信二维码" width="160" height="160" loading="lazy" />
+                <div class="qr-label">微信</div>
+                <div class="qr-hint">扫码添加微信</div>
+              </div>
+              <div class="qr-item">
+                <img src="qr-xianyu.jpg" alt="闲鱼二维码" width="160" height="160" loading="lazy" />
+                <div class="qr-label">闲鱼</div>
+                <div class="qr-hint">扫码直接下单</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-strip">
+      <div class="container">
+        <div class="cta-card">
+          <div>
+            <h2>错得起就干。止损放哪，想好了没？</h2>
+            <p>把 Tony 体系装进你的 OpenClaw、Claude、Codex 或 WorkBuddy——下一次想冲动开单时，先让它过一遍过滤器。</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-on-dark" href="#cases">再看一遍案例</a>
+            <a class="btn btn-ghost-light" href="#top">回到顶部</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 397" role="img" aria-label="Logo"><rect width="397" height="397" rx="48" ry="48" fill="#000"/><polygon points="197,79 309,183 85,183" fill="#fff"/><polygon points="85,212 309,212 197,316" fill="#fff"/></svg></span>
+            法师交易系统
+          </div>
+          <p>法师 Tony 交易体系的 AI 教练，覆盖 A 股、港美股、加密货币，不预测，只应对。</p>
+        </div>
+        <div class="footer-col">
+          <h5>Skill</h5>
+          <a href="#capabilities">能力矩阵</a>
+          <a href="#workflow">工作流</a>
+          <a href="#framework">判断框架</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>
+          <strong>免责声明</strong>：本页仅供学习与展示 智能体 Skill 能力，投资交易可能导致本金全部损失，盈亏自负。
+        </div>
+        <a class="footer-x" href="https://x.com/ac_callme" target="_blank" rel="noopener" aria-label="X (Twitter)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav
+    const toggle = document.getElementById('navToggle');
+    const links = document.getElementById('navLinks');
+    toggle?.addEventListener('click', () => links.classList.toggle('open'));
+    links?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+    // Nav shadow on scroll
+    const nav = document.querySelector('.nav');
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Case tabs
+    const tabs = document.querySelectorAll('.pill-tab[data-case]');
+    const panels = {
+      mu: document.getElementById('case-mu'),
+      mrvl: document.getElementById('case-mrvl'),
+      hynix: document.getElementById('case-hynix'),
+    };
+    function showCase(id) {
+      tabs.forEach(t => {
+        const on = t.dataset.case === id;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      Object.entries(panels).forEach(([k, el]) => {
+        el?.classList.toggle('active', k === id);
+        if (k === id) el?.querySelectorAll('.reveal').forEach(r => r.classList.add('in'));
+      });
+    }
+    tabs.forEach(t => t.addEventListener('click', () => showCase(t.dataset.case)));
+
+    // Footer jump to case
+    document.querySelectorAll('[data-jump]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        showCase(a.dataset.jump);
+        document.getElementById('cases')?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Scroll reveal
+    const revealTargets = document.querySelectorAll([
+      '.badge-row', '.hero h1', '.hero .lead', '.hero-cta', '.hero-panel',
+      '.section-head', '.stats-grid > div', '.product-card',
+      '.step', '.fw-card', '.weak-tile', '.case-tabs', '.case-main', '.case-side > *',
+      '.quote-band blockquote', '.quote-band p', '.use-card', '.cta-card', '.disclaimer'
+    ].join(','));
+    revealTargets.forEach(el => {
+      el.classList.add('reveal');
+      const sibs = Array.from(el.parentElement.children).filter(c => c.classList.contains('reveal'));
+      el.style.setProperty('--d', Math.min(sibs.indexOf(el), 6) * 70 + 'ms');
+    });
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -32px 0px' });
+    revealTargets.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
